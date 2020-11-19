@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
+import GlobalStyle from "../GlobalStyles";
 
 import Admin from "./Admin";
 import BodyLocation from "./BodyLocation";
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <Wrapper>
+      <GlobalStyle />
       <Router>
         <Header />
 
