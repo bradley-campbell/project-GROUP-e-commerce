@@ -17,13 +17,13 @@ import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
 
 function App() {
-  const [bacon, setBacon] = useState(null);
+  // const [bacon, setBacon] = useState(null);
 
-  useEffect(() => {
-    fetch("/bacon")
-      .then((res) => res.json())
-      .then((data) => setBacon(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/bacon")
+  //     .then((res) => res.json())
+  //     .then((data) => setBacon(data));
+  // }, []);
 
   return (
     <Wrapper>
