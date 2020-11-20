@@ -5,11 +5,31 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 const PORT = 4000;
-const dataItems = require("./data/items.json");
+const dataItems = require("./data/items_modified.json");
 const dataCompanies = require("./data/companies.json");
 const dataOrders = require("./data/orders.json");
 
-//console.log(dataItems);
+// hard-coded body locations and categories
+const allBodyLocations = [
+  "wrist",
+  "arms",
+  "head",
+  "waist",
+  "chest",
+  "hands",
+  "neck",
+  "feet",
+  "torso",
+];
+const allCategories = [
+  "fitness",
+  "medical",
+  "lifestyle",
+  "entertainment",
+  "industrial",
+  "pets and animals",
+  "gaming",
+];
 
 express()
   .use(function (req, res, next) {
@@ -93,9 +113,9 @@ express()
   .get("/product/by-bodyLocation/:bodyLocation", (req, res) => {
     // Get products for Body Location X
     const bId = req.params.bodyLocation;
-    const bodyParts = getAllOf("body_location");
+    // const bodyParts = getAllOf("body_location");
     // reduce the list to demanded item
-    if (bodyParts.includes(bId.toLowerCase())) {
+    if (allBodyLocations.includes(bId.toLowerCase())) {
       const bList = dataItems.reduce((acc, cur) => {
         if (cur.body_location.toLowerCase() === bId.toLowerCase()) {
           acc.push(cur);
@@ -116,10 +136,10 @@ express()
   .get("/product/by-category/:category", (req, res) => {
     // Get products in category X
     const catId = req.params.category;
-    const cats = getAllOf("category");
+    //const cats = getAllOf("category");
     //console.log(cats);
     // reduce the list to demanded item
-    if (cats.includes(catId.toLowerCase())) {
+    if (allCategories.includes(catId.toLowerCase())) {
       const catList = dataItems.reduce((acc, cur) => {
         if (cur.category.toLowerCase() === catId.toLowerCase()) {
           acc.push(cur);
@@ -200,7 +220,8 @@ const getCompanyIds = () => {
     return acc;
   }, []);
 };
-const getAllOf = (property) => {
+
+/*const getAllOf = (property) => {
   // return a list of required property from the items
   // without duplicates
   // considering add them to static variables
@@ -213,4 +234,6 @@ const getAllOf = (property) => {
     }
   }, new Set());
   return [...s];
-};
+};*/
+
+//console.log(getAllOf("category"));
