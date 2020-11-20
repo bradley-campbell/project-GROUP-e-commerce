@@ -1,33 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import CartItem from "./CartItem";
 
-const Cart = () => {
-  // useEffect(() => {
-  //   fetch("")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     });
-  // }, []);
+import { getStoreItemArray } from "./../reducers";
 
-  const items = [1, 2, 3];
+const Cart = () => {
+  const storeItems = useSelector(getStoreItemArray);
+
+  const subTotal = useSelector((state) => {
+    const values = Object.values(state);
+    return values.reduce((acc, item) => {
+      return acc + item.quantity * item.price;
+    }, 0);
+  });
+  const total = subTotal * 1.15;
 
   return (
     <Wrapper>
       <Container>
         <Top>
           <Header>Cart</Header>
-          <SubHeader>Your cart contains # products.</SubHeader>
+          <SubHeader>
+            Your cart contains {storeItems.length} products.
+          </SubHeader>
         </Top>
-        {items.map((item) => {
-          return <CartItem props={item.toString()} />;
+        {storeItems.map((item) => {
+          console.log(item);
+          return <CartItem item={item} />;
         })}
         <Bottom>
           <TotalContainer>
-            <SubTotal>Subtotal</SubTotal>
-            <Total>Total</Total>
+            <SubTotal>Subtotal: ${subTotal}</SubTotal>
+            <Total>Total: ${total.toFixed(2)}</Total>
           </TotalContainer>
           <Button>Proceed to Checkout</Button>
         </Bottom>
@@ -44,7 +50,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   background: yellow;
   border: 2px solid red;
-  width: 50%;
+  width: 75%;
 `;
 
 const Top = styled.div`
@@ -63,7 +69,9 @@ const Bottom = styled.div`
   padding: 10px;
 `;
 
-const TotalContainer = styled.div``;
+const TotalContainer = styled.div`
+  margin-right: 20px;
+`;
 
 const SubTotal = styled.p``;
 

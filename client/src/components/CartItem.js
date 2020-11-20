@@ -1,19 +1,41 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { GoTrashcan } from "react-icons/go";
 
-const CartItem = () => {
+import { addItem, removeItem, updateQuantity } from "./../actions";
+
+const CartItem = ({ item }) => {
+  const dispatch = useDispatch();
+  // const itemFromState = useSelector((state) => state[id]);
+
+  const { _id, imageSrc, name, price, quantity } = item;
+  const id = _id;
+  console.log(id);
   return (
     <Wrapper>
-      <Image />
-      <Name>Item Name</Name>
-      <Price>Item Price</Price>
+      <Image src={imageSrc} /> <Name>{name}</Name>
+      <Price>${price}</Price>
       <QuantityContainer>
         <DecrementButton>-</DecrementButton>
-        <Quantity placeholder="0"></Quantity>
-        <IncrementButton>+</IncrementButton>
+        <Quantity
+          // placeholder="0"
+          value={quantity}
+          onChange={(e) => {
+            dispatch(updateQuantity({ id, quantity: e.target.value }));
+          }}
+        ></Quantity>
+        <IncrementButton onClick={() => dispatch(addItem({ id, ...item }))}>
+          +
+        </IncrementButton>
       </QuantityContainer>
-      <RemoveButton>x</RemoveButton>
-      {/* to be replaced with a little garbage can icon? */}
+      <RemoveButton
+        onClick={() => {
+          dispatch(removeItem({ id }));
+        }}
+      >
+        <GoTrashcan />
+      </RemoveButton>
     </Wrapper>
   );
 };
@@ -27,7 +49,10 @@ const Wrapper = styled.div`
   padding: 10px;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  height: 100px;
+  width: 100px;
+`;
 
 const Name = styled.p``;
 
