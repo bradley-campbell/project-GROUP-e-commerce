@@ -148,11 +148,8 @@ express()
     // Get list of products sold by Company X (by id)
   })*/
 
-  .patch("/product", (req, res) => {
-
-  })
+  .patch("/product", (req, res) => {})
   .put("/order/:orderId", (req, res) => {
-    
     res.status(200).json("🥓");
   })
   .put("/product", (req, res) => {
