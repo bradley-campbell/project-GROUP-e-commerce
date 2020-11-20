@@ -1,8 +1,8 @@
 const d = require("./items.json");
 const fs = require("fs");
 
-// helper file to convert prices to double values
 // only used once
+// 1. convert convert prices to double values
 
 const new_d = JSON.stringify(
   d.map(
