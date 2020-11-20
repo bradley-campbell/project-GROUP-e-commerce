@@ -197,7 +197,11 @@ express()
   })
   .get("/company/all", (req, res) => {
     // Get list of all companies
-    res.status(200).json({ status: 200, companies: dataCompanies });
+    // convert _id to id
+    const cs = dataCompanies.map((ele, ind) => {
+      return (dataCompanies[ind] = convertId(ele));
+    });
+    res.status(200).json({ status: 200, companies: cs });
   })
 
   /*
@@ -235,12 +239,16 @@ function convertedItems(items) {
       })
   );
 }
-
 // convert the single item
 function convertItem(item) {
-  return { ...item, price: convertPrice(item["price"]) };
+  const it = convertId(item);
+  return { ...it, price: convertPrice(item["price"]) };
 }
-
+function convertId(item) {
+  const n_id = item._id;
+  delete item._id;
+  return { ...item, id: n_id };
+}
 function convertPrice(input) {
   // fixed format: $33.33
   const str_sub = input.substring(1);
