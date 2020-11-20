@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { GoTrashcan } from "react-icons/go";
 
-import { addItem, removeItem, updateQuantity } from "./../actions";
+import {
+  addItem,
+  removeItem,
+  removeItemCompletely,
+  updateQuantity,
+} from "./../actions";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -17,12 +22,20 @@ const CartItem = ({ item }) => {
       <Image src={imageSrc} /> <Name>{name}</Name>
       <Price>${price}</Price>
       <QuantityContainer>
-        <DecrementButton>-</DecrementButton>
+        <DecrementButton
+          onClick={() => {
+            quantity > 1
+              ? dispatch(removeItem({ id, ...item }))
+              : dispatch(removeItemCompletely({ id }));
+          }}
+        >
+          -
+        </DecrementButton>
         <Quantity
           // placeholder="0"
           value={quantity}
           onChange={(e) => {
-            dispatch(updateQuantity({ id, quantity: e.target.value }));
+            dispatch(updateQuantity({ id, quantity: e.target.value, ...item }));
           }}
         ></Quantity>
         <IncrementButton onClick={() => dispatch(addItem({ id, ...item }))}>
@@ -31,7 +44,7 @@ const CartItem = ({ item }) => {
       </QuantityContainer>
       <RemoveButton
         onClick={() => {
-          dispatch(removeItem({ id }));
+          dispatch(removeItemCompletely({ id }));
         }}
       >
         <GoTrashcan />
