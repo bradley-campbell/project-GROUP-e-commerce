@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Item from "./Item";
 
 const Grid = () => {
+  
   let items = [1, 2, 3];
 
   return (

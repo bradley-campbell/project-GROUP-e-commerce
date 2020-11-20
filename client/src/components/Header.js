@@ -16,19 +16,19 @@ const Header = () => {
 
       <LogoLink exact to="/home">
         <ShopTitle>
-          Wear <span>Where?</span>
+          FETCH
         </ShopTitle>
       </LogoLink>
       <Navigation>
         <NavLink exact to="/company" activeStyle={{ color: "green" }}>
-          Company
+          <h3>Company</h3>
         </NavLink>
         <NavLink exact to="/bodylocation">
-          Body Location
+          <h3> Body Location</h3>
         </NavLink>
         <Category>
           <NavLink exact to="/category" className={"category"}>
-            Category
+            <h3>Category</h3>
           </NavLink>
         </Category>
         <form
@@ -46,7 +46,9 @@ const Header = () => {
             }}
             value={query}
           />
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={!query}>
+            Submit
+          </button>
         </form>
       </Navigation>
       <CartWrapper>
@@ -70,7 +72,7 @@ const ShopTitle = styled.h1`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.nav`
   position: relative;
   display: flex;
   align-items: center;
@@ -79,7 +81,6 @@ const Wrapper = styled.div`
   padding: 10px 30px 10px 30px;
   height: 5%;
   min-height: 60px;
-  background-color: pink;
 `;
 
 const Navigation = styled.div`
@@ -142,7 +143,6 @@ const DropDown = styled.div`
   height: 250px;
   padding: 25px;
   display: flex;
-  visibility: hidden;
 `;
 
 const Category = styled.div`
