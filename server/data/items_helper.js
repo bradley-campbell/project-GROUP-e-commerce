@@ -3,6 +3,7 @@ const fs = require("fs");
 
 // only used once
 // 1. convert convert prices to double values
+// nvm talked to TC and said to parse it as it goes
 
 const new_d = JSON.stringify(
   d.map(
