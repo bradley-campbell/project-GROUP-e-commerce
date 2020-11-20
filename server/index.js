@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 const PORT = 4000;
-const dataItems = require("./data/items_modified.json");
+const dataItems = require("./data/items.json");
 const dataCompanies = require("./data/companies.json");
 const dataOrders = require("./data/orders.json");
 
@@ -62,7 +62,7 @@ express()
       // check if it's found
       if (p) {
         // if found, send back with 200 and product
-        res.status(200).json({ status: 200, product: p });
+        res.status(200).json({ status: 200, product: convertItem(p) });
       } else {
         // if not found, send back with 404 not found
         res.status(404).json({
@@ -88,10 +88,11 @@ express()
         // get the reduced list of demanded item
         const cList = dataItems.reduce((acc, cur) => {
           if (cur.companyId === cId) {
-            acc.push(cur);
+            acc.push(convertItem(cur));
           }
           return acc;
         }, []);
+
         // responde with list of items
         res.status(200).json({ status: 200, products: cList });
         return;
@@ -118,7 +119,7 @@ express()
     if (allBodyLocations.includes(bId.toLowerCase())) {
       const bList = dataItems.reduce((acc, cur) => {
         if (cur.body_location.toLowerCase() === bId.toLowerCase()) {
-          acc.push(cur);
+          acc.push(convertItem(cur));
         }
         return acc;
       }, []);
@@ -142,7 +143,7 @@ express()
     if (allCategories.includes(catId.toLowerCase())) {
       const catList = dataItems.reduce((acc, cur) => {
         if (cur.category.toLowerCase() === catId.toLowerCase()) {
-          acc.push(cur);
+          acc.push(convertItem(cur));
         }
         return acc;
       }, []);
@@ -179,7 +180,9 @@ express()
     const arr = [];
     for (let k = 0; k < n; k++) {
       // get list of random products
-      arr.push(dataItems[Math.floor(Math.random() * dataItems.length)]);
+      arr.push(
+        convertItem(dataItems[Math.floor(Math.random() * dataItems.length)])
+      );
     }
     res.status(200).json({ status: 200, products: arr });
   })
@@ -190,6 +193,7 @@ express()
     // the search keywords:
     // e.g. word1=winter&word2=summer
     // input cleaning may needed
+    res.status(200).json("🥓");
   })
   .get("/company/all", (req, res) => {
     // Get list of all companies
@@ -220,6 +224,31 @@ const getCompanyIds = () => {
     return acc;
   }, []);
 };
+
+// convert array of items
+function convertedItems(items) {
+  return items.map(
+    (ele, ind) =>
+      (items[ind] = {
+        ...ele,
+        price: convertPrice(ele["price"]),
+      })
+  );
+}
+
+// convert the single item
+function convertItem(item) {
+  return { ...item, price: convertPrice(item["price"]) };
+}
+
+function convertPrice(input) {
+  // fixed format: $33.33
+  const str_sub = input.substring(1);
+  if (isNaN(parseFloat(str_sub))) {
+    console.log(input);
+  }
+  return parseFloat(str_sub);
+}
 
 /*const getAllOf = (property) => {
   // return a list of required property from the items
