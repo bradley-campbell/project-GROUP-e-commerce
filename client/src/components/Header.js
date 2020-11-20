@@ -14,7 +14,7 @@ const Header = () => {
     <Wrapper>
       <DropDown className="dropdown">Pets Fitness Medical</DropDown>
 
-      <LogoLink exact to="/">
+      <LogoLink exact to="/home">
         <ShopTitle>
           Wear <span>Where?</span>
         </ShopTitle>
@@ -24,7 +24,7 @@ const Header = () => {
           Company
         </NavLink>
         <NavLink exact to="/bodylocation">
-          Wear Where?
+          Body Location
         </NavLink>
         <Category>
           <NavLink exact to="/category" className={"category"}>
@@ -131,20 +131,6 @@ const CartWrapper = styled.div`
   }
 `;
 
-const Category = styled.div`
-  background-color: green;
-  box-sizing: border-box;
-  height: 45px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover .dropdown {
-    background-color: yellow;
-  }
-`;
-
 const DropDown = styled.div`
   position: absolute;
   left: 0;
@@ -156,4 +142,22 @@ const DropDown = styled.div`
   height: 250px;
   padding: 25px;
   display: flex;
+  visibility: hidden;
+`;
+
+const Category = styled.div`
+  background-color: green;
+  box-sizing: border-box;
+  height: 45px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    ${DropDown} {
+      background-color: green;
+    }
+    background-color: yellow;
+  }
 `;
