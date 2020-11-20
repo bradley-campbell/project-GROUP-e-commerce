@@ -6,7 +6,7 @@ import styled from "styled-components";
 const CompanyList = () => {
   return (
     <div>
-      <h1>These are the companies to choose from - so many!</h1>;
+      <h1>COMPANY LIST</h1>
     </div>
   );
 };
