@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const PORT = 4000;
 const dataItems = require("./data/items.json");
 const dataCompanies = require("./data/companies.json");
+const dataOrders = require("./data/orders.json");
+
 //console.log(dataItems);
 
 express()
@@ -28,7 +30,7 @@ express()
   .use("/", express.static(__dirname + "/"))
 
   // REST endpoints?
-  .get("/bacon", (req, res) => res.status(200).json("🥓"))
+  //.get("/bacon", (req, res) => res.status(200).json("🥓"))
 
   .get("/product/by-product/:productId", (req, res) => {
     // Get info for ProductDetails page
@@ -58,18 +60,28 @@ express()
   .get("/product/by-company/:companyId", (req, res) => {
     // Get products sold by Company X
     const cId = parseInt(req.params.companyId);
+    const comIds = getCompanyIds();
     // check is is integer or not
     if (!isNaN(cId)) {
-      // reduce the list to demanded item
-      const cList = dataItems.reduce((acc, cur) => {
-        //console.log(acc);
-        if (cur.companyId === cId) {
-          acc.push(cur);
-        }
-        return acc;
-      }, []);
-      // responde with list of items  // may add 404 with not included companies
-      res.status(200).json({ status: 200, products: cList });
+      // check if the cId is included in our databse
+      if (comIds.includes(cId)) {
+        // get the reduced list of demanded item
+        const cList = dataItems.reduce((acc, cur) => {
+          if (cur.companyId === cId) {
+            acc.push(cur);
+          }
+          return acc;
+        }, []);
+        // responde with list of items
+        res.status(200).json({ status: 200, products: cList });
+        return;
+      } else {
+        res.status(404).json({
+          status: 404,
+          error: `The company with id ${cId} doesn't exist in our database!`,
+        });
+        return;
+      }
     } else {
       // respond with 400 bad request
       res
@@ -81,28 +93,48 @@ express()
   .get("/product/by-bodyLocation/:bodyLocation", (req, res) => {
     // Get products for Body Location X
     const bId = req.params.bodyLocation;
+    const bodyParts = getAllOf("body_location");
     // reduce the list to demanded item
-    const bList = dataItems.reduce((acc, cur) => {
-      if (cur.body_location.toLowerCase() === bId.toLowerCase()) {
-        acc.push(cur);
-      }
-      return acc;
-    }, []);
-    // responde with list of items  // may add 404 with not included companies
-    res.status(200).json({ status: 200, products: bList });
+    if (bodyParts.includes(bId.toLowerCase())) {
+      const bList = dataItems.reduce((acc, cur) => {
+        if (cur.body_location.toLowerCase() === bId.toLowerCase()) {
+          acc.push(cur);
+        }
+        return acc;
+      }, []);
+      // responde with list of items  // may add 404 with not included companies
+      res.status(200).json({ status: 200, products: bList });
+      return;
+    } else {
+      res.status(404).json({
+        status: 200,
+        error: `The body location '${bId}' is not in our database!`,
+      });
+    }
   })
 
   .get("/product/by-category/:category", (req, res) => {
     // Get products in category X
     const catId = req.params.category;
+    const cats = getAllOf("category");
+    //console.log(cats);
     // reduce the list to demanded item
-    const catList = dataItems.reduce((acc, cur) => {
-      if (cur.category.toLowerCase() === catId.toLowerCase()) {
-        acc.push(cur);
-      }
-      return acc;
-    }, []);
-    res.status(200).json({ status: 200, products: catList });
+    if (cats.includes(catId.toLowerCase())) {
+      const catList = dataItems.reduce((acc, cur) => {
+        if (cur.category.toLowerCase() === catId.toLowerCase()) {
+          acc.push(cur);
+        }
+        return acc;
+      }, []);
+      res.status(200).json({ status: 200, products: catList });
+      return;
+    } else {
+      res.status(404).json({
+        status: 200,
+        error: `The category '${catId}' is not in our database!`,
+      });
+      return;
+    }
   })
   .get("/product/random", (req, res) => {
     // Get array of X amount of random products
@@ -110,7 +142,8 @@ express()
     const n = req.body.number;
     //console.log(n);
     if (n == null || n === "undefined") {
-      // "=="" will check both undefined and null
+      // "n==null" will check both n===null and number is not given (n===undefined)
+      // "undefined" is when given {n:undefined} in front-end
       res.status(400).json({
         status: 400,
         error: `Number is of value '${n}', Please give me the number of products you want!`,
@@ -119,7 +152,7 @@ express()
     } else if (typeof n !== "number") {
       res.status(400).json({
         status: 400,
-        error: `Number is of value '${n}', it is not type of number!`,
+        error: `Number is '${n}', it is not type of number!`,
       });
       return;
     }
@@ -131,7 +164,7 @@ express()
     res.status(200).json({ status: 200, products: arr });
   })
 
-  .get(`/product/search`, (req, res) => {
+  .get("/product/search", (req, res) => {
     //=> will complete leter
     // Get products containing search term in title
     // the search keywords:
@@ -142,6 +175,7 @@ express()
     // Get list of all companies
     res.status(200).json({ status: 200, companies: dataCompanies });
   })
+
   /*
     duplicated path.
   .get("/company/:companyId", (req, res) => {
@@ -149,6 +183,7 @@ express()
   })*/
 
   .patch("/product", (req, res) => {})
+
   .put("/order/:orderId", (req, res) => {
     res.status(200).json("🥓");
   })
@@ -157,3 +192,25 @@ express()
   })
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+
+const getCompanyIds = () => {
+  // return a list of company ids
+  return dataCompanies.reduce((acc, cur) => {
+    acc.push(cur._id);
+    return acc;
+  }, []);
+};
+const getAllOf = (property) => {
+  // return a list of required property from the items
+  // without duplicates
+  // considering add them to static variables
+  const s = dataItems.reduce((acc, cur) => {
+    if (property !== "imageSrc") {
+      // want to keep the imageSrc untouched
+      return acc.add(cur[property].toLowerCase());
+    } else {
+      return acc.add(cur[property]);
+    }
+  }, new Set());
+  return [...s];
+};
