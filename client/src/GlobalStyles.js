@@ -1,2 +1,25 @@
 import React from "react";
-import {GlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+`;
+
+export default GlobalStyle;
