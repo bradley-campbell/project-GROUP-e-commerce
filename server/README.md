@@ -14,7 +14,7 @@
 | price         | float          | `49.99`                                                  |
 | body_location | string         | `"Wrist"`                                                |
 | category      | string         | `"Fitness"`                                              |
-| \_id          | integer        | `6543`                                                   |
+| id            | integer        | `6543`                                                   |
 | imageSrc      | string(base64) | too long to display                                      |
 | numInStock    | integer        | `9`                                                      |
 | companyId     | integer        | `19962`                                                  |
@@ -27,7 +27,7 @@
 | name    | string  | `"Barska"`                 |
 | url     | string  | `"http://www.barska.com/"` |
 | country | string  | `"United States"`          |
-| \_id    | integer | `19962`                    |
+| id      | integer | `19962`                    |
 
 ---
 
