@@ -9,8 +9,8 @@ const Item = ({ item }) => {
         src="https://www.thehits.co.nz/media/1747385/1.jpg?width=635&height=395&mode=crop"
         width="100%"
       />
-      <Name>Burger Hat</Name>
-      <Price>$500.00</Price>
+      <h2>Burger Hat</h2>
+      <p>$500.00</p>
     </Wrapper>
   );
 };
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   margin: 30px;
   line-height: 0.2em;
   border-radius: 10px;
-  background: pink;
+  background: pink;  // grab from constant file 
   text-align: center;
   cursor: pointer;
 `;
