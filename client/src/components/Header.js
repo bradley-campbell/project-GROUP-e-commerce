@@ -15,9 +15,7 @@ const Header = () => {
       <DropDown className="dropdown">Pets Fitness Medical</DropDown>
 
       <LogoLink exact to="/home">
-        <ShopTitle>
-          FETCH
-        </ShopTitle>
+        <ShopTitle>FETCH</ShopTitle>
       </LogoLink>
       <Navigation>
         <NavLink exact to="/company" activeStyle={{ color: "green" }}>
@@ -143,6 +141,7 @@ const DropDown = styled.div`
   height: 250px;
   padding: 25px;
   display: flex;
+  visibility: hidden;
 `;
 
 const Category = styled.div`
