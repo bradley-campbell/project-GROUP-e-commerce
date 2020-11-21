@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const CompanyList = () => {
   const [comps, setCompanies] = useState(null);
-
+  // this is a comment
   useEffect(() => {
     fetch(`/company/all`)
       .then((res) => res.json())
