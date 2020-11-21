@@ -7,7 +7,7 @@ const Home = () => {
 
   const handleFetch = async () => {
     try {
-      let response = await fetch("/product/random"); // Tried fetching with number in body, produced an error - small change to endpoint
+      let response = await fetch("/product/random/25"); // Tried fetching with number in body, produced an error - small change to endpoint
       response = await response.json();
       setRandomItems([...response.products]);
     } catch (error) {
