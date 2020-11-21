@@ -68,12 +68,12 @@
   - On failure
     - The category is not in our system: `{ status:404, error:"ERROR_MESSAGE" }`
 
-- GET `/product/random`
+- GET `/product/random/:num`
 
   - Get array of X amount of random products
   - body requirement
-    - `{ number:INTEGER_VALUE }`
-    - e.g. with `body: JSON.stringify({number:34})` will return 34 random products
+    - `:num` is an integer of the data you want to retrieve.
+    - e.g. with `/product/random/34` will return 34 random products
   - On success
     - `{ status: 200, products: [array of objects] }`
   - On failure
