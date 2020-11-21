@@ -46,7 +46,7 @@
 
   - Get products of a specific company, indicated by id
   - On success:
-    - `{ status:200, products:[List of product objects] }`
+    - `{ status:200, products:[List of product objects], company: { a company object } }`
   - On failure:
 
     - companyId is not integer: `{ status:400, error:"ERROR_MESSAGE" }`
@@ -84,6 +84,17 @@
   - Get list of all companies
   - On success
     - `{ status: 200, companies: [array of companies] }`
+
+- GET `/company/:companyId`
+
+  - Get a specific company by id
+  - On success
+    - `{ status: 200, company: { company object } }`
+  - On failure
+    - Not integer
+      - `{ status: 400, error: ERROR_MESSAGE }`
+    - Not in the database
+      - `{ status: 404, error: ERROR_MESSAGE }`
 
 - GET `/product/search`
 

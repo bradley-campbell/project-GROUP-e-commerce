@@ -84,17 +84,26 @@ express()
     // check is is integer or not
     if (!isNaN(cId)) {
       // check if the cId is included in our databse
+      //console.log(comIds);
       if (comIds.includes(cId)) {
         // get the reduced list of demanded item
         const cList = dataItems.reduce((acc, cur) => {
+          const c_cur = { ...cur };
           if (cur.companyId === cId) {
-            acc.push(convertItem(cur));
+            acc.push(convertItem(c_cur));
           }
           return acc;
         }, []);
+        const company = convertId(
+          dataCompanies.find((ele) => {
+            return ele._id === cId;
+          })
+        );
 
         // responde with list of items
-        res.status(200).json({ status: 200, products: cList });
+        res
+          .status(200)
+          .json({ status: 200, products: cList, company: company });
         return;
       } else {
         res.status(404).json({
@@ -190,6 +199,7 @@ express()
     // input cleaning may needed
     res.status(200).json("🥓");
   })
+
   .get("/company/all", (req, res) => {
     // Get list of all companies
     // convert _id to id
@@ -197,6 +207,34 @@ express()
       return (dataCompanies[ind] = convertId(ele));
     });
     res.status(200).json({ status: 200, companies: cs });
+  })
+
+  .get("/company/:companyId", (req, res) => {
+    // Get individual company by id
+    const cId = parseInt(req.params.companyId);
+    const cIds = getCompanyIds();
+    if (!isNaN(cId)) {
+      if (cIds.includes(cId)) {
+        const c = convertId(
+          dataCompanies.find((ele) => {
+            return ele._id === cId;
+          })
+        );
+        res.status(200).json({ status: 200, company: c });
+        return;
+      } else {
+        res.status(404).json({
+          status: 404,
+          error: `The company with id ${cId} is not in our database.`,
+        });
+        return;
+      }
+    } else {
+      res.status(400).json({
+        status: 400,
+        error: `The company id is ${cId}, which is not an integer.`,
+      });
+    }
   })
 
   /*
@@ -218,32 +256,26 @@ express()
 
 const getCompanyIds = () => {
   // return a list of company ids
-  return dataCompanies.reduce((acc, cur) => {
+  const cL = dataCompanies.reduce((acc, cur) => {
+    //console.log(cur);
     acc.push(cur._id);
     return acc;
   }, []);
+  return cL;
 };
-
-// convert array of items
-function convertedItems(items) {
-  return items.map(
-    (ele, ind) =>
-      (items[ind] = {
-        ...ele,
-        price: convertPrice(ele["price"]),
-      })
-  );
-}
 
 // convert the single item
 function convertItem(item) {
+  // return a new object
   const it = convertId(item);
   return { ...it, price: convertPrice(item["price"]) };
 }
 function convertId(item) {
+  // return a new object
+  const item_new = { ...item };
   const n_id = item._id;
-  delete item._id;
-  return { ...item, id: n_id };
+  delete item_new["_id"];
+  return { ...item_new, id: n_id };
 }
 function convertPrice(input) {
   // fixed format: $33.33
@@ -253,20 +285,3 @@ function convertPrice(input) {
   }
   return parseFloat(str_sub);
 }
-
-/*const getAllOf = (property) => {
-  // return a list of required property from the items
-  // without duplicates
-  // considering add them to static variables
-  const s = dataItems.reduce((acc, cur) => {
-    if (property !== "imageSrc") {
-      // want to keep the imageSrc untouched
-      return acc.add(cur[property].toLowerCase());
-    } else {
-      return acc.add(cur[property]);
-    }
-  }, new Set());
-  return [...s];
-};*/
-
-//console.log(getAllOf("category"));
