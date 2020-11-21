@@ -51,14 +51,6 @@ function App() {
             <ProductDetails />
           </Route>
 
-          <Route exact path="/bodylocation/:bodylocationId">
-            <BodyLocation />
-          </Route>
-
-          <Route exact path="/category">
-            <CategoryList />
-          </Route>
-
           <Route exact path="/category/:categoryId">
             <ItemsByCategory />
           </Route>
