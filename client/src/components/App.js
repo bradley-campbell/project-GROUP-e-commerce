@@ -16,7 +16,6 @@ import Payment from "./Payment";
 import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
-import "normalize.css";
 import { COLORS } from "../ConstantStyles";
 
 function App() {
