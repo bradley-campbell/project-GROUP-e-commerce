@@ -12,6 +12,7 @@ const CompanyList = () => {
     fetch(`/company/all`)
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         setCompanies(res.companies);
       });
   }, []);
