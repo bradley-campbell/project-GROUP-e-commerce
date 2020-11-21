@@ -17,6 +17,7 @@ import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
 import "normalize.css";
+import { COLORS } from "../ConstantStyles";
 
 function App() {
   // const [bacon, setBacon] = useState(null);
@@ -89,6 +90,8 @@ function App() {
 
 export default App;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  background: ${COLORS.white};
+`;
 
 const Grid = styled.div``;

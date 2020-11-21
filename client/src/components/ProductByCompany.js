@@ -30,6 +30,7 @@ const ProductByCompany = () => {
   ) : (
     <div>Loading page</div>
   );
+
 };
 
 export default ProductByCompany;
