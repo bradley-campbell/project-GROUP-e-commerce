@@ -19,6 +19,8 @@ const ProductByCompany = () => {
       });
   }, []);
 
+  console.log(cProducts);
+
   return cProducts ? <div></div> : <div>Loading page</div>;
 };
 

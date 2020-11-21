@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiShoppingCart as CartIcon } from "react-icons/fi";
 import { NavLink, Link, useHistory } from "react-router-dom";
+import { COLORS } from "../ConstantStyles";
 
 const Header = () => {
   const [query, setQuery] = useState("");
@@ -16,16 +17,16 @@ const Header = () => {
         <ShopTitle>SHOP FETCH</ShopTitle>
       </LogoLink>
       <Navigation>
-        <NavLink exact to="/company" activeStyle={{ color: "green" }}>
+        <NavStyle exact to="/company" activeStyle={{ color: "green" }}>
           <h3>Company</h3>
-        </NavLink>
-        <NavLink exact to="/bodylocation">
+        </NavStyle>
+        <NavStyle exact to="/bodylocation">
           <h3> Body Location</h3>
-        </NavLink>
+        </NavStyle>
         <Category>
-          <NavLink exact to="/category" className={"category"}>
+          <NavStyle exact to="/category" className={"category"}>
             <h3>Category</h3>
-          </NavLink>
+          </NavStyle>
         </Category>
         <form
           onSubmit={(ev) => {
@@ -34,7 +35,7 @@ const Header = () => {
             setQuery("");
           }}
         >
-          <input
+          <Input
             placeholder="Search"
             onChange={(ev) => {
               const formatQuery = ev.target.value;
@@ -42,17 +43,17 @@ const Header = () => {
             }}
             value={query}
           />
-          <button type="submit" disabled={!query}>
+          <Button type="submit" disabled={!query}>
             Submit
-          </button>
+          </Button>
         </form>
       </Navigation>
       <CartWrapper>
-        <div>
-          <h1>3</h1>
-        </div>
+        <CartNum exact to="/cart">
+          2
+        </CartNum>
         <CartLink exact to="/cart">
-          <CartIcon size={55} />
+          <CartIcon size={42} color={COLORS.white} />
         </CartLink>
       </CartWrapper>
     </Wrapper>
@@ -74,6 +75,7 @@ const Wrapper = styled.nav`
   padding: 10px 30px 10px 30px;
   height: 5%;
   min-height: 60px;
+  background: ${COLORS.primary};
 `;
 
 const Navigation = styled.div`
@@ -87,7 +89,13 @@ const Navigation = styled.div`
   }
 `;
 
-const NavStyle = styled(NavLink)``;
+const NavStyle = styled(NavLink)`
+  color: ${COLORS.accent};
+
+  &:hover {
+    color: ${COLORS.white};
+  }
+`;
 
 const LogoLink = styled(Link)`
   text-decoration: none;
@@ -96,6 +104,13 @@ const LogoLink = styled(Link)`
 `;
 
 const CartLink = styled(Link)``;
+const CartNum = styled(Link)`
+  color: ${COLORS.white};
+  margin-right: -29px;
+  margin-top: -7px;
+  font-size: 12px;
+  font-weight: bolder;
+`;
 
 const CartWrapper = styled.div`
   position: relative;
@@ -103,7 +118,7 @@ const CartWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  h1 {
+  h3 {
     font-size: 15px;
   }
 
@@ -114,11 +129,6 @@ const CartWrapper = styled.div`
     justify-content: center;
     color: white;
     border-radius: 50%;
-    border: 1px white solid;
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-    background-color: blue;
     z-index: 2;
     left: 44%;
     top: 20%;
@@ -137,4 +147,24 @@ const Category = styled.div`
   &:hover {
     background-color: yellow;
   }
+`;
+
+const Button = styled.button`
+  background: ${COLORS.button};
+  border-radius: 0 ${COLORS.borderRadius} ${COLORS.borderRadius} 0;
+  color: ${COLORS.primary};
+  border: none;
+  padding: 5px 20px;
+  cursor: pointer;
+
+  &:hover {
+    background: ${COLORS.accent};
+  }
+`;
+
+const Input = styled.input`
+  background: ${COLORS.white};
+  padding: 5px 10px;
+  border: none;
+  border-radius: ${COLORS.borderRadius} 0 0 ${COLORS.borderRadius};
 `;
