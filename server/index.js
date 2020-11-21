@@ -157,34 +157,29 @@ express()
       return;
     }
   })
-  .get("/product/random", (req, res) => {
+  .get("/product/random/:num", (req, res) => {
     // Get array of X amount of random products
     // assumption: body contains a number
-    const n = req.body.number;
+    const n = parseInt(req.params.num);
     //console.log(n);
-    if (n == null || n === "undefined") {
+    if (isNaN(n)) {
       // "n==null" will check both n===null and number is not given (n===undefined)
       // "undefined" is when given {n:undefined} in front-end
       res.status(400).json({
         status: 400,
-        error: `Number is of value '${n}', Please give me the number of products you want!`,
+        error: `Number is of value '${req.params.num}', Please give me the number of products you want!`,
       });
       return;
-    } else if (typeof n !== "number") {
-      res.status(400).json({
-        status: 400,
-        error: `Number is '${n}', it is not type of number!`,
-      });
-      return;
+    } else {
+      const arr = [];
+      for (let k = 0; k < n; k++) {
+        // get list of random products
+        arr.push(
+          convertItem(dataItems[Math.floor(Math.random() * dataItems.length)])
+        );
+      }
+      res.status(200).json({ status: 200, products: arr });
     }
-    const arr = [];
-    for (let k = 0; k < n; k++) {
-      // get list of random products
-      arr.push(
-        convertItem(dataItems[Math.floor(Math.random() * dataItems.length)])
-      );
-    }
-    res.status(200).json({ status: 200, products: arr });
   })
 
   .get("/product/search", (req, res) => {
