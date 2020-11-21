@@ -16,6 +16,7 @@ import Payment from "./Payment";
 import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
+import "normalize.css";
 
 function App() {
   // const [bacon, setBacon] = useState(null);

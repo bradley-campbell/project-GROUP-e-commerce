@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaShoppingCart as CartIcon } from "react-icons/fa";
+import { FiShoppingCart as CartIcon } from "react-icons/fi";
 import { NavLink, Link, useHistory } from "react-router-dom";
 
 const Header = () => {
@@ -12,12 +12,8 @@ const Header = () => {
 
   return (
     <Wrapper>
-      <DropDown className="dropdown">Pets Fitness Medical</DropDown>
-
       <LogoLink exact to="/home">
-        <ShopTitle>
-          FETCH
-        </ShopTitle>
+        <ShopTitle>SHOP FETCH</ShopTitle>
       </LogoLink>
       <Navigation>
         <NavLink exact to="/company" activeStyle={{ color: "green" }}>
@@ -66,10 +62,7 @@ const Header = () => {
 export default Header;
 
 const ShopTitle = styled.h1`
-  font-family: sans-serif;
-  span {
-    font-weight: lighter;
-  }
+  font-style: oblique;
 `;
 
 const Wrapper = styled.nav`
@@ -132,19 +125,6 @@ const CartWrapper = styled.div`
   }
 `;
 
-const DropDown = styled.div`
-  position: absolute;
-  left: 0;
-  top: 100%;
-  height: 250px;
-  background-color: purple;
-  opacity: 85%;
-  width: 100%;
-  height: 250px;
-  padding: 25px;
-  display: flex;
-`;
-
 const Category = styled.div`
   background-color: green;
   box-sizing: border-box;
@@ -155,9 +135,6 @@ const Category = styled.div`
   justify-content: center;
 
   &:hover {
-    ${DropDown} {
-      background-color: green;
-    }
     background-color: yellow;
   }
 `;
