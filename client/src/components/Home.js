@@ -9,7 +9,7 @@ const Home = () => {
     try {
       let response = await fetch("/product/random"); // Tried fetching with number in body, produced an error - small change to endpoint
       response = await response.json();
-      setRandomItems(response.products);
+      setRandomItems([...response.products]);
     } catch (error) {
       console.log(error);
     }
@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <div>
-      <Grid items={randomItems} />
+      <Grid itemsData={randomItems} />
     </div>
   );
 };

@@ -2,16 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import Item from "./Item";
 
-const Grid = ({ itemData }) => {
+const Grid = ({ itemsData }) => {
   let items = [1, 2, 3];
 
-  return (
+  console.log(typeof itemsData);
+
+  return itemsData ? (
     <Wrapper>
-      {/* {itemData.map((item) => (
-        <Item item={item} />
-      ))} */}
+      {itemsData.map((item) => {
+        return <Item item={item} />;
+      })}
     </Wrapper>
-  );
+  ) : <div>loading</div>
 };
 
 export default Grid;
