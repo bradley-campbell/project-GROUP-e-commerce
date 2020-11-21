@@ -18,6 +18,8 @@ const CompanyList = () => {
       });
   }, []);
 
+  console.log(comps);
+
   return (
     comps && (
       <CWrapper>
