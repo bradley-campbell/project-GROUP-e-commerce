@@ -160,7 +160,7 @@ express()
   .get("/product/random", (req, res) => {
     // Get array of X amount of random products
     // assumption: body contains a number
-    const n = req.body.number;
+    const n = 25; // When a body is included with the GET request there is an error: TypeError: Failed to execute 'fetch' on 'Window': Request with GET/HEAD method cannot have body.
     //console.log(n);
     if (n == null || n === "undefined") {
       // "n==null" will check both n===null and number is not given (n===undefined)
