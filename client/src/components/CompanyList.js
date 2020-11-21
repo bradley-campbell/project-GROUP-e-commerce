@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 // Fetch items by company selected
 
 const CompanyList = () => {
-  const [comps, setComps] = useState(null);
+  const [comps, setCompanies] = useState(null);
 
   useEffect(() => {
     fetch(`/company/all`)
@@ -14,11 +14,9 @@ const CompanyList = () => {
       .then((res) => {
         console.log(res);
         setCompanies(res.companies);
- main
+        main;
       });
   }, []);
-
-  console.log(comps);
 
   return (
     comps && (
