@@ -203,8 +203,8 @@ express()
   .get("/company/all", (req, res) => {
     // Get list of all companies
     // convert _id to id
-    const cs = dataCompanies.map((ele, ind) => {
-      return (dataCompanies[ind] = convertId(ele));
+    const cs = dataCompanies.map((ele) => {
+      return convertId(ele);
     });
     res.status(200).json({ status: 200, companies: cs });
   })

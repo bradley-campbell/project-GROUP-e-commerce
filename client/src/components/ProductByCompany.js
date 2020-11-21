@@ -22,18 +22,24 @@ const ProductByCompany = () => {
       });
   }, []);
 
-  return cProducts ? (
+  return cProducts && comInfo ? (
     <PCWrapper>
-      <PCTitle>Products from company {cProducts[0].companyId}</PCTitle>
+      <PCTitle>Products from company {comInfo.name} </PCTitle>
       <Grid itemsData={cProducts} />
     </PCWrapper>
   ) : (
     <div>Loading page</div>
   );
-
 };
 
 export default ProductByCompany;
 
-const PCWrapper = styled.div``;
-const PCTitle = styled.div``;
+const PCWrapper = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const PCTitle = styled.h1`
+  color: black;
+`;
