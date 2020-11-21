@@ -41,5 +41,5 @@ const PCWrapper = styled.div`
   align-items: center;
 `;
 const PCTitle = styled.h1`
-  color: black; 
+  color: black;
 `;
