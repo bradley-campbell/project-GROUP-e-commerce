@@ -12,7 +12,7 @@ const ProductDetails = () => {
   console.log(itemId);
 
   useEffect(() => {
-    fetch(`/product/by-product/${itemId}`)
+    fetch(`/product/${itemId}`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);

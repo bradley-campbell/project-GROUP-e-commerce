@@ -10,11 +10,14 @@ const CompanyList = () => {
 
   useEffect(() => {
     fetch(`/company/all`)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        setCompanies(res.companies);
- main
+      .then((data) => data.json())
+      .then((info) => {
+        if (info.status === 200) {
+          console.log(info);
+          setComps(info.companies);
+        } else {
+          console.log(info.error); // may direct to error page
+        }
       });
   }, []);
 

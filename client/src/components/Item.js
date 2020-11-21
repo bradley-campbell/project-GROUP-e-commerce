@@ -4,7 +4,7 @@ import { COLORS } from "../ConstantStyles";
 import { Link } from "react-router-dom";
 
 const Item = ({ item }) => {
-  console.log(item);
+  console.log(item.id);
 
   return (
     <Wrapper to="/products/productid">
