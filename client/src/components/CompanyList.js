@@ -14,7 +14,6 @@ const CompanyList = () => {
       .then((res) => {
         console.log(res);
         setCompanies(res.companies);
-        main;
       });
   }, []);
 
