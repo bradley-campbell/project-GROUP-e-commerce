@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { COLORS } from "../ConstantStyles";
+import { Link } from "react-router-dom";
 
 // Fetch items by company selected
 
@@ -28,6 +30,28 @@ const CompanyList = () => {
     )
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const CompanyBox = styled(Link)`
+  padding: 10px;
+  border: none;
+  width: 200px;
+  height: 60px;
+  color: ${COLORS.primary};
+  text-align: center;
+  background: ${COLORS.secondary};
+  border-radius: ${COLORS.borderRadius};
+  margin: 20px;
+`;
+
+const Name = styled.h2`
+  font-size: 20px;
+`;
 
 export default CompanyList;
 const CWrapper = styled.div`
