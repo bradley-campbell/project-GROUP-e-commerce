@@ -7,7 +7,7 @@ const Item = ({ item }) => {
   console.log(item);
 
   return (
-    <Wrapper to="/products/productid">
+    <Wrapper to={`/product/${item.id}`}>
       <ProductImg src={item.imageSrc} width="100%" />
       <Info>
         <Name>{item.name}</Name>

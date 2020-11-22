@@ -5,7 +5,7 @@ import AddToCartBtn from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
 
 const ProductDetails = () => {
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState("");
   const params = useParams();
   const itemId = params.productId;
 
@@ -16,25 +16,25 @@ const ProductDetails = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        setProduct(res);
+        setProduct(res.product);
       });
   }, []);
 
-  console.log(product);
+  console.log(product.name);
 
   return (
     <Wrapper>
-      <ProductName>Moon Boot</ProductName>
+      <ProductName>{product.name}</ProductName>
       <ProductImg src="https://i.pinimg.com/564x/b4/d5/e8/b4d5e8d0200d6a5c046754413161db1c.jpg" />
       <ProductInfoDiv>
-        <ProductPrice>$300,000.00</ProductPrice>
+        <ProductPrice>${product.price}</ProductPrice>
         <Amount type="number" placeholder="1" min="1" max="7" />
         <AddToCartBtn />
         <NumInStock>7 In Stock</NumInStock>
         <Specs>
           <BodyLocation>Body Location: Foot</BodyLocation>
           {/* link to items by body location */}
-          <Category>Category: Space Apparel</Category>
+          <Category>Category: {product.category}</Category>
           {/* link to items by category */}
         </Specs>
       </ProductInfoDiv>
