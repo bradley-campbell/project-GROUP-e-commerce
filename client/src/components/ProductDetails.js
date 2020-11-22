@@ -25,17 +25,21 @@ const ProductDetails = () => {
   return (
     <Wrapper>
       <ProductName>{product.name}</ProductName>
-      <ProductImg src="https://i.pinimg.com/564x/b4/d5/e8/b4d5e8d0200d6a5c046754413161db1c.jpg" />
+      <ProductImg src={product.imageSrc} />
       <ProductInfoDiv>
         <ProductPrice>${product.price}</ProductPrice>
-        <Amount type="number" placeholder="1" min="1" max="7" />
+
+        <Amount
+          type="number"
+          placeholder="1"
+          min="1"
+          max={product.numInStock}
+        />
         <AddToCartBtn />
-        <NumInStock>7 In Stock</NumInStock>
+        <NumInStock>{product.numInStock} In Stock</NumInStock>
         <Specs>
-          <BodyLocation>Body Location: Foot</BodyLocation>
-          {/* link to items by body location */}
+          <BodyLocation>Body Location: {product.body_location}</BodyLocation>
           <Category>Category: {product.category}</Category>
-          {/* link to items by category */}
         </Specs>
       </ProductInfoDiv>
     </Wrapper>
@@ -53,15 +57,19 @@ const Wrapper = styled.div`
     "image info";
 `;
 const ProductName = styled.h2`
+  text-align: center;
   grid-area: name;
   font-size: 20px;
-  margin: 30px calc(50vw - 150px);
-  width: 300px;
+  margin: 30px calc(50vw - 320px);
+  width: 500px;
 `;
 
 const ProductImg = styled.img`
   grid-area: image;
+  border: 90px solid white;
   border-radius: 20px;
+  margin-left: 10vw;
+  width: 15vw;
 `;
 
 const ProductInfoDiv = styled.div`
