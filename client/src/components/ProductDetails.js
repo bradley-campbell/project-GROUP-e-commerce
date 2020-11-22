@@ -28,15 +28,21 @@ const ProductDetails = () => {
       <ProductImg src={product.imageSrc} />
       <ProductInfoDiv>
         <ProductPrice>${product.price}</ProductPrice>
+        {product.numInStock > 0 ? (
+          <>
+            <Amount
+              type="number"
+              placeholder="1"
+              min="1"
+              max={product.numInStock}
+            />
 
-        <Amount
-          type="number"
-          placeholder="1"
-          min="1"
-          max={product.numInStock}
-        />
-        <AddToCartBtn />
-        <NumInStock>{product.numInStock} In Stock</NumInStock>
+            <AddToCartBtn />
+            <NumInStock>{product.numInStock} In Stock</NumInStock>
+          </>
+        ) : (
+          <SoldOut>This item is currently out of stock</SoldOut>
+        )}
         <Specs>
           <BodyLocation>Body Location: {product.body_location}</BodyLocation>
           <Category>Category: {product.category}</Category>
@@ -106,6 +112,10 @@ const Specs = styled.div`
   border: 1px solid ${COLORS.secondary};
   padding: 10px;
   border-radius: ${COLORS.borderRadius};
+`;
+
+const SoldOut = styled.div`
+  color: darkred;
 `;
 
 export default ProductDetails;
