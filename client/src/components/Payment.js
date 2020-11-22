@@ -9,7 +9,7 @@ const Payment = () => {
   const [formData, setFormData] = useState({});
 
   const closeModal = (ev) => {
-      setVisible(false);
+    setVisible(false);
   };
 
   const handleSubmit = (ev) => {
@@ -24,7 +24,7 @@ const Payment = () => {
 
   return (
     <Wrapper visible={visible}>
-      <Overlay onKeyDown={closeModal}>
+      <Overlay>
         <Content>
           <ExitButton onClick={closeModal}>
             <AiOutlineCloseCircle size={35} />
@@ -32,6 +32,14 @@ const Payment = () => {
 
           <FormContent>
             <h1>Order Form</h1>
+            <OrderSummary>
+              <ul>
+                {/* map through items in cart */}
+                <li>Item id - Item name (first 15 char) Quantity: 2 price:$29.99</li>
+                <li></li>
+              </ul>
+            </OrderSummary>
+
             <h2>Provide your information</h2>
             <FormGroup>
               <Input
@@ -119,20 +127,24 @@ const Overlay = styled.div`
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
-  cursor: pointer;
 `;
 
 const Content = styled.div`
   background-color: white;
+  border-radius: 15px;
+  padding: 15px;
   width: 50%;
   height: 80%;
 `;
 
 const ExitButton = styled.button`
   border: 0;
+  border-radius: 50%;
+  background-color: transparent;
   position: relative;
+  top: 0;
+  left: 0;
   cursor: pointer;
-  padding: 5px;
 `;
 
 const FormContent = styled.div`
@@ -160,4 +172,9 @@ const SelectWrapper = styled.div`
       margin-right: 6px;
     }
   }
+`;
+
+const OrderSummary = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
