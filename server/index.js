@@ -61,8 +61,10 @@ express()
       const p = dataItems.find((ele) => ele._id === id);
       // check if it's found
       if (p) {
-        // if found, send back with 200 and product
-        res.status(200).json({ status: 200, product: convertItem(p) });
+        // if found, find the company info
+        const new_p = convertProduct(p);
+        //send back with 200 and product
+        res.status(200).json({ status: 200, product: new_p });
       } else {
         // if not found, send back with 404 not found
         res.status(404).json({
@@ -90,20 +92,14 @@ express()
         const cList = dataItems.reduce((acc, cur) => {
           const c_cur = { ...cur };
           if (cur.companyId === cId) {
-            acc.push(convertItem(c_cur));
+            acc.push(convertProduct(c_cur));
           }
           return acc;
         }, []);
-        const company = convertId(
-          dataCompanies.find((ele) => {
-            return ele._id === cId;
-          })
-        );
+        const c = convertCompany(getCompById(cId));
 
         // responde with list of items
-        res
-          .status(200)
-          .json({ status: 200, products: cList, company: company });
+        res.status(200).json({ status: 200, products: cList, company: c });
         return;
       } else {
         res.status(404).json({
@@ -128,7 +124,7 @@ express()
     if (allBodyLocations.includes(bId.toLowerCase())) {
       const bList = dataItems.reduce((acc, cur) => {
         if (cur.body_location.toLowerCase() === bId.toLowerCase()) {
-          acc.push(convertItem(cur));
+          acc.push(convertProduct(cur));
         }
         return acc;
       }, []);
@@ -152,10 +148,11 @@ express()
     if (allCategories.includes(catId.toLowerCase())) {
       const catList = dataItems.reduce((acc, cur) => {
         if (cur.category.toLowerCase() === catId.toLowerCase()) {
-          acc.push(convertItem(cur));
+          acc.push(convertProduct(cur));
         }
         return acc;
       }, []);
+
       res.status(200).json({ status: 200, products: catList });
       return;
     } else {
@@ -184,7 +181,9 @@ express()
       for (let k = 0; k < n; k++) {
         // get list of random products
         arr.push(
-          convertItem(dataItems[Math.floor(Math.random() * dataItems.length)])
+          convertProduct(
+            dataItems[Math.floor(Math.random() * dataItems.length)]
+          )
         );
       }
       res.status(200).json({ status: 200, products: arr });
@@ -203,9 +202,7 @@ express()
   .get("/company/all", (req, res) => {
     // Get list of all companies
     // convert _id to id
-    const cs = dataCompanies.map((ele) => {
-      return convertId(ele);
-    });
+    const cs = convertCompanies(dataCompanies);
     res.status(200).json({ status: 200, companies: cs });
   })
 
@@ -215,7 +212,7 @@ express()
     const cIds = getCompanyIds();
     if (!isNaN(cId)) {
       if (cIds.includes(cId)) {
-        const c = convertId(
+        const c = convertCompany(
           dataCompanies.find((ele) => {
             return ele._id === cId;
           })
@@ -236,7 +233,6 @@ express()
       });
     }
   })
-
   /*
     duplicated path.
   .get("/company/:companyId", (req, res) => {
@@ -254,6 +250,88 @@ express()
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
 
+// ========================= functions =========================
+
+// function to convert one product
+//    1. convert _id to id
+//    2. convert price to double
+//    3. remove companyName in name if first word is company name, and add companyName as a key
+//    4. add company as a key
+const convertProduct = (item) => {
+  const new_item = addCompanyById(editNaming(convertItem(item))); // convertItem will take care of both id and price
+  return new_item;
+};
+// function to convert a list of product
+const convertProducts = (items) => {
+  const new_items = [];
+  let ele;
+  for (ele of items) {
+    new_items.push(convertProduct(ele));
+  }
+  return new_items;
+};
+// function to convert company
+//    1. convert _id to id
+const convertCompany = (company) => {
+  return convertId(company);
+};
+const convertCompanies = (companies) => {
+  const new_companies = [];
+  let ele;
+  for (ele of companies) {
+    new_companies.push(convertCompany(ele));
+  }
+  return new_companies;
+};
+
+/// function to add companyName as key in object
+//  And remove it from the name of product if the first word is companyName
+const editNaming = (item) => {
+  // get the company info
+  const copy = { ...item };
+  const i_name = item.name;
+  const c_name = getCompById(item.companyId).name;
+  const c_name_index = getIndexOf(i_name, c_name);
+  // check if found any
+  if (c_name_index >= 0) {
+    // get the first word
+    // check if the return value equals original string or not
+    // if it is then the first word is not company name, don't touch it
+
+    if (c_name_index + 1 < i_name.length) {
+      // check if exceeds boundary
+      copy["name"] = i_name.substr(c_name_index + c_name.length + 1);
+      // check if the first letter is " " or " - "
+      // Not sure if it covers all cases, can add if found other consistencies
+      while (copy["name"][0] === " " || copy["name"][0] === "-") {
+        copy["name"] = copy["name"].substr(1);
+      }
+    }
+  }
+  // append companyName as a key
+  copy["companyName"] = c_name;
+  return copy;
+};
+// function to get the first word in a string
+const getIndexOf = (inputStr, target) => {
+  const i = inputStr.indexOf(target);
+  return i;
+};
+// function to add company name to a single product
+const addCompanyById = (item) => {
+  const new_item = { ...item };
+  new_item["company"] = convertCompany(getCompById(new_item.companyId));
+  return new_item;
+};
+// function to return a company given an id
+const getCompById = (id) => {
+  // id is an integer
+  const c = dataCompanies.find((ele) => {
+    return ele._id === id;
+  });
+  return { ...c };
+};
+// function to get all company ids
 const getCompanyIds = () => {
   // return a list of company ids
   const cL = dataCompanies.reduce((acc, cur) => {
@@ -263,12 +341,12 @@ const getCompanyIds = () => {
   }, []);
   return cL;
 };
-
-// convert the single item
+// convert the single product : id and price
 function convertItem(item) {
   // return a new object
   const it = convertId(item);
-  return { ...it, price: convertPrice(item["price"]) };
+  const pri = convertPrice(item.price);
+  return { ...it, price: pri };
 }
 function convertId(item) {
   // return a new object
