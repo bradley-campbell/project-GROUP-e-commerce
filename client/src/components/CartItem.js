@@ -12,11 +12,14 @@ import {
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
-  // const itemFromState = useSelector((state) => state[id]);
 
   const { _id, imageSrc, name, price, quantity } = item;
   const id = _id;
-  console.log(id);
+
+  const itemFromState = useSelector((state) => state);
+
+  console.log(itemFromState);
+
   return (
     <Wrapper>
       <Image src={imageSrc} /> <Name>{name}</Name>
@@ -25,7 +28,7 @@ const CartItem = ({ item }) => {
         <DecrementButton
           onClick={() => {
             quantity > 1
-              ? dispatch(removeItem({ id, ...item }))
+              ? dispatch(removeItem({ ...item, id }))
               : dispatch(removeItemCompletely({ id }));
           }}
         >
@@ -35,10 +38,10 @@ const CartItem = ({ item }) => {
           // placeholder="0"
           value={quantity}
           onChange={(e) => {
-            dispatch(updateQuantity({ id, quantity: e.target.value, ...item }));
+            dispatch(updateQuantity({ ...item, id, quantity: e.target.value }));
           }}
         ></Quantity>
-        <IncrementButton onClick={() => dispatch(addItem({ id, ...item }))}>
+        <IncrementButton onClick={() => dispatch(addItem({ ...item, id }))}>
           +
         </IncrementButton>
       </QuantityContainer>

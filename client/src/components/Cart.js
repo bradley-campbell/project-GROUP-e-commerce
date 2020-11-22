@@ -24,8 +24,6 @@ const Cart = () => {
     }, 0);
   });
 
-  console.log(numberOfItems);
-
   return (
     <Wrapper>
       <Container>
@@ -34,7 +32,6 @@ const Cart = () => {
           <SubHeader>Your cart contains {numberOfItems} items.</SubHeader>
         </Top>
         {storeItems.map((item) => {
-          console.log(item);
           return <CartItem item={item} />;
         })}
         <Bottom>
