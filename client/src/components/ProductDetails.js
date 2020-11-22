@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import AddToCartBtn from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
 
@@ -20,9 +20,7 @@ const ProductDetails = () => {
       });
   }, []);
 
-  console.log(product.name);
-
-  return (
+  return product ? (
     <Wrapper>
       <ProductName>{product.name}</ProductName>
       <ProductImg src={product.imageSrc} />
@@ -44,11 +42,23 @@ const ProductDetails = () => {
           <SoldOut>This item is currently out of stock</SoldOut>
         )}
         <Specs>
-          <BodyLocation>Body Location: {product.body_location}</BodyLocation>
-          <Category>Category: {product.category}</Category>
+          <BodyLocation>
+            Body Location:{" "}
+            <GoTo to={`/bodylocation/${product.body_location.toLowerCase()}`}>
+              {product.body_location}
+            </GoTo>
+          </BodyLocation>
+          <Category>
+            Category:{" "}
+            <GoTo to={`/category/${product.category.toLowerCase()}`}>
+              {product.category}
+            </GoTo>
+          </Category>
         </Specs>
       </ProductInfoDiv>
     </Wrapper>
+  ) : (
+    <div>loading</div>
   );
 };
 
@@ -112,6 +122,10 @@ const Specs = styled.div`
   border: 1px solid ${COLORS.secondary};
   padding: 10px;
   border-radius: ${COLORS.borderRadius};
+`;
+
+const GoTo = styled(Link)`
+  color: ${COLORS.accent};
 `;
 
 const SoldOut = styled.div`
