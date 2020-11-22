@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import AddToCartBtn from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
 
 const ProductDetails = () => {
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState("");
   const params = useParams();
   const itemId = params.productId;
 
@@ -16,29 +16,49 @@ const ProductDetails = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        setProduct(res);
+        setProduct(res.product);
       });
   }, []);
 
-  console.log(product);
-
-  return (
+  return product ? (
     <Wrapper>
-      <ProductName>Moon Boot</ProductName>
-      <ProductImg src="https://i.pinimg.com/564x/b4/d5/e8/b4d5e8d0200d6a5c046754413161db1c.jpg" />
+      <ProductName>{product.name}</ProductName>
+      <ProductImg src={product.imageSrc} />
       <ProductInfoDiv>
-        <ProductPrice>$300,000.00</ProductPrice>
-        <Amount type="number" placeholder="1" min="1" max="7" />
-        <AddToCartBtn />
-        <NumInStock>7 In Stock</NumInStock>
+        <ProductPrice>${product.price}</ProductPrice>
+        {product.numInStock > 0 ? (
+          <>
+            <Amount
+              type="number"
+              placeholder="1"
+              min="1"
+              max={product.numInStock}
+            />
+
+            <AddToCartBtn />
+            <NumInStock>{product.numInStock} In Stock</NumInStock>
+          </>
+        ) : (
+          <SoldOut>This item is currently out of stock</SoldOut>
+        )}
         <Specs>
-          <BodyLocation>Body Location: Foot</BodyLocation>
-          {/* link to items by body location */}
-          <Category>Category: Space Apparel</Category>
-          {/* link to items by category */}
+          <BodyLocation>
+            Body Location:{" "}
+            <GoTo to={`/bodylocation/${product.body_location.toLowerCase()}`}>
+              {product.body_location}
+            </GoTo>
+          </BodyLocation>
+          <Category>
+            Category:{" "}
+            <GoTo to={`/category/${product.category.toLowerCase()}`}>
+              {product.category}
+            </GoTo>
+          </Category>
         </Specs>
       </ProductInfoDiv>
     </Wrapper>
+  ) : (
+    <div>loading</div>
   );
 };
 
@@ -53,15 +73,19 @@ const Wrapper = styled.div`
     "image info";
 `;
 const ProductName = styled.h2`
+  text-align: center;
   grid-area: name;
   font-size: 20px;
-  margin: 30px calc(50vw - 150px);
-  width: 300px;
+  margin: 30px calc(50vw - 320px);
+  width: 500px;
 `;
 
 const ProductImg = styled.img`
   grid-area: image;
+  border: 90px solid white;
   border-radius: 20px;
+  margin-left: 10vw;
+  width: 15vw;
 `;
 
 const ProductInfoDiv = styled.div`
@@ -98,6 +122,14 @@ const Specs = styled.div`
   border: 1px solid ${COLORS.secondary};
   padding: 10px;
   border-radius: ${COLORS.borderRadius};
+`;
+
+const GoTo = styled(Link)`
+  color: ${COLORS.accent};
+`;
+
+const SoldOut = styled.div`
+  color: darkred;
 `;
 
 export default ProductDetails;
