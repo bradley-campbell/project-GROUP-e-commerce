@@ -16,6 +16,7 @@ import Payment from "./Payment";
 import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
+import { COLORS } from "../ConstantStyles";
 
 function App() {
   // const [bacon, setBacon] = useState(null);
@@ -49,14 +50,6 @@ function App() {
             <ProductDetails />
           </Route>
 
-          <Route exact path="/bodylocation/:bodylocationId">
-            <BodyLocation />
-          </Route>
-
-          <Route exact path="/category">
-            <CategoryList />
-          </Route>
-
           <Route exact path="/category/:categoryId">
             <ItemsByCategory />
           </Route>
@@ -88,6 +81,8 @@ function App() {
 
 export default App;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  background: ${COLORS.white};
+`;
 
 const Grid = styled.div``;
