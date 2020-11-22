@@ -18,6 +18,8 @@
 | imageSrc      | string(base64) | too long to display                                      |
 | numInStock    | integer        | `9`                                                      |
 | companyId     | integer        | `19962`                                                  |
+| companyName   | String         | `"Barska"`                                               |
+| company       | Object         | `{COMPANY OBJECT}` (see below)                           |
 |               |                |                                                          |
 
 |         | company |                            |
@@ -29,6 +31,18 @@
 | country | string  | `"United States"`          |
 | id      | integer | `19962`                    |
 
+## Renaming
+
+- The products are renamed by removing the company name.
+
+  - If there is no name found then won't touch it.
+
+- Also removed any `"-"` or `" "` at the beginning, even if it's sequencial
+  - the ones not included at the beginning won't be influenced.
+- Special cases may occur and this isn't always effective.
+  - e.g. when the company name is in the middle, the name will be removed, which may not be desired.
+  - e.g. `"smart health"` is not the same as `'smartHealth'` therefore if encountered `"smart health"` won't be removed.
+
 ---
 
 ## endpoints info
@@ -37,7 +51,7 @@
 
   - Get specific product information
   - On success:
-    - `{ status:200, product:{Object of single product info} }`
+    - `{ status:200, product: { PRODUCT INFO, company: { a company object } } `
   - On failure:
     - productId is not integer: `{ status:400, error:"ERROR_MESSAGE" }`
     - product is not found: `{ status:404, error:"ERROR_MESSAGE" }`
@@ -56,7 +70,7 @@
 
   - Get products for Body Location X
   - On success
-    - `{ status:200, products:[List of objects] }`
+    - `{ status:200, products:[ List of Product Object with a nested company:{ company object } ] }`
   - On failure
     - The body part is not in our system: `{ status:404, error:"ERROR_MESSAGE" }`
 
@@ -64,7 +78,7 @@
 
   - Get products in category X
   - On success
-    - `{ status:200, products:[array of objects] }`
+    - `{ status: 200, products:[ List of Product Object each with a nested 'company:{ company object }' ] }`
   - On failure
     - The category is not in our system: `{ status:404, error:"ERROR_MESSAGE" }`
 
@@ -75,7 +89,7 @@
     - `:num` is an integer of the data you want to retrieve.
     - e.g. with `/product/random/34` will return 34 random products
   - On success
-    - `{ status: 200, products: [array of objects] }`
+    - `{ status: 200, products:[ List of Product Object each with a nested 'company:{ company object }' ] }`
   - On failure
     - The number is not integer/is null/not provided: `{ status:400, error"ERROR_MESSAGE" }`
 
