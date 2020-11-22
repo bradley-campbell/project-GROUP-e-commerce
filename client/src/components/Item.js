@@ -12,6 +12,11 @@ const Item = ({ item }) => {
       <Info>
         <Name>{item.name}</Name>
         <Price>${item.price}</Price>
+        {item.numInStock > 0 ? (
+          <AddToCart>Add to Cart</AddToCart>
+        ) : (
+          <OutOfStock>Out of Stock</OutOfStock>
+        )}
       </Info>
     </Wrapper>
   );
@@ -48,7 +53,7 @@ const Name = styled.p`
   font-weight: bold;
   line-height: 1.2em;
   color: black;
-  padding: 70px 30px 20px 30px;
+  padding: 30px 30px 20px 30px;
 `;
 
 const Price = styled.p`
@@ -71,6 +76,37 @@ const Info = styled.div`
   &:hover {
     opacity: 100%;
   }
+`;
+
+const AddToCart = styled.button`
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  margin-top: 10px;
+  left: 72px;
+  background-color: ${COLORS.primary};
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  transition: 0.3s ease;
+  border-radius: ${COLORS.borderRadius};
+  &:hover {
+    background: ${COLORS.accent};
+  }
+  &:active {
+    box-shadow: inset 1px 1px 15px 0px rgba(50, 50, 50, 1);
+  }
+`;
+
+const OutOfStock = styled.div`
+  position: absolute;
+  bottom: 40px;
+  margin-top: 10px;
+  left: 72px;
+  color: darkred;
+  border: ${COLORS.borderRadius};
+  margin-top: 10px;
+  font-weight: bold;
 `;
 
 export default Item;
