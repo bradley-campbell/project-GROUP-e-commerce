@@ -16,7 +16,7 @@ const Item = ({ item }) => {
         <Name>{name}</Name>
         <Price>${price}</Price>
         {numInStock > 0 ? (
-          // Attached button styling to className and added it to global styles
+          // Added button styling inside the component instead of creating a separate component, for simplicity
           <Button className="addToCart" onClick={handleAddToCart}>
             AddToCart
           </Button>
@@ -74,7 +74,7 @@ const Info = styled.div`
   right: 0;
   height: calc(100% + 35px);
   width: calc(100% + 35px);
-  border-radius: var(--borderRadius);
+  border-radius: ${COLORS.borderRadius};
   opacity: 0;
   transition: 0.5s ease;
   background-color: rgb(245, 244, 242, 0.7);
@@ -90,7 +90,7 @@ const OutOfStock = styled.div`
   margin-top: 10px;
   left: 72px;
   color: darkred;
-  border: var(--borderRadius);
+  border: ${COLORS.borderRadius};
   margin-top: 10px;
   font-weight: bold;
 `;

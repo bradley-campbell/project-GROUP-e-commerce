@@ -16,22 +16,22 @@ const GlobalStyle = createGlobalStyle`
 
 ${reset};
 
+
 .addToCart{
 
-border-radius: var(--borderRadius);
-  color: var(--white);
+border-radius: ${COLORS.borderRadius};
+  color: ${COLORS.white};
   border: none;
   padding: 10px 17px;
-  background: var(--primary);
+  background: ${COLORS.primary};
   cursor: pointer;
   &:hover {
-    background: var(--accent);
+    background: ${COLORS.accent};
   }
 
   &:active {
-    background: var(--secondary);
+    background: ${COLORS.secondary};
   }
-
 }
 
 body{
