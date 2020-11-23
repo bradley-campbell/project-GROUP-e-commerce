@@ -1,19 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { AddToCartBtn } from "./AddToCartBtn";
+import handleAddToCart from "./handleAddToCart";
 
 const Item = ({ item }) => {
   console.log(item);
+  let history = useHistory();
 
   return (
-    <Wrapper to={`/product/${item.id}`}>
+    <Wrapper onClick={() => history.push(`/product/${item.id}`)}>
       <ProductImg src={item.imageSrc} width="100%" />
       <Info>
         <Name>{item.name}</Name>
         <Price>${item.price}</Price>
         {item.numInStock > 0 ? (
-          <AddToCart>Add to Cart</AddToCart>
+          <AddToCart
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart(item);
+            }}
+          />
         ) : (
           <OutOfStock>Out of Stock</OutOfStock>
         )}
@@ -22,7 +30,7 @@ const Item = ({ item }) => {
   );
 };
 
-const Wrapper = styled(Link)`
+const Wrapper = styled.div`
   width: 200px;
   height: 200px;
   margin: 30px;
@@ -78,24 +86,11 @@ const Info = styled.div`
   }
 `;
 
-const AddToCart = styled.button`
-  cursor: pointer;
+const AddToCart = styled(AddToCartBtn)`
   position: absolute;
   bottom: 20px;
   margin-top: 10px;
-  left: 72px;
-  background-color: ${COLORS.primary};
-  color: white;
-  padding: 8px 14px;
-  border: none;
-  transition: 0.3s ease;
-  border-radius: ${COLORS.borderRadius};
-  &:hover {
-    background: ${COLORS.accent};
-  }
-  &:active {
-    box-shadow: inset 1px 1px 15px 0px rgba(50, 50, 50, 1);
-  }
+  left: 67px;
 `;
 
 const OutOfStock = styled.div`
