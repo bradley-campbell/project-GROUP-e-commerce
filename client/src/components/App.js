@@ -12,7 +12,7 @@ import Confirmation from "./Confirmation";
 import Header from "./Header";
 import Home from "./Home";
 import ItemsByCategory from "./ItemsByCategory";
-import Payment from "./Payment";
+import Payment from "./Payment/Payment";
 import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";

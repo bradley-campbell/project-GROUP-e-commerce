@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Input from "./Input";
+import { formValidation } from "./InputValidation";
+import Form from "./Form";
 
 const item = {
   name: "Jawbone UP24 Activity Tracker Wristband, Pink Coral, M",
@@ -16,20 +18,18 @@ const item = {
 };
 
 const Payment = () => {
-  const [visible, setVisible] = useState(true);
-  const [disabled, setDisabled] = useState(true);
   const [formData, setFormData] = useState({});
+  const [visible, setVisible] = useState(true);
 
   const closeModal = (ev) => {
     setVisible(false);
   };
 
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-  };
-
-  const handleChange = (data, key) => {
-    setFormData({ ...formData, [key]: data });
+  const handleFetch = async () => {
+    console.log(formData);
+    console.log("fetch");
+    // Sent form data + cart to BE
+    //Confirm page becomes visible
   };
 
   console.log(formData);
@@ -68,67 +68,7 @@ const Payment = () => {
               </div>
             </Totals>
           </OrderSummary>
-
-          <FormContent>
-            <h2>Bill to:</h2>
-            <FormGroup>
-              <Input
-                name="givenName"
-                type="text"
-                placeholder="First name"
-                handleChange={handleChange}
-              />
-              <Input
-                name="surname"
-                type="text"
-                placeholder="Last name"
-                handleChange={handleChange}
-              />
-            </FormGroup>
-            <Input
-              name="email"
-              type="text"
-              placeholder="Email"
-              handleChange={handleChange}
-            />
-            <Input
-              name="address"
-              type="address"
-              placeholder="Address"
-              handleChange={handleChange}
-            />
-            <FormGroup>
-              <Input
-                name="city"
-                type="text"
-                placeholder="City"
-                handleChange={handleChange}
-              />
-              <Input
-                name="province"
-                type="text"
-                placeholder="Province"
-                handleChange={handleChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                name="postcode"
-                type="text"
-                placeholder="Postal Code"
-                handleChange={handleChange}
-              />
-              <Input
-                name="country"
-                type="text"
-                placeholder="Country"
-                handleChange={handleChange}
-              />
-            </FormGroup>
-            <button onClick={handleSubmit} type="submit" disabled={disabled}>
-              Submit
-            </button>
-          </FormContent>
+          <Form setFormData={setFormData} />
         </Content>
       </Overlay>
     </Wrapper>
@@ -171,7 +111,7 @@ const Content = styled.div`
   border-radius: 15px;
   padding: 15px;
   width: 50%;
-  height: 80%;
+  min-height: 450px;
 `;
 
 const ExitButton = styled.button`
@@ -184,44 +124,13 @@ const ExitButton = styled.button`
   cursor: pointer;
 `;
 
-const FormContent = styled.div`
-  margin: 25px;
-
-  h2 {
-    padding-bottom: 10px;
-  }
-`;
-const FormGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  > div {
-    flex: 1 0 auto;
-    width: 48%;
-    &:first-child {
-      margin-right: 6px;
-    }
-  }
-`;
-const SelectWrapper = styled.div`
-  display: flex;
-  margin-top: -20px;
-  > div {
-    max-width: inherit;
-    &:first-child {
-      flex: 1;
-      margin-right: 6px;
-    }
-  }
-`;
-
 const ItemizedList = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  height: 150px;
   padding-top: 15px;
   padding-bottom: 15px;
+  height: 50px;
 
   li {
     display: flex;
@@ -235,7 +144,7 @@ const ItemizedList = styled.div`
 `;
 
 const OrderSummary = styled.div`
-  margin: 25px;
+  margin: 25px 25px 0px 25px;
 `;
 
 const Totals = styled.div`

@@ -17,3 +17,15 @@ export const updateQuantity = (item) => ({
   type: "UPDATE_QUANTITY",
   item,
 });
+
+export const requestValidation = () => ({
+  type: "REQUEST_Validation",
+});
+
+export const receiveValidation = () => ({
+  type: "RECEIVE_Validation",
+});
+
+export const receiveValidationError = () => ({
+  type: "RECEIVE_Validation_ERROR",
+});

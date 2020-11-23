@@ -7,7 +7,6 @@ import handleAddToCart from "./handleAddToCart";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState("");
-  const [company, setCompany] = useState("");
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
@@ -21,24 +20,24 @@ const ProductDetails = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (product) {
-      fetch(`/company/${product.company.id}`)
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          setCompany(res.company);
-        });
-    }
-  }, [product]);
+  const {
+    companyName,
+    companyId,
+    body_location,
+    name,
+    imageSrc,
+    price,
+    numInStock,
+    category,
+  } = product;
 
   return product ? (
     <Wrapper>
-      <ProductName>{product.name}</ProductName>
-      <ProductImg src={product.imageSrc} />
+      <ProductName>{name}</ProductName>
+      <ProductImg src={imageSrc} />
       <ProductInfoDiv>
-        <ProductPrice>${product.price}</ProductPrice>
-        {product.numInStock > 0 ? (
+        <ProductPrice>${price}</ProductPrice>
+        {numInStock > 0 ? (
           <>
             <Amount
               onChange={(event) => setQuantity(event.target.value)}
@@ -47,29 +46,26 @@ const ProductDetails = () => {
               min="1"
               max={product.numInStock}
             />
+            <Button className="addToCart" onClick={() => {}}>
+              Add to Cart
+            </Button>
 
-            <AddToCartBtn
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToCart(product, Number(quantity));
-              }}
-            />
-            <NumInStock>{product.numInStock} In Stock</NumInStock>
+            <NumInStock>{numInStock} In Stock</NumInStock>
           </>
         ) : (
           <SoldOut>This item is currently out of stock</SoldOut>
         )}
         <Specs>
           <Company>
-            Company: <GoTo to={`/company/${company.id}}`}>{company.name}</GoTo>
+            Company: <GoTo to={`/company/${companyId}}`}>{companyName}</GoTo>
           </Company>
           <BodyLocation>
             Body Location:{" "}
-            <GoTo to={`/bodylocation/${product.body_location.toLowerCase()}`}>
-              {product.body_location}
+            <GoTo to={`/bodylocation/${body_location.toLowerCase()}`}>
+              {body_location}
             </GoTo>
           </BodyLocation>
-          <Category>Category: {product.category}</Category>
+          <Category>Category: {category}</Category>
         </Specs>
       </ProductInfoDiv>
     </Wrapper>
@@ -155,5 +151,7 @@ const SoldOut = styled.div`
 const Company = styled.p`
   font-size: 14px;
 `;
+
+const Button = styled.button``;
 
 export default ProductDetails;
