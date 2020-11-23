@@ -353,12 +353,18 @@ const readJsonFile = (path) => {
 const addOrder = (path, id, order) => {
   const fs = require("fs");
   const original = readJsonFile(path); // an object
-  original[id] = { ...order };
+  // adding to original data
+  original[id] = { ...order, timestamp: +new Date() };
+  // adding timestamp by miliseconds
+  const tstamp = new Date().getTime();
+  original[id]["timestamp"] = tstamp;
+  // convert to json data
   const new_data = JSON.stringify(original);
+  // write
   fs.writeFile(path, new_data, (err) => {
     if (err) console.log("Error writing file:", err);
   });
-  return "success";
+  return 1;
 };
 // function to remove an order from the json file
 const removeOrder = (path, id) => {};

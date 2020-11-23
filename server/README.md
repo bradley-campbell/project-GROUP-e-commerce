@@ -43,6 +43,12 @@
   - e.g. when the company name is in the middle, the name will be removed, which may not be desired.
   - e.g. `"smart health"` is not the same as `'smartHealth'` therefore if encountered `"smart health"` won't be removed.
 
+## orders.json
+
+- Local file which saves the order information (considering add "pending"/"success" states)
+- An object with order id as key, and order details as value.
+- Also added a timestamp in miliseconds
+
 ---
 
 ## endpoints info
