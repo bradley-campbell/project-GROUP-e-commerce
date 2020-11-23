@@ -3,35 +3,51 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { GoTrashcan } from "react-icons/go";
 
-import { addItem, removeItem, updateQuantity } from "./../actions";
+import {
+  addItem,
+  removeItem,
+  removeItemCompletely,
+  updateQuantity,
+} from "./../actions";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
-  // const itemFromState = useSelector((state) => state[id]);
 
   const { _id, imageSrc, name, price, quantity } = item;
   const id = _id;
-  console.log(id);
+
+  const itemFromState = useSelector((state) => state);
+
+  console.log(itemFromState);
+
   return (
     <Wrapper>
       <Image src={imageSrc} /> <Name>{name}</Name>
       <Price>${price}</Price>
       <QuantityContainer>
-        <DecrementButton>-</DecrementButton>
+        <DecrementButton
+          onClick={() => {
+            quantity > 1
+              ? dispatch(removeItem({ ...item, id }))
+              : dispatch(removeItemCompletely({ id }));
+          }}
+        >
+          -
+        </DecrementButton>
         <Quantity
           // placeholder="0"
           value={quantity}
           onChange={(e) => {
-            dispatch(updateQuantity({ id, quantity: e.target.value }));
+            dispatch(updateQuantity({ ...item, id, quantity: e.target.value }));
           }}
         ></Quantity>
-        <IncrementButton onClick={() => dispatch(addItem({ id, ...item }))}>
+        <IncrementButton onClick={() => dispatch(addItem({ ...item, id }))}>
           +
         </IncrementButton>
       </QuantityContainer>
       <RemoveButton
         onClick={() => {
-          dispatch(removeItem({ id }));
+          dispatch(removeItemCompletely({ id }));
         }}
       >
         <GoTrashcan />
