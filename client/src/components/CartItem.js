@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { GoTrashcan } from "react-icons/go";
 
@@ -12,6 +12,8 @@ import {
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
+  const theState = useSelector((state) => state);
+  // const item = useSelector((state) => state[id]);
 
   const { _id, imageSrc, name, price, quantity, numInStock } = item;
   const id = _id;

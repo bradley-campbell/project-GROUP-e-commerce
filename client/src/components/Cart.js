@@ -10,6 +10,7 @@ const Cart = () => {
   const storeItems = useSelector(getStoreItemArray);
 
   const subTotal = useSelector((state) => {
+    console.log(state);
     const values = Object.values(state);
     return values.reduce((acc, item) => {
       return acc + item.quantity * item.price;
@@ -32,6 +33,7 @@ const Cart = () => {
           <SubHeader>Your cart contains {numberOfItems} items.</SubHeader>
         </Top>
         {storeItems.map((item) => {
+          console.log(item);
           return <CartItem item={item} />;
         })}
         <Bottom>

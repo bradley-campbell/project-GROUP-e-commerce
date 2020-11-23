@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
-import { AddToCartBtn } from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
-import handleAddToCart from "./handleAddToCart";
+
+import { addItem } from "./../actions";
+
+import { getStoreItemArray } from "./../reducers";
 
 const ProductDetails = () => {
+  const dispatch = useDispatch();
+  const storeItems = useSelector(getStoreItemArray);
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
 
+  // console.log(storeItems);
+
   useEffect(() => {
     fetch(`/product/by-product/${itemId}`)
       .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        setProduct(res.product);
+      .then(({ product }) => {
+        // console.log(product);
+        setProduct(product);
       });
   }, []);
 
@@ -29,6 +36,7 @@ const ProductDetails = () => {
     price,
     numInStock,
     category,
+    id,
   } = product;
 
   return product ? (
@@ -46,7 +54,10 @@ const ProductDetails = () => {
               min="1"
               max={product.numInStock}
             />
-            <Button className="addToCart" onClick={() => {}}>
+            <Button
+              className="addToCart"
+              onClick={() => dispatch(addItem({ ...product, id }))}
+            >
               Add to Cart
             </Button>
 
