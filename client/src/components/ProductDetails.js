@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
-import AddToCartBtn from "./AddToCartBtn";
+import { AddToCartBtn } from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
-
-import {
-  addItem,
-  removeItem,
-  removeItemCompletely,
-  updateQuantity,
-} from "./../actions";
+import handleAddToCart from "./handleAddToCart";
 
 const ProductDetails = () => {
-  const dispatch = useDispatch();
   const [product, setProduct] = useState("");
+  const [company, setCompany] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
-
-  console.log(itemId);
 
   useEffect(() => {
     fetch(`/product/by-product/${itemId}`)
@@ -29,6 +21,17 @@ const ProductDetails = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (product) {
+      fetch(`/company/${product.company.id}`)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          setCompany(res.company);
+        });
+    }
+  }, [product]);
+
   return product ? (
     <Wrapper>
       <ProductName>{product.name}</ProductName>
@@ -38,31 +41,35 @@ const ProductDetails = () => {
         {product.numInStock > 0 ? (
           <>
             <Amount
+              onChange={(event) => setQuantity(event.target.value)}
               type="number"
               placeholder="1"
               min="1"
               max={product.numInStock}
             />
 
-            <AddToCartBtn />
+            <AddToCartBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(product, Number(quantity));
+              }}
+            />
             <NumInStock>{product.numInStock} In Stock</NumInStock>
           </>
         ) : (
           <SoldOut>This item is currently out of stock</SoldOut>
         )}
         <Specs>
+          <Company>
+            Company: <GoTo to={`/company/${company.id}}`}>{company.name}</GoTo>
+          </Company>
           <BodyLocation>
             Body Location:{" "}
             <GoTo to={`/bodylocation/${product.body_location.toLowerCase()}`}>
               {product.body_location}
             </GoTo>
           </BodyLocation>
-          <Category>
-            Category:{" "}
-            <GoTo to={`/category/${product.category.toLowerCase()}`}>
-              {product.category}
-            </GoTo>
-          </Category>
+          <Category>Category: {product.category}</Category>
         </Specs>
       </ProductInfoDiv>
     </Wrapper>
@@ -134,11 +141,19 @@ const Specs = styled.div`
 `;
 
 const GoTo = styled(Link)`
-  color: ${COLORS.accent};
+  color: ${COLORS.secondary};
+  &:hover {
+    text-decoration: underline;
+    color: ${COLORS.accent};
+  }
 `;
 
 const SoldOut = styled.div`
   color: darkred;
+`;
+
+const Company = styled.p`
+  font-size: 14px;
 `;
 
 export default ProductDetails;
