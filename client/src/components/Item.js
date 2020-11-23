@@ -1,13 +1,17 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
 import { Link, useHistory } from "react-router-dom";
 
+import { addItem } from "./../actions";
+import { getStoreItemArray } from "./../reducers";
+
 const Item = ({ item }) => {
+  const dispatch = useDispatch();
+  const storeItems = useSelector(getStoreItemArray);
   const { name, price, numInStock, imageSrc, id } = item; // Destructured item to have direct access to variables
   let history = useHistory();
-
-  const handleAddToCart = () => {}; // Added handleAddToCart which wil
 
   return (
     <Wrapper onClick={() => history.push(`/product/${id}`)}>
@@ -17,7 +21,13 @@ const Item = ({ item }) => {
         <Price>${price}</Price>
         {numInStock > 0 ? (
           // Added button styling inside the component instead of creating a separate component, for simplicity
-          <Button className="addToCart" onClick={handleAddToCart}>
+          <Button
+            className="addToCart"
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(addItem({ ...item, id }));
+            }}
+          >
             AddToCart
           </Button>
         ) : (

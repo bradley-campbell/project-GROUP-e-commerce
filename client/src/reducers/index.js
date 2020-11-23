@@ -1,7 +1,7 @@
 const initialState = {
   6543: {
     name: "Barska GB12166 Fitness Watch with Heart Rate Monitor",
-    price: 49.99,
+    price: "$49.99",
     body_location: "Wrist",
     category: "Fitness",
     _id: 6543,
@@ -16,6 +16,29 @@ const initialState = {
 export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case "ADD_ITEM": {
+      // console.log(action.item.id);
+      // console.log(state);
+      // const isInCart = Object.keys(initialState).find(
+      //   (item) => item.id === action.item.id
+      // );
+      // const stateCopy = state;
+      // if (state[action.item.id]) {
+      //   return {
+      //     ...stateCopy,
+      //     [action.item.id]: {
+      //       ...action.item,
+      //       quantity: stateCopy[action.item.id].quantity + 1,
+      //     },
+      //   };
+      // } else {
+      //   return {
+      //     ...stateCopy,
+      //     [action.item.id]: {
+      //       ...action.item,
+      //       quantity: 1,
+      //     },
+      //   };
+      // }
       return {
         ...state,
         [action.item.id]: {
