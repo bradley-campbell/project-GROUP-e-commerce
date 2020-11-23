@@ -12,7 +12,6 @@
 //     case "RECEIVE_VALIDATION": {
 //       return {
 //         ...state,
-//         token: action.token,
 //         status: "idle",
 //       };
 //     }
