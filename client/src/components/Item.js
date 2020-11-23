@@ -1,23 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { AddToCartBtn } from "./AddToCartBtn";
+import handleAddToCart from "./handleAddToCart";
 
 const Item = ({ item }) => {
   console.log(item);
+  let history = useHistory();
 
   return (
-    <Wrapper to={`/product/${item.id}`}>
+    <Wrapper onClick={() => history.push(`/product/${item.id}`)}>
       <ProductImg src={item.imageSrc} width="100%" />
       <Info>
         <Name>{item.name}</Name>
         <Price>${item.price}</Price>
+        {item.numInStock > 0 ? (
+          <AddToCart
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart(item);
+            }}
+          />
+        ) : (
+          <OutOfStock>Out of Stock</OutOfStock>
+        )}
       </Info>
     </Wrapper>
   );
 };
 
-const Wrapper = styled(Link)`
+const Wrapper = styled.div`
   width: 200px;
   height: 200px;
   margin: 30px;
@@ -48,7 +61,7 @@ const Name = styled.p`
   font-weight: bold;
   line-height: 1.2em;
   color: black;
-  padding: 70px 30px 20px 30px;
+  padding: 30px 30px 20px 30px;
 `;
 
 const Price = styled.p`
@@ -71,6 +84,24 @@ const Info = styled.div`
   &:hover {
     opacity: 100%;
   }
+`;
+
+const AddToCart = styled(AddToCartBtn)`
+  position: absolute;
+  bottom: 20px;
+  margin-top: 10px;
+  left: 67px;
+`;
+
+const OutOfStock = styled.div`
+  position: absolute;
+  bottom: 40px;
+  margin-top: 10px;
+  left: 72px;
+  color: darkred;
+  border: ${COLORS.borderRadius};
+  margin-top: 10px;
+  font-weight: bold;
 `;
 
 export default Item;

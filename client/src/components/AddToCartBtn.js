@@ -2,8 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
 
-const AddToCartBtn = () => {
-  return <Button>Add To Cart</Button>;
+export const AddToCartBtn = ({ className, onClick }) => {
+  return (
+    <Button className={className} onClick={onClick}>
+      Add To Cart
+    </Button>
+  );
 };
 
 const Button = styled.button`
