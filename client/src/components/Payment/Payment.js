@@ -27,9 +27,8 @@ const Payment = () => {
     setVisible(false);
   };
 
-  const handleChange = (ev) => {
-    console.log(ev);
-    // setFormData({ ...formData, [key]: data });
+  const handleChange = (data, key) => {
+    setFormData({ ...formData, [key]: data });
   };
 
   console.log(formData);

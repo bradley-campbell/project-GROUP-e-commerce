@@ -1,21 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import { useForm } from "react-hook-form";
 
-const Input = ({ name, type, placeholder, handleChange }) => {
+const Input = ({ name, type, placeholder, handleChange, ref }) => {
+
+  const { register, handleSubmit } = useForm();
+
   return (
     <Wrapper>
       <label htmlFor={name}>{placeholder}</label>
       <input
+        ref={ref}
         type={type}
         name={name}
         placeholder={placeholder}
-        onChange={(ev) => handleChange(ev.target.value, name)}
-        minlength="1"
         required
       />
     </Wrapper>
   );
 };
+
+
+
+export default Input;
 
 const Wrapper = styled.div`
   margin-bottom: 6px;
@@ -39,5 +46,3 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-export default Input;

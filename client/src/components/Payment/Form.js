@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Input from "./Input";
+import { useForm } from "react-hook-form";
 
 const provinces = [
   "AB",
@@ -18,73 +18,87 @@ const provinces = [
   "YT",
 ];
 
-const Form = ({ handleChange, disabled, handleSubmit }) => {
-  return (
-    <FormContent>
-      <h2>Bill to:</h2>
-      <FormGroup>
-        <Input
-          name="givenName"
-          type="text"
-          placeholder="First name"
-          handleChange={handleChange}
-        />
-        <Input
-          name="surname"
-          type="text"
-          placeholder="Last name"
-          handleChange={handleChange}
-        />
-      </FormGroup>
-      <Input
-        name="email"
-        type="email"
-        placeholder="Email"
-        handleChange={handleChange}
-      />
-      <Input
-        name="address"
-        type="address"
-        placeholder="Address"
-        handleChange={handleChange}
-      />
-      <FormGroup>
-        <Input
-          name="city"
-          type="text"
-          placeholder="City"
-          handleChange={handleChange}
-        />
-        <DropDown>
-          <label HTMLfor="province">Province: </label>
-          <select name="province" onChange={handleChange}>
-            <option></option>
+const Form = ({ handleChange, disabled }) => {
+  const { register, handleSubmit } = useForm();
 
-            {provinces.map((province) => {
-              return <option value={province}> {province}</option>;
-            })}
-          </select>
-        </DropDown>
-      </FormGroup>
-      <FormGroup>
-        <Input
-          name="postcode"
-          type="text"
-          placeholder="Postal Code"
-          handleChange={handleChange}
-        />
-        <Input
-          name="country"
-          type="text"
-          placeholder="Country"
-          value={"Canada"}
-          handleChange={handleChange}
-        />
-      </FormGroup>
-      <button onClick={handleSubmit} type="submit" disabled={disabled}>
-        Submit
-      </button>
-    </FormContent>
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <IWrapper>
+      <FormContent>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h2>Bill to:</h2>
+          <FormGroup>
+            <Input
+              ref={register}
+              name="givenName"
+              type="text"
+              placeholder="First name"
+            />
+            <Input
+              ref={register}
+              name="surname"
+              type="text"
+              placeholder="Last name"
+              handleChange={handleChange}
+            />
+          </FormGroup>
+          <Input
+            ref={register}
+            name="email"
+            type="email"
+            placeholder="Email"
+            handleChange={handleChange}
+          />
+          <Input
+            ref={register}
+            name="address"
+            type="address"
+            placeholder="Address"
+            handleChange={handleChange}
+          />
+          <FormGroup>
+            <Input
+              ref={register}
+              name="city"
+              type="text"
+              placeholder="City"
+              handleChange={handleChange}
+            />
+            <DropDown>
+              <label for="province">Province:</label>
+              <select name="province" onChange={handleChange} ref={register}>
+                <option>Province</option>
+
+                {provinces.map((province) => {
+                  return <option value={province}> {province}</option>;
+                })}
+              </select>
+            </DropDown>
+          </FormGroup>
+          <FormGroup>
+            <Input
+              ref={register}
+              name="postcode"
+              type="text"
+              placeholder="Postal Code"
+              handleChange={handleChange}
+            />
+            <Input
+              ref={register}
+              name="country"
+              type="text"
+              placeholder="Country"
+              value={"Canada"}
+              handleChange={handleChange}
+            />
+            <Input type="submit" />
+          </FormGroup>
+        </form>
+      </FormContent>
+    </IWrapper>
   );
 };
 
@@ -130,5 +144,29 @@ const DropDown = styled.div`
     .placeholder {
       color: #464a5c;
     }
+  }
+`;
+
+const IWrapper = styled.div`
+  margin-bottom: 6px;
+  width: 100%;
+  position: relative;
+  label {
+    display: none;
+  }
+`;
+
+const Input = styled.input`
+  border-radius: 3px;
+  border: 1px solid #e4e8eb;
+  box-sizing: border-box;
+  color: #464a5c;
+  font-size: 15px;
+  font-weight: 300;
+  height: 36px;
+  padding: 8px 12px 10px 12px;
+  width: 100%;
+  &::placeholder {
+    color: #999;
   }
 `;
