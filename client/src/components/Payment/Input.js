@@ -3,19 +3,21 @@ import styled from "styled-components";
 
 const Input = ({ name, type, placeholder, handleChange }) => {
   return (
-    <IWrapper>
+    <Wrapper>
       <label htmlFor={name}>{placeholder}</label>
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         onChange={(ev) => handleChange(ev.target.value, name)}
+        minlength="1"
+        required
       />
-    </IWrapper>
+    </Wrapper>
   );
 };
 
-const IWrapper = styled.div`
+const Wrapper = styled.div`
   margin-bottom: 6px;
   width: 100%;
   position: relative;
