@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { GoTrashcan } from "react-icons/go";
 
@@ -13,19 +13,15 @@ import {
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const { _id, imageSrc, name, price, quantity } = item;
+  const { _id, imageSrc, name, price, quantity, numInStock } = item;
   const id = _id;
-
-  const itemFromState = useSelector((state) => state);
-
-  console.log(itemFromState);
 
   return (
     <Wrapper>
       <Image src={imageSrc} /> <Name>{name}</Name>
       <Price>${price}</Price>
       <QuantityContainer>
-        <DecrementButton
+        {/* <DecrementButton
           onClick={() => {
             quantity > 1
               ? dispatch(removeItem({ ...item, id }))
@@ -33,17 +29,25 @@ const CartItem = ({ item }) => {
           }}
         >
           -
-        </DecrementButton>
+        </DecrementButton> */}
         <Quantity
-          // placeholder="0"
+          min="1"
+          max={numInStock}
+          type="number"
           value={quantity}
+          onKeyPress={(e) => {
+            e.preventDefault();
+            return false;
+          }}
           onChange={(e) => {
-            dispatch(updateQuantity({ ...item, id, quantity: e.target.value }));
+            dispatch(
+              updateQuantity({ ...item, id, quantity: Number(e.target.value) })
+            );
           }}
         ></Quantity>
-        <IncrementButton onClick={() => dispatch(addItem({ ...item, id }))}>
+        {/* <IncrementButton onClick={() => dispatch(addItem({ ...item, id }))}>
           +
-        </IncrementButton>
+        </IncrementButton> */}
       </QuantityContainer>
       <RemoveButton
         onClick={() => {
@@ -76,25 +80,25 @@ const Price = styled.p``;
 
 const QuantityContainer = styled.div``;
 
-const DecrementButton = styled.button`
-  all: unset;
-`;
+// const DecrementButton = styled.button`
+//   all: unset;
+// `;
 
-const Quantity = styled.textarea`
+const Quantity = styled.input`
   border: none;
   /* box-sizing: border-box; */
   font-weight: bold;
-  height: 20px;
+  height: 40px;
   margin: 10px;
   resize: none;
   text-align: center;
   vertical-align: middle;
-  width: 20px;
+  width: 40px;
 `;
 
-const IncrementButton = styled.button`
-  all: unset;
-`;
+// const IncrementButton = styled.button`
+//   all: unset;
+// `;
 
 const RemoveButton = styled.button`
   border: none;
