@@ -110,6 +110,22 @@
 - PATCH `/product`
 
   - update the product quantities when customers put orders
+  - body requirement:
+
+    - cart: An object of purchased items with item ids as keys
+    - Example:
+      ```javascript
+            cart: {
+              "5555": {
+                id: 5555,
+                quantity: 2
+              },
+              "5556": {
+                id: 5556,
+                quantity: 2
+              },
+            }
+      ```
 
   - On success: `{ status: 200, message:"MESSAGE" }`
   - On failure: `{status: HTTPCODE, error:"ERROR MESSAGE"}`
