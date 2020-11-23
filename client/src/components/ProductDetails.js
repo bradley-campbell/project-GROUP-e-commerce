@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
-import AddToCartBtn from "./AddToCartBtn";
+import { AddToCartBtn } from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState("");
+  const [company, setCompany] = useState("");
   const params = useParams();
   const itemId = params.productId;
 
@@ -17,8 +18,21 @@ const ProductDetails = () => {
       .then((res) => {
         console.log(res);
         setProduct(res.product);
+        console.log(product);
       });
   }, []);
+
+  useEffect(() => {
+    if (product) {
+      fetch(`/company/${product.company.id}`)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          setCompany(res.company);
+          console.log(company);
+        });
+    }
+  }, [product]);
 
   return product ? (
     <Wrapper>
@@ -35,25 +49,28 @@ const ProductDetails = () => {
               max={product.numInStock}
             />
 
-            <AddToCartBtn />
+            <AddToCartBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                window.alert(product.name);
+              }}
+            />
             <NumInStock>{product.numInStock} In Stock</NumInStock>
           </>
         ) : (
           <SoldOut>This item is currently out of stock</SoldOut>
         )}
         <Specs>
+          <Company>
+            Company: <GoTo to={`/company/${company.id}}`}>{company.name}</GoTo>
+          </Company>
           <BodyLocation>
             Body Location:{" "}
             <GoTo to={`/bodylocation/${product.body_location.toLowerCase()}`}>
               {product.body_location}
             </GoTo>
           </BodyLocation>
-          <Category>
-            Category:{" "}
-            <GoTo to={`/category/${product.category.toLowerCase()}`}>
-              {product.category}
-            </GoTo>
-          </Category>
+          <Category>Category: {product.category}</Category>
         </Specs>
       </ProductInfoDiv>
     </Wrapper>
@@ -125,11 +142,19 @@ const Specs = styled.div`
 `;
 
 const GoTo = styled(Link)`
-  color: ${COLORS.accent};
+  color: ${COLORS.secondary};
+  &:hover {
+    text-decoration: underline;
+    color: ${COLORS.accent};
+  }
 `;
 
 const SoldOut = styled.div`
   color: darkred;
+`;
+
+const Company = styled.p`
+  font-size: 14px;
 `;
 
 export default ProductDetails;
