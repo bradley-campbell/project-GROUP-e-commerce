@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
 import { Link, useHistory } from "react-router-dom";
 import { AddToCartBtn } from "./AddToCartBtn";
+import handleAddToCart from "./handleAddToCart";
 
 const Item = ({ item }) => {
   console.log(item);
@@ -18,7 +19,7 @@ const Item = ({ item }) => {
           <AddToCart
             onClick={(e) => {
               e.stopPropagation();
-              window.alert(item.name);
+              handleAddToCart(item);
             }}
           />
         ) : (

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
 import { AddToCartBtn } from "./AddToCartBtn";
 import { COLORS } from "../ConstantStyles";
+import handleAddToCart from "./handleAddToCart";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState("");
   const [company, setCompany] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
-
-  console.log(itemId);
 
   useEffect(() => {
     fetch(`/product/by-product/${itemId}`)
@@ -18,7 +18,6 @@ const ProductDetails = () => {
       .then((res) => {
         console.log(res);
         setProduct(res.product);
-        console.log(product);
       });
   }, []);
 
@@ -29,7 +28,6 @@ const ProductDetails = () => {
         .then((res) => {
           console.log(res);
           setCompany(res.company);
-          console.log(company);
         });
     }
   }, [product]);
@@ -43,6 +41,7 @@ const ProductDetails = () => {
         {product.numInStock > 0 ? (
           <>
             <Amount
+              onChange={(event) => setQuantity(event.target.value)}
               type="number"
               placeholder="1"
               min="1"
@@ -52,7 +51,7 @@ const ProductDetails = () => {
             <AddToCartBtn
               onClick={(e) => {
                 e.stopPropagation();
-                window.alert(product.name);
+                handleAddToCart(product, Number(quantity));
               }}
             />
             <NumInStock>{product.numInStock} In Stock</NumInStock>
