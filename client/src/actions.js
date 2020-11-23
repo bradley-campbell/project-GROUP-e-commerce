@@ -8,6 +8,11 @@ export const removeItem = (item) => ({
   item,
 });
 
+export const removeItemCompletely = (item) => ({
+  type: "REMOVE_ITEM_COMPLETELY",
+  item,
+});
+
 export const updateQuantity = (item) => ({
   type: "UPDATE_QUANTITY",
   item,

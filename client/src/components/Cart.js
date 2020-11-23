@@ -17,22 +17,26 @@ const Cart = () => {
   });
   const total = subTotal * 1.15;
 
+  const numberOfItems = useSelector((state) => {
+    const values = Object.values(state);
+    return values.reduce((acc, item) => {
+      return acc + item.quantity;
+    }, 0);
+  });
+
   return (
     <Wrapper>
       <Container>
         <Top>
           <Header>Cart</Header>
-          <SubHeader>
-            Your cart contains {storeItems.length} products.
-          </SubHeader>
+          <SubHeader>Your cart contains {numberOfItems} items.</SubHeader>
         </Top>
         {storeItems.map((item) => {
-          console.log(item);
           return <CartItem item={item} />;
         })}
         <Bottom>
           <TotalContainer>
-            <SubTotal>Subtotal: ${subTotal}</SubTotal>
+            <SubTotal>Subtotal: ${subTotal.toFixed(2)}</SubTotal>
             <Total>Total: ${total.toFixed(2)}</Total>
           </TotalContainer>
           <Button>Proceed to Checkout</Button>
