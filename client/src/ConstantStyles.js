@@ -4,6 +4,5 @@ export const COLORS = {
   secondary: "rgb(184, 192, 245)",
   accent: "rgb(173, 144, 127)",
   button: "rgb(250, 220, 220)",
-
   borderRadius: "10px",
 };

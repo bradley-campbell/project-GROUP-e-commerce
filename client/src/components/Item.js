@@ -2,26 +2,24 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
 import { Link, useHistory } from "react-router-dom";
-import { AddToCartBtn } from "./AddToCartBtn";
-import handleAddToCart from "./handleAddToCart";
 
 const Item = ({ item }) => {
-  console.log(item);
+  const { name, price, numInStock, imageSrc, id } = item; // Destructured item to have direct access to variables
   let history = useHistory();
 
+  const handleAddToCart = () => {}; // Added handleAddToCart which wil
+
   return (
-    <Wrapper onClick={() => history.push(`/product/${item.id}`)}>
-      <ProductImg src={item.imageSrc} width="100%" />
+    <Wrapper onClick={() => history.push(`/product/${id}`)}>
+      <ProductImg src={imageSrc} width="100%" />
       <Info>
-        <Name>{item.name}</Name>
-        <Price>${item.price}</Price>
-        {item.numInStock > 0 ? (
-          <AddToCart
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToCart(item);
-            }}
-          />
+        <Name>{name}</Name>
+        <Price>${price}</Price>
+        {numInStock > 0 ? (
+          // Attached button styling to className and added it to global styles
+          <Button className="addToCart" onClick={handleAddToCart}>
+            AddToCart
+          </Button>
         ) : (
           <OutOfStock>Out of Stock</OutOfStock>
         )}
@@ -76,7 +74,7 @@ const Info = styled.div`
   right: 0;
   height: calc(100% + 35px);
   width: calc(100% + 35px);
-  border-radius: ${COLORS.borderRadius};
+  border-radius: var(--borderRadius);
   opacity: 0;
   transition: 0.5s ease;
   background-color: rgb(245, 244, 242, 0.7);
@@ -86,22 +84,22 @@ const Info = styled.div`
   }
 `;
 
-const AddToCart = styled(AddToCartBtn)`
-  position: absolute;
-  bottom: 20px;
-  margin-top: 10px;
-  left: 67px;
-`;
-
 const OutOfStock = styled.div`
   position: absolute;
   bottom: 40px;
   margin-top: 10px;
   left: 72px;
   color: darkred;
-  border: ${COLORS.borderRadius};
+  border: var(--borderRadius);
   margin-top: 10px;
   font-weight: bold;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  bottom: 20px;
+  margin-top: 10px;
+  left: 67px;
 `;
 
 export default Item;
