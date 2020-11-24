@@ -151,16 +151,18 @@ const DropBtn = styled.button`
 `;
 
 const DropdownContent = styled.ul`
+  margin-top: 18px;
   position: absolute;
-  margin-left: -2px;
-  width: 120px;
+  margin-left: -60px;
+  width: 300px;
 `;
 
 const DropItem = styled(Link)`
-  display: block;
+  display: inline-block;
   text-align: center;
-  background: ${COLORS.secondary};
-  color: black;
+  width: 60px;
+  background: ${COLORS.primary};
+  color: white;
   padding: 10px 10px;
   &:hover {
     background: ${COLORS.accent};
@@ -171,7 +173,6 @@ const LogoLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-size: 80%;
-  z-index: 1;
 `;
 
 const CartLink = styled(Link)``;

@@ -11,6 +11,7 @@ import CompanyList from "./CompanyList";
 import Confirmation from "./Confirmation";
 import Header from "./Header";
 import Home from "./Home";
+import All from "./All";
 import ItemsByCategory from "./ItemsByCategory";
 import Payment from "./Payment/Payment";
 import ProductByCompany from "./ProductByCompany";
@@ -36,6 +37,10 @@ function App() {
         <Switch>
           <Route exact path="/home">
             <Home />
+          </Route>
+
+          <Route exact path="/all">
+            <All />
           </Route>
 
           <Route exact path="/company">
