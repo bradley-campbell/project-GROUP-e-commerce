@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
+import GlobalStyle from "../GlobalStyles";
 
 import Admin from "./Admin";
 import BodyLocation from "./BodyLocation";
@@ -10,72 +11,71 @@ import CompanyList from "./CompanyList";
 import Confirmation from "./Confirmation";
 import Header from "./Header";
 import Home from "./Home";
+import All from "./All";
 import ItemsByCategory from "./ItemsByCategory";
-import Payment from "./Payment";
+import Payment from "./Payment/Payment";
 import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
+import { COLORS } from "../ConstantStyles";
 
 function App() {
-  const [bacon, setBacon] = useState(null);
+  // const [bacon, setBacon] = useState(null);
 
-  useEffect(() => {
-    fetch("/bacon")
-      .then((res) => res.json())
-      .then((data) => setBacon(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/bacon")
+  //     .then((res) => res.json())
+  //     .then((data) => setBacon(data));
+  // }, []);
 
   return (
     <Wrapper>
+      <GlobalStyle />
       <Router>
         <Header />
 
         <Switch>
-          <Route exact to="/home">
+          <Route exact path="/home">
             <Home />
           </Route>
 
-          <Route exact to="/company">
+          <Route exact path="/all">
+            <All />
+          </Route>
+
+          <Route exact path="/company">
             <CompanyList />
           </Route>
 
-          <Route exact to="/company/:companyId">
+          <Route exact path="/company/:companyId">
             <ProductByCompany />
           </Route>
 
-          <Route exact to="/product/:productId">
+          <Route exact path="/product/:productId">
             <ProductDetails />
           </Route>
 
-          <Route exact to="/bodylocation/:bodylocationId">
+          <Route exact path="/bodylocation/:bodylocationId">
             <BodyLocation />
           </Route>
 
-          <Route exact to="/category">
-            <CategoryList />
-          </Route>
-
-          <Route exact to="/category/:categoryId">
-            <ItemsByCategory />
-          </Route>
-
-          <Route exact to="/cart">
+          <Route exact path="/cart">
             <Cart />
           </Route>
 
-          <Route exact to="/payment">
+          <Route exact path="/payment">
             <Payment />
           </Route>
 
-          <Route exact to="/confirmation">
+          <Route exact path="/confirmation">
             <Confirmation />
           </Route>
 
-          <Route exact to="/search">
+          <Route exact path="/search">
             <SearchResults />
           </Route>
 
-          <Route exact to="/admin">
+          <Route exact path="/admin">
             <Admin />
           </Route>
         </Switch>
@@ -86,6 +86,8 @@ function App() {
 
 export default App;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  background: ${COLORS.white};
+`;
 
 const Grid = styled.div``;

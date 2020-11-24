@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "react-hook-form": "^6.11.5",
+    "react-icons": "^3.11.0",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "styled-reset": "^4.3.1"
   }
 }
