@@ -20,20 +20,17 @@ const Payment = () => {
   console.log(cartArray);
   const subtotal = 29.99;
 
-  cart = {id: }
-
   const dispatch = useDispatch();
 
   const closeModal = (ev) => {
     dispatch(togglePaymentView());
-    handleFetch(formData, cartState, subtotal );
+    handleFetch(formData, cartState, subtotal);
   };
 
   const handleFetch = async (form, cart, subtotal) => {
-    
     const reqPost = {
       method: "POST",
-      body: JSON.stringify({ formData: form, cart, subtotal }),  // id quantity
+      body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
