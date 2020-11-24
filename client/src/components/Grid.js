@@ -10,7 +10,6 @@ const Grid = ({ itemsData }) => {
     itemsView === "all"
       ? setItemsArray(itemsData)
       : setItemsArray(itemsData.filter((item) => item.category === itemsView));
-    console.log(itemsData);
   }, [itemsView]);
 
   return (
@@ -35,9 +34,13 @@ const Grid = ({ itemsData }) => {
       </SelectView>
       <GridDisplay>
         {itemsArray ? (
-          itemsArray.map((item) => <Item item={item} />)
+          itemsArray
+            .sort((a, b) => (a.numInStock > b.numInStock ? -1 : 1)) // sorts by numInStock, highest to lowest
+            .map((item) => <Item item={item} />)
         ) : itemsData ? (
-          itemsData.map((item) => <Item item={item} />)
+          itemsData
+            .sort((a, b) => (a.numInStock > b.numInStock ? -1 : 1)) // sorts by numInStock, highest to lowest
+            .map((item) => <Item item={item} />)
         ) : (
           <div>loading</div>
         )}
