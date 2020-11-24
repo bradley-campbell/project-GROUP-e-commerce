@@ -66,10 +66,10 @@ const Header = () => {
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
-            history.push(`/search/?search=${query}`); // not necessary
+            history.push(`/search/?search=${query}`); // depends on where you want to direct to
             fetch(`/product/search/?search=${query}`) // sending info to backend by params
               .then((data) => data.json())
-              .then((data) => console.log(data));
+              .then((data) => console.log(data)); // later work after backend,may setQuery
             setQuery("");
           }}
         >
