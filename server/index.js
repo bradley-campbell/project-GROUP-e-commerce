@@ -3,11 +3,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const { v4: uuidv4 } = require("uuid"); // to generate unique ids
 
 const PORT = 4000;
 const dataItems = require("./data/items.json");
 const dataCompanies = require("./data/companies.json");
 const dataOrders = require("./data/orders.json");
+//const fs = require("fs"); // static file-writing, allows files to be accessed after closing server
+// replacing SQL
 
 // hard-coded body locations and categories
 const allBodyLocations = [
@@ -96,8 +99,8 @@ express()
           }
           return acc;
         }, []);
+        // get the company
         const c = convertCompany(getCompById(cId));
-
         // responde with list of items
         res.status(200).json({ status: 200, products: cList, company: c });
         return;
@@ -239,11 +242,98 @@ express()
     // Get list of products sold by Company X (by id)
   })*/
 
-  .patch("/product", (req, res) => {})
+  .patch("/product", (req, res) => {
+    /* cart: {
+        5555: {
+        id: 5555,
+        quantity: 2
+        },
+        5556: {
+        id: 5556,
+        quantity: 2
+        },
+        }
+    */
+    // get cart and items
+    const cart = req.body.cart;
+    const items = Object.values(cart);
+    // check if cart is empty
+    if (items.length === 0) {
+      res.status(400).json({
+        status: 400,
+        error: `There is nothing in the cart!`,
+      });
+    }
+    const list_to_patch = []; // list of object
+    //{index: index in itemsData, decreQuan: quantity to decrement}
 
-  .put("/order/:orderId", (req, res) => {
-    res.status(200).json("🥓");
+    // (don't update the quantities yet)
+    // check first if all items are in our database
+    let item;
+    for (item of items) {
+      // findIndex return -1 if not found
+      const state = dataItems.findIndex((ele) => {
+        return ele._id === item.id;
+      });
+      // if not found
+      if (state < 0) {
+        res.status(404).json({
+          status: 404,
+          error: `The product id ${item.id} was not found in our database!`,
+        });
+        return; // terminate when there is an error
+      } else {
+        // check if the quantity required is <= in stock
+        const stock = dataItems[state]["numInStock"];
+        if (stock < item.quantity) {
+          // check if the quantity is smaller than the request
+          //   this shouldn't happen given front-end is limiting the quantity but just in case
+          res.status(409).json({
+            status: 409,
+            error: `The quantity required for the product ${dataItems[state]._id}, the "${dataItems[state].name}" is larger than the quantity of stock!`,
+          });
+          return; // terminate if anything goes wrong
+        } else {
+          // safely push the index and the quantity to decrement
+          list_to_patch.push({ index: state, decreQuan: item.quantity }); // save the index for later usage
+        }
+      }
+    }
+    // go through the list to reduce the quantity it's safely passed after all checks
+    let cur;
+    for (cur of list_to_patch) {
+      dataItems[cur.index]["numInStock"] -= cur.decreQuan;
+    }
+    res.status(200).json({
+      status: 200,
+      message: `Successfully updated the stocks for ${list_to_patch.length} product/products.`,
+    });
+    return;
   })
+
+  .put("/order", (req, res) => {
+    // with:
+    // 1. order id
+    // 2. date
+    // 3. formData and cart info
+
+    const orderId = uuidv4(); // generate a unique id
+    // write to the orders.json file
+    addOrder("./data/orders.json", orderId, {
+      orderId: orderId,
+      formData: { ...req.body.formData },
+      cart: { ...req.body.cart },
+      subtotal: req.body.subtotal,
+    });
+    // successful fordata
+    res.status(200).json({
+      status: 200,
+      orderId: orderId,
+      formData: { ...req.body.formData },
+    });
+    return;
+  })
+
   .put("/product", (req, res) => {
     res.status(200).json("🥓");
   })
@@ -251,6 +341,33 @@ express()
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
 
 // ========================= functions =========================
+// function to read json file, return the data
+const readJsonFile = (path) => {
+  const fs = require("fs");
+  const rawData = fs.readFileSync(path);
+  return JSON.parse(rawData);
+};
+//console.log(readJsonFile("./data/orders.json"));
+
+// function to write json file, accept thing to write
+const addOrder = (path, id, order) => {
+  const fs = require("fs");
+  const original = readJsonFile(path); // an object
+  // adding to original data
+  original[id] = { ...order, timestamp: +new Date() };
+  // adding timestamp by miliseconds
+  const tstamp = new Date().getTime();
+  original[id]["timestamp"] = tstamp;
+  // convert to json data
+  const new_data = JSON.stringify(original);
+  // write
+  fs.writeFile(path, new_data, (err) => {
+    if (err) console.log("Error writing file:", err);
+  });
+  return 1;
+};
+// function to remove an order from the json file
+const removeOrder = (path, id) => {};
 
 // function to convert one product
 //    1. convert _id to id
@@ -275,6 +392,7 @@ const convertProducts = (items) => {
 const convertCompany = (company) => {
   return convertId(company);
 };
+// function to convert a list of companies
 const convertCompanies = (companies) => {
   const new_companies = [];
   let ele;
@@ -289,8 +407,8 @@ const convertCompanies = (companies) => {
 const editNaming = (item) => {
   // get the company info
   const copy = { ...item };
-  const i_name = item.name;
-  const c_name = getCompById(item.companyId).name;
+  const i_name = item.name.toLowerCase();
+  const c_name = getCompById(item.companyId).name.toLowerCase();
   const c_name_index = getIndexOf(i_name, c_name);
   // check if found any
   if (c_name_index >= 0) {
@@ -312,7 +430,7 @@ const editNaming = (item) => {
   copy["companyName"] = c_name;
   return copy;
 };
-// function to get the first word in a string
+// function to get the starting index of a target string in another string
 const getIndexOf = (inputStr, target) => {
   const i = inputStr.indexOf(target);
   return i;
