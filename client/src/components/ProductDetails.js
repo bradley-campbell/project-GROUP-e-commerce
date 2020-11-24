@@ -4,9 +4,9 @@ import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
 import { COLORS } from "../ConstantStyles";
 
-import { addItem } from "./../actions";
+import { addItem, updateQuantity } from "./../actions";
 
-import { getStoreItemArray } from "./../reducers";
+import { getStoreItemArray } from "../reducers/cart-reducer";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const ProductDetails = () => {
   const params = useParams();
   const itemId = params.productId;
 
-  // console.log(storeItems);
+  const state = useSelector((state) => state);
 
   useEffect(() => {
     fetch(`/product/by-product/${itemId}`)
@@ -39,6 +39,8 @@ const ProductDetails = () => {
     id,
   } = product;
 
+  const inputValue = 0;
+
   return product ? (
     <Wrapper>
       <ProductName>{name}</ProductName>
@@ -48,7 +50,9 @@ const ProductDetails = () => {
         {numInStock > 0 ? (
           <>
             <Amount
-              onChange={(event) => setQuantity(event.target.value)}
+              onChange={(e) => {
+                setQuantity(e.target.value);
+              }}
               type="number"
               placeholder="1"
               min="1"
@@ -56,7 +60,16 @@ const ProductDetails = () => {
             />
             <Button
               className="addToCart"
-              onClick={() => dispatch(addItem({ ...product, id }))}
+              onClick={() => {
+                console.log(quantity);
+                dispatch(
+                  updateQuantity({
+                    ...product,
+                    id,
+                    quantity: Number(quantity),
+                  })
+                );
+              }}
             >
               Add to Cart
             </Button>

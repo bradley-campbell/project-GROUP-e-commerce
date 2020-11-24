@@ -4,13 +4,12 @@ import styled from "styled-components";
 
 import CartItem from "./CartItem";
 
-import { getStoreItemArray } from "./../reducers";
+import { getStoreItemArray } from "../reducers/cart-reducer";
 
 const Cart = () => {
   const storeItems = useSelector(getStoreItemArray);
 
   const subTotal = useSelector((state) => {
-    console.log(state);
     const values = Object.values(state);
     return values.reduce((acc, item) => {
       return acc + item.quantity * item.price;
@@ -33,8 +32,17 @@ const Cart = () => {
           <SubHeader>Your cart contains {numberOfItems} items.</SubHeader>
         </Top>
         {storeItems.map((item) => {
-          console.log(item);
-          return <CartItem item={item} />;
+          const { id, imageSrc, name, price, quantity, numInStock } = item;
+          return (
+            <CartItem
+              id={id}
+              imageSrc={imageSrc}
+              name={name}
+              price={price}
+              quantity={quantity}
+              numInStock={numInStock}
+            />
+          );
         })}
         <Bottom>
           <TotalContainer>

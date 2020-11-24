@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { GoTrashcan } from "react-icons/go";
+import { useHistory } from "react-router-dom";
 
 import {
   addItem,
@@ -10,17 +11,18 @@ import {
   updateQuantity,
 } from "./../actions";
 
-const CartItem = ({ item }) => {
+const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
   const dispatch = useDispatch();
-  const theState = useSelector((state) => state);
-  // const item = useSelector((state) => state[id]);
+  const item = useSelector((state) => state[id]);
+  let history = useHistory();
 
-  const { _id, imageSrc, name, price, quantity, numInStock } = item;
-  const id = _id;
+  // const { _id, imageSrc, name, price, quantity, numInStock } = item;
+  // const id = _id;
 
   return (
     <Wrapper>
-      <Image src={imageSrc} /> <Name>{name}</Name>
+      <Image src={imageSrc} onClick={() => history.push(`/product/${id}`)} />{" "}
+      <Name>{name}</Name>
       <Price>${price}</Price>
       <QuantityContainer>
         {/* <DecrementButton
@@ -74,6 +76,10 @@ const Wrapper = styled.div`
 const Image = styled.img`
   height: 100px;
   width: 100px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Name = styled.p``;

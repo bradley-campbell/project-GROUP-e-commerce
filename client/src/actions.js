@@ -18,14 +18,7 @@ export const updateQuantity = (item) => ({
   item,
 });
 
-export const requestValidation = () => ({
-  type: "REQUEST_Validation",
-});
-
-export const receiveValidation = () => ({
-  type: "RECEIVE_Validation",
-});
-
-export const receiveValidationError = () => ({
-  type: "RECEIVE_Validation_ERROR",
+export const setStatus = (status) => ({
+  type: "SET_STATUS",
+  status,
 });

@@ -5,7 +5,7 @@ import { COLORS } from "../ConstantStyles";
 import { Link, useHistory } from "react-router-dom";
 
 import { addItem } from "./../actions";
-import { getStoreItemArray } from "./../reducers";
+import { getStoreItemArray } from "../reducers/cart-reducer";
 
 const Item = ({ item }) => {
   const dispatch = useDispatch();
