@@ -6,6 +6,11 @@ import { COLORS } from "../ConstantStyles";
 
 const Header = () => {
   const [query, setQuery] = useState("");
+  const [dropOpen, setDropOpen] = useState(false);
+
+  const dropHandle = () => {
+    setDropOpen(!dropOpen);
+  };
 
   console.log(query);
 
@@ -17,17 +22,47 @@ const Header = () => {
         <ShopTitle>SHOP FETCH</ShopTitle>
       </LogoLink>
       <Navigation>
-        <NavStyle exact to="/company" activeStyle={{ color: "green" }}>
-          <h3>Company</h3>
+        <NavStyle exact to="/all" activeStyle={{ color: "pink" }}>
+          <h3>All</h3>
         </NavStyle>
-        <NavStyle exact to="/bodylocation">
-          <h3> Body Location</h3>
+        <NavStyle exact to="/company" activeStyle={{ color: "pink" }}>
+          <h3>Brands</h3>
         </NavStyle>
-        <Category>
-          <NavStyle exact to="/category" className={"category"}>
-            <h3>Category</h3>
-          </NavStyle>
-        </Category>
+        <NavDrop>
+          <DropBtn onClick={() => dropHandle()}>Body Location</DropBtn>
+
+          {dropOpen && (
+            <DropdownContent onClick={() => dropHandle()}>
+              <DropItem exact to="/bodylocation/wrist">
+                wrist
+              </DropItem>
+              <DropItem exact to="/bodylocation/arms">
+                arms
+              </DropItem>
+              <DropItem exact to="/bodylocation/head">
+                head
+              </DropItem>
+              <DropItem exact to="/bodylocation/waist">
+                waist
+              </DropItem>
+              <DropItem exact to="/bodylocation/chest">
+                chest
+              </DropItem>
+              <DropItem exact to="/bodylocation/hands">
+                hands
+              </DropItem>
+              <DropItem exact to="/bodylocation/neck">
+                neck
+              </DropItem>
+              <DropItem exact to="/bodylocation/feet">
+                feet
+              </DropItem>
+              <DropItem exact to="/bodylocation/torso">
+                torso
+              </DropItem>
+            </DropdownContent>
+          )}
+        </NavDrop>
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
@@ -91,9 +126,44 @@ const Navigation = styled.div`
 
 const NavStyle = styled(NavLink)`
   color: ${COLORS.accent};
-
+  position: relative;
+  display: inline-block;
   &:hover {
     color: ${COLORS.white};
+  }
+`;
+
+//dropdown stuff
+
+const NavDrop = styled.div``;
+const DropBtn = styled.button`
+  border: none;
+  background: transparent;
+  color: ${COLORS.white};
+  cursor: pointer;
+  margin: 0px -2px;
+  font-size: 15px;
+  padding: 5px 8px;
+  width: 120px;
+  &:active {
+    background: ${COLORS.secondary};
+  }
+`;
+
+const DropdownContent = styled.ul`
+  position: absolute;
+  margin-left: -2px;
+  width: 120px;
+`;
+
+const DropItem = styled(Link)`
+  display: block;
+  text-align: center;
+  background: ${COLORS.secondary};
+  color: black;
+  padding: 10px 10px;
+  &:hover {
+    background: ${COLORS.accent};
   }
 `;
 
@@ -132,20 +202,6 @@ const CartWrapper = styled.div`
     z-index: 2;
     left: 44%;
     top: 20%;
-  }
-`;
-
-const Category = styled.div`
-  background-color: green;
-  box-sizing: border-box;
-  height: 45px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: yellow;
   }
 `;
 
