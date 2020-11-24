@@ -22,3 +22,8 @@ export const setCartItemsTotal = (total) => ({
   type: "SET_CART_ITEMS_TOTAL",
   total,
 });
+
+export const setSubtotal = (total) => ({
+  type: "SET_SUBTOTAL",
+  total,
+});
