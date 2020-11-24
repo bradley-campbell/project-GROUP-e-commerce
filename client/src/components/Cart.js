@@ -1,17 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-
+import { togglePaymentView } from "../actions/statusActions";
 import CartItem from "./CartItem";
 
-import { getStoreItemArray } from "./../reducers";
-
 const Cart = () => {
-  const storeItems = useSelector(getStoreItemArray);
+  const cartState = useSelector((state) => state.cartState);
+  const cartArray = Object.values(cartState);
+  const dispatch = useDispatch();
+  const viewState = useSelector((state) => state.viewState);
 
   const subTotal = useSelector((state) => {
-    console.log(state);
-    const values = Object.values(state);
+    const values = Object.values(state.cartState);
     return values.reduce((acc, item) => {
       return acc + item.quantity * item.price;
     }, 0);
@@ -19,11 +19,17 @@ const Cart = () => {
   const total = subTotal * 1.15;
 
   const numberOfItems = useSelector((state) => {
-    const values = Object.values(state);
+    const values = Object.values(state.cartState);
     return values.reduce((acc, item) => {
       return acc + item.quantity;
     }, 0);
   });
+
+  const proceedToPayment = () => {
+    dispatch(togglePaymentView());
+  };
+
+  console.log(viewState);
 
   return (
     <Wrapper>
@@ -32,16 +38,16 @@ const Cart = () => {
           <Header>Cart</Header>
           <SubHeader>Your cart contains {numberOfItems} items.</SubHeader>
         </Top>
-        {storeItems.map((item) => {
-          console.log(item);
-          return <CartItem item={item} />;
-        })}
+        {cartArray.length > 0 &&
+          cartArray.map((item) => {
+            return <CartItem item={item} />;
+          })}
         <Bottom>
           <TotalContainer>
             <SubTotal>Subtotal: ${subTotal.toFixed(2)}</SubTotal>
             <Total>Total: ${total.toFixed(2)}</Total>
           </TotalContainer>
-          <Button>Proceed to Checkout</Button>
+          <Button onClick={proceedToPayment}>Proceed to Checkout</Button>
         </Bottom>
       </Container>
     </Wrapper>

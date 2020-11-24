@@ -4,6 +4,8 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Input from "./Input";
 import { formValidation } from "./InputValidation";
 import Form from "./Form";
+import { useDispatch, useSelector } from "react-redux";
+import { togglePaymentView } from "../../actions/statusActions";
 
 const item = {
   name: "Jawbone UP24 Activity Tracker Wristband, Pink Coral, M",
@@ -19,10 +21,17 @@ const item = {
 
 const Payment = () => {
   const [formData, setFormData] = useState({});
-  const [visible, setVisible] = useState(true);
+  const viewState = useSelector((state) => state.viewState);
+  const { paymentPageView, confirmationPageView } = viewState;
+
+  const cartState = useSelector((state) => state.cartState);
+  const cartArray = Object.values(cartState);
+  console.log(cartArray);
+
+  const dispatch = useDispatch();
 
   const closeModal = (ev) => {
-    setVisible(false);
+    dispatch(togglePaymentView());
   };
 
   const handleFetch = async () => {
@@ -35,7 +44,7 @@ const Payment = () => {
   console.log(formData);
 
   return (
-    <Wrapper visible={visible}>
+    <Wrapper visible={paymentPageView}>
       <Overlay>
         <Content>
           <ExitButton onClick={closeModal}>
@@ -50,14 +59,19 @@ const Payment = () => {
             <h1>Order Summary</h1>
             <ItemizedList>
               {/* map through items in cart */}
-              <li>
-                <span>
-                  {" "}
-                  <a href={`/product/${item._id}`}># {item._id}</a> -{" "}
-                  {item.name.slice(0, 30)}
-                </span>
-                <span>1 @ {item.price}</span>
-              </li>
+              {cartArray.map((item) => {
+                console.log(item.id);
+                return (
+                  <li>
+                    <span>
+                      {" "}
+                      <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
+                      {item.name.slice(0, 30)}
+                    </span>
+                    <span>1 @ {item.price}</span>
+                  </li>
+                );
+              })}
             </ItemizedList>
             <Totals>
               <div>

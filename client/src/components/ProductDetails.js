@@ -3,29 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
 import { COLORS } from "../ConstantStyles";
-
-import { addItem } from "./../actions";
-
+import { addItem, updateQuantity } from "../actions/cartActions";
 import { getStoreItemArray } from "./../reducers";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
-  const storeItems = useSelector(getStoreItemArray);
+  const cartState = useSelector((state) => state.cartState); // Access the state from the cartReducer
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
-
-  // console.log(storeItems);
-
-  useEffect(() => {
-    fetch(`/product/by-product/${itemId}`)
-      .then((res) => res.json())
-      .then(({ product }) => {
-        // console.log(product);
-        setProduct(product);
-      });
-  }, []);
 
   const {
     companyName,
@@ -38,6 +25,22 @@ const ProductDetails = () => {
     category,
     id,
   } = product;
+
+  const handleAddToCart = () => {
+    return !cartState[id] && quantity === 1
+      ? dispatch(addItem({ ...product, id, quantity: quantity }))
+      : updateQuantity({ ...product, id, quantity: quantity });
+  };
+  console.log(cartState);
+
+  useEffect(() => {
+    fetch(`/product/by-product/${itemId}`)
+      .then((res) => res.json())
+      .then(({ product }) => {
+        // console.log(product);
+        setProduct(product);
+      });
+  }, []);
 
   return product ? (
     <Wrapper>
@@ -54,10 +57,7 @@ const ProductDetails = () => {
               min="1"
               max={product.numInStock}
             />
-            <Button
-              className="addToCart"
-              onClick={() => dispatch(addItem({ ...product, id }))}
-            >
+            <Button className="addToCart" onClick={handleAddToCart}>
               Add to Cart
             </Button>
 
