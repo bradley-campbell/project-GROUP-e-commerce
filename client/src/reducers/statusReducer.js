@@ -2,6 +2,7 @@ const initialState = {
   status: "idle",
   paymentPageView: false,
   confirmationPageView: false,
+  cartItemTotal: 0,
 };
 
 const statusReducer = (state = initialState, action) => {
@@ -22,6 +23,9 @@ const statusReducer = (state = initialState, action) => {
     }
     case "CONFIRMATION_PAGE_VISIBLE": {
       return { ...state, confirmationPageView: !state.confirmationPageView };
+    }
+    case "SET_CART_ITEMS_TOTAL": {
+      return { ...state, cartItemTotal: action.total };
     }
     default:
       return state;

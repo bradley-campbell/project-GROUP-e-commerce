@@ -13,11 +13,9 @@ const Item = ({ item }) => {
   const cartState = useSelector((state) => state.cartState); // Access the state from the cartReducer
   const { name, price, numInStock, imageSrc, id } = item; // Destructured item to have direct access to variables
   let history = useHistory();
-  const viewState = useSelector((state) => state.viewState);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    dispatch(receiveData());
     dispatch(addItem({ ...item, id }));
   };
 

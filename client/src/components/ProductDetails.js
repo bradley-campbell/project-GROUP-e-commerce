@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
 import { COLORS } from "../ConstantStyles";
-import { addItem } from "../actions/cartActions";
+import { addItem, updateQuantity } from "../actions/cartActions";
 import { getStoreItemArray } from "./../reducers";
 
 const ProductDetails = () => {
@@ -13,20 +13,6 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
-
-  const handleAddToCart = () => {
-    dispatch(addItem({ ...product, id }));
-  };
-  console.log(cartState);
-
-  useEffect(() => {
-    fetch(`/product/by-product/${itemId}`)
-      .then((res) => res.json())
-      .then(({ product }) => {
-        // console.log(product);
-        setProduct(product);
-      });
-  }, []);
 
   const {
     companyName,
@@ -39,6 +25,22 @@ const ProductDetails = () => {
     category,
     id,
   } = product;
+
+  const handleAddToCart = () => {
+    return !cartState[id] && quantity === 1
+      ? dispatch(addItem({ ...product, id, quantity: quantity }))
+      : updateQuantity({ ...product, id, quantity: quantity });
+  };
+  console.log(cartState);
+
+  useEffect(() => {
+    fetch(`/product/by-product/${itemId}`)
+      .then((res) => res.json())
+      .then(({ product }) => {
+        // console.log(product);
+        setProduct(product);
+      });
+  }, []);
 
   return product ? (
     <Wrapper>

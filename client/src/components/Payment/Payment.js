@@ -24,7 +24,9 @@ const Payment = () => {
   const viewState = useSelector((state) => state.viewState);
   const { paymentPageView, confirmationPageView } = viewState;
 
-  console.log(paymentPageView);
+  const cartState = useSelector((state) => state.cartState);
+  const cartArray = Object.values(cartState);
+  console.log(cartArray);
 
   const dispatch = useDispatch();
 
@@ -57,14 +59,19 @@ const Payment = () => {
             <h1>Order Summary</h1>
             <ItemizedList>
               {/* map through items in cart */}
-              <li>
-                <span>
-                  {" "}
-                  <a href={`/product/${item._id}`}># {item._id}</a> -{" "}
-                  {item.name.slice(0, 30)}
-                </span>
-                <span>1 @ {item.price}</span>
-              </li>
+              {cartArray.map((item) => {
+                console.log(item.id);
+                return (
+                  <li>
+                    <span>
+                      {" "}
+                      <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
+                      {item.name.slice(0, 30)}
+                    </span>
+                    <span>1 @ {item.price}</span>
+                  </li>
+                );
+              })}
             </ItemizedList>
             <Totals>
               <div>

@@ -17,3 +17,8 @@ export const togglePaymentView = () => ({
 export const toggleConfirmationView = () => ({
   type: "CONFIRMATION_PAGE_VISIBLE",
 });
+
+export const setCartItemsTotal = (total) => ({
+  type: "SET_CART_ITEMS_TOTAL",
+  total,
+});

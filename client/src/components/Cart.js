@@ -11,8 +11,7 @@ const Cart = () => {
   const viewState = useSelector((state) => state.viewState);
 
   const subTotal = useSelector((state) => {
-    console.log(cartState);
-    const values = Object.values(state);
+    const values = Object.values(state.cartState);
     return values.reduce((acc, item) => {
       return acc + item.quantity * item.price;
     }, 0);
@@ -20,7 +19,7 @@ const Cart = () => {
   const total = subTotal * 1.15;
 
   const numberOfItems = useSelector((state) => {
-    const values = Object.values(state);
+    const values = Object.values(state.cartState);
     return values.reduce((acc, item) => {
       return acc + item.quantity;
     }, 0);
@@ -41,7 +40,6 @@ const Cart = () => {
         </Top>
         {cartArray.length > 0 &&
           cartArray.map((item) => {
-            console.log(item);
             return <CartItem item={item} />;
           })}
         <Bottom>

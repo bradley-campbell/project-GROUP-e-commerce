@@ -8,13 +8,13 @@ import {
   removeItem,
   removeItemCompletely,
   updateQuantity,
-} from "./../actions";
+} from "../actions/cartActions";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
   const { id, imageSrc, name, price, quantity, numInStock } = item;
-  
+
   const handleRemove = () => {
     dispatch(removeItem(item));
   };
@@ -39,6 +39,7 @@ const CartItem = ({ item }) => {
           type="number"
           value={quantity}
           onKeyPress={(e) => {
+            console.log(e);
             e.preventDefault();
             return false;
           }}
