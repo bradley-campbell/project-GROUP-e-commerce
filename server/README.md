@@ -153,20 +153,23 @@
     - ```javascript
       body: {
         "formData": {
-        "givenName":"GIVENNAME",
-        "lastName":"LASTNAME",
-        "email":"AAA@AAA.com",
-        "address":"kkk avenue kkk",
-        "province":"QC",
-        "country":"Canada",
-        "postalCode":"H3H 4K9"
+          "givenName":"GIVENNAME",
+          "lastName":"LASTNAME",
+          "email":"AAA@AAA.com",
+          "address":"kkk avenue kkk",
+          "province":"QC",
+          "country":"Canada",
+          "postalCode":"H3H 4K9"
         },
         "cart": {
-        "5555": {
-        "id": 5555,
-        "quantity": 2 },
-        "5556": {
-        "id": 5556, "quantity": 2 }
+          "5555": {
+            "id": 5555,
+            "quantity": 2
+          },
+          "5556": {
+            "id": 5556,
+            "quantity": 2
+          }
         },
         "subtotal":555
         }

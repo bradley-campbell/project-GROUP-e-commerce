@@ -199,6 +199,7 @@ express()
     // the search keywords:
     // e.g. word1=winter&word2=summer
     // input cleaning may needed
+    console.log(req.query);
     res.status(200).json("🥓");
   })
 
@@ -263,6 +264,7 @@ express()
         status: 400,
         error: `There is nothing in the cart!`,
       });
+      return; // terminate
     }
     const list_to_patch = []; // list of object
     //{index: index in itemsData, decreQuan: quantity to decrement}
