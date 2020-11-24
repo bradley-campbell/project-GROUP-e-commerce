@@ -49,7 +49,9 @@ const ProductDetails = () => {
         {numInStock > 0 ? (
           <>
             <Amount
-              onChange={(event) => setQuantity(event.target.value)}
+              onChange={(e) => {
+                setQuantity(e.target.value);
+              }}
               type="number"
               placeholder="1"
               min="1"

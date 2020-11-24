@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
 import { Link } from "react-router-dom";
+import { setStatus } from "../actions";
+import { useSelector } from "react-redux";
 
 // Fetch items by company selected
 
@@ -9,11 +11,13 @@ export const CompanyList = () => {
   const [companies, setCompanies] = useState(null);
   // this is a comment
   useEffect(() => {
+    setStatus("loading");
     fetch(`/company/all`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setCompanies(res.companies);
+        setStatus("idle");
       });
   }, []);
 
