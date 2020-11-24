@@ -11,7 +11,7 @@ const Payment = () => {
   const { paymentPageView, confirmationPageView } = viewState;
   const cartState = useSelector((state) => state.cartState);
   const cartArray = Object.values(cartState);
-  const subtotal = 29.99;
+  const subtotal = 166.95;
 
   useEffect(() => {
     // On change to cart, update  an object containing only the required information for the backend to process an order (item name + quantity ordered)
@@ -30,10 +30,10 @@ const Payment = () => {
   };
 
   const handleFetch = async (form, cart, subtotal) => {
-    console.log({ body: JSON.stringify({ formData: form, cart, subtotal }) });
+    console.log({ body: { formData: form, cart, subtotal } });
 
-    const reqPost = {
-      method: "POST",
+    const reqPut = {
+      method: "PUT",
       body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
       headers: {
         Accept: "application/json",
@@ -51,15 +51,15 @@ const Payment = () => {
     };
 
     try {
-      let putResponse = await fetch("/order", reqPost);
+      let putResponse = await fetch("/order", reqPut);
       putResponse = await putResponse.json();
       console.log(putResponse);
 
       let patchResponse = await fetch("/product", reqPatch);
       patchResponse = await patchResponse.json();
-      console.log(patchResponse);
-    } catch {
-      console.log("error");
+      console.log(patchResponse.orderId);
+    } catch (error) {
+      console.log(error);
     }
   };
 
