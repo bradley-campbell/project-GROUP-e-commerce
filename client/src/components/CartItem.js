@@ -1,8 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { GoTrashcan } from "react-icons/go";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
+import { COLORS } from "../ConstantStyles";
 
 import {
   addItem,
@@ -11,7 +12,8 @@ import {
   updateQuantity,
 } from "../actions/cartActions";
 
-const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
+const CartItem = ({ item }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
   const { id, imageSrc, name, price, quantity, numInStock } = item;
@@ -20,11 +22,15 @@ const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
     dispatch(removeItem(item));
   };
 
+  console.log(cartState);
+
   return (
     <Wrapper>
       <Image src={imageSrc} onClick={() => history.push(`/product/${id}`)} />{" "}
-      <Name>{name}</Name>
-      <Price>${price}</Price>
+      <Name onClick={() => history.push(`/product/${id}`)}>{name}</Name>
+      <Price>
+        <Grey>Item Total:</Grey> ${price.toFixed(2)}
+      </Price>
       <QuantityContainer>
         {/* <DecrementButton
           onClick={() => {
@@ -35,6 +41,7 @@ const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
         >
           -
         </DecrementButton> */}
+        Quantity:{" "}
         <Quantity
           min="1"
           max={numInStock}
@@ -51,63 +58,97 @@ const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
             );
           }}
         ></Quantity>
-        {/* <IncrementButton onClick={() => dispatch(addItem({ ...item, id }))}>
-          +
-        </IncrementButton> */}
       </QuantityContainer>
       <RemoveButton onClick={handleRemove}>
-        <GoTrashcan />
+        <AiOutlineCloseCircle size={20} />
       </RemoveButton>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  align-items: center;
-  background: lightpink;
-  border-bottom: 2px solid blue;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  background: white;
+  text-align: left;
+
+  border: 1px solid rgba(50, 50, 50, 0.05);
+  display: grid;
+  grid-template-columns: 3fr 8fr 4fr 2fr;
+  grid-template-rows: 80px 50px;
+  grid-template-areas:
+    "itempic title quant trash"
+    "itempic title itemprice itemprice";
 `;
 
 const Image = styled.img`
-  height: 100px;
-  width: 100px;
-
+  grid-area: itempic;
+  width: 70px;
+  padding: 20px 20px;
+  border-radius: 30%;
   &:hover {
     cursor: pointer;
+    opacity: 0.8;
   }
 `;
 
-const Name = styled.p``;
+const Name = styled.p`
+  margin-top: 10px;
+  grid-area: title;
+  padding: 20px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
-const Price = styled.p``;
+const Price = styled.p`
+  grid-area: itemprice;
+  padding: 20px 10px 10px 120px;
+  font-size: 14px;
+`;
 
-const QuantityContainer = styled.div``;
+const QuantityContainer = styled.div`
+  grid-area: quant;
+  font-size: 16px;
+  margin-top: 40px;
+  margin-left: 5px;
+  font-weight: lighter;
+  color: darkgray;
+`;
+
+const Grey = styled.span`
+  color: grey;
+`;
 
 // const DecrementButton = styled.button`
 //   all: unset;
 // `;
 
 const Quantity = styled.input`
-  border: none;
-  /* box-sizing: border-box; */
+  border: 1px solid lightgray;
+  border-radius: 5px;
   font-weight: bold;
-  height: 40px;
-  margin: 10px;
   resize: none;
+  margin-left: 5px;
   text-align: center;
   vertical-align: middle;
-  width: 40px;
+  height: 20px;
+  width: 35px;
 `;
 
-// const IncrementButton = styled.button`
-//   all: unset;
-// `;
-
 const RemoveButton = styled.button`
+  color: gray;
+  height: 20px;
+  margin-left: 50px;
+  background: transparent;
+  padding-top: 10px;
+  grid-area: trash;
   border: none;
+  cursor: pointer;
+  &:hover {
+    color: black;
+  }
 `;
 
 export default CartItem;
