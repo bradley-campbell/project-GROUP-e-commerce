@@ -66,7 +66,10 @@ const Header = () => {
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
-            history.push(`/search/?${query}`);
+            history.push(`/search/?search=${query}`); // not necessary
+            fetch(`/product/search/?search=${query}`) // sending info to backend by params
+              .then((data) => data.json())
+              .then((data) => console.log(data));
             setQuery("");
           }}
         >
