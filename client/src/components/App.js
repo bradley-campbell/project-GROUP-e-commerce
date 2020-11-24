@@ -11,6 +11,7 @@ import CompanyList from "./CompanyList";
 import Confirmation from "./Confirmation";
 import Header from "./Header";
 import Home from "./Home";
+import All from "./All";
 import ItemsByCategory from "./ItemsByCategory";
 import Payment from "./Payment/Payment";
 import ProductByCompany from "./ProductByCompany";
@@ -38,6 +39,10 @@ function App() {
             <Home />
           </Route>
 
+          <Route exact path="/all">
+            <All />
+          </Route>
+
           <Route exact path="/company">
             <CompanyList />
           </Route>
@@ -50,8 +55,8 @@ function App() {
             <ProductDetails />
           </Route>
 
-          <Route exact path="/category/:categoryId">
-            <ItemsByCategory />
+          <Route exact path="/bodylocation/:bodylocationId">
+            <BodyLocation />
           </Route>
 
           <Route exact path="/cart">
