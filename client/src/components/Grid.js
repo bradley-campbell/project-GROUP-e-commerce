@@ -5,15 +5,94 @@ import Item from "./Item";
 const Grid = ({ itemsData }) => {
   const [itemsView, setItemsView] = useState("all");
   const [itemsArray, setItemsArray] = useState(itemsData);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(25);
+  const [displayedItems, setDisplayedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  let numOfPages = 0;
+  const pages = [];
+  const pageSize = 25;
+
+  console.log("current page", currentPage);
+  console.log("pages", pages);
+  console.log("dispayedItems", displayedItems);
+  console.log("itemsArray", itemsArray);
+
+  console.log(itemsArray.length);
+  if (itemsArray.length > 0) {
+    numOfPages = Math.ceil(itemsArray.length / pageSize);
+  } else if (itemsArray.length === 0 && itemsData.length > 0) {
+    numOfPages = Math.ceil(itemsData.length / pageSize);
+  }
+
+  for (let i = 1; i <= numOfPages; i++) {
+    pages.push(i);
+  }
+  console.log(pages);
 
   useEffect(() => {
-    itemsView === "all"
-      ? setItemsArray(itemsData)
-      : setItemsArray(itemsData.filter((item) => item.category === itemsView));
-  }, [itemsView]);
+    // itemsView === "all"
+    //   ? setItemsArray(itemsData)
+    //   : setItemsArray(itemsData.filter((item) => item.category === itemsView));
+    if (itemsView === "all") {
+      const itemsDisplayed = itemsData.slice(startIndex, endIndex);
+      setItemsArray(itemsData);
+      setDisplayedItems(itemsDisplayed);
+    } else {
+      const catergoryItems = itemsData.filter(
+        (item) => item.category === itemsView
+      );
+      const itemsDisplayed = itemsData.slice(startIndex, endIndex);
+      setItemsArray(catergoryItems);
+      setDisplayedItems(itemsDisplayed);
+    }
+  }, [itemsView, startIndex, endIndex]);
+
+  const handleBack = () => {
+    if (currentPage > 1) {
+      setStartIndex(startIndex - pageSize);
+      setEndIndex(endIndex - pageSize);
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleForward = () => {
+    if (currentPage < pages.length) {
+      setStartIndex(startIndex + pageSize);
+      setEndIndex(endIndex + pageSize);
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePage = (page) => {
+    setStartIndex((page - 1) * pageSize);
+    setEndIndex(page * pageSize);
+    setCurrentPage(page);
+  };
 
   return (
     <Wrapper>
+      <Pagination>
+        <Back key="0" onClick={handleBack}>
+          Back
+        </Back>
+        {pages.map((page) => {
+          return (
+            <Page
+              key={page}
+              onClick={() => {
+                handlePage(page);
+              }}
+            >
+              {page}
+            </Page>
+          );
+        })}
+        <Forward key={pages.length + 1} onClick={handleForward}>
+          Forward
+        </Forward>
+      </Pagination>
       <SelectView>
         <ViewOption onClick={() => setItemsView("all")}>All</ViewOption>
         <ViewOption onClick={() => setItemsView("Fitness")}>Fitness</ViewOption>
@@ -33,14 +112,14 @@ const Grid = ({ itemsData }) => {
         <ViewOption onClick={() => setItemsView("Gaming")}>Gaming</ViewOption>
       </SelectView>
       <GridDisplay>
-        {itemsArray ? (
-          itemsArray
+        {displayedItems ? (
+          displayedItems
             .sort((a, b) => (a.numInStock > b.numInStock ? -1 : 1)) // sorts by numInStock, highest to lowest
-            .map((item) => <Item item={item} />)
+            .map((item) => <Item item={item} key={item.id} />)
         ) : itemsData ? (
           itemsData
             .sort((a, b) => (a.numInStock > b.numInStock ? -1 : 1)) // sorts by numInStock, highest to lowest
-            .map((item) => <Item item={item} />)
+            .map((item) => <Item item={item} key={item.id} />)
         ) : (
           <div>loading</div>
         )}
@@ -80,3 +159,11 @@ const GridDisplay = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const Pagination = styled.div``;
+
+const Back = styled.button``;
+
+const Forward = styled.button``;
+
+const Page = styled.button``;
