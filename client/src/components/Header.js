@@ -171,6 +171,7 @@ const LogoLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-size: 80%;
+  z-index: 1;
 `;
 
 const CartLink = styled(Link)``;

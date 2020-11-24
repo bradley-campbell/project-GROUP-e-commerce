@@ -50,8 +50,8 @@ function App() {
             <ProductDetails />
           </Route>
 
-          <Route exact path="/category/:categoryId">
-            <ItemsByCategory />
+          <Route exact path="/bodylocation/:bodylocationId">
+            <BodyLocation />
           </Route>
 
           <Route exact path="/cart">
