@@ -121,6 +121,7 @@
     - cart: An object of purchased items with item ids as keys
     - Example:
       ```javascript
+          body: {
             cart: {
               "5555": {
                 id: 5555,
@@ -131,6 +132,7 @@
                 quantity: 2
               },
             }
+          }
       ```
 
   - On success: `{ status: 200, message:"MESSAGE" }`
@@ -149,7 +151,7 @@
     - subtotal
   - Example:
     - ```javascript
-      {
+      body: {
         "formData": {
         "givenName":"GIVENNAME",
         "lastName":"LASTNAME",
