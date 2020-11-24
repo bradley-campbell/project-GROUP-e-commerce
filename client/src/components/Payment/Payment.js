@@ -27,18 +27,41 @@ const Payment = () => {
   const cartState = useSelector((state) => state.cartState);
   const cartArray = Object.values(cartState);
   console.log(cartArray);
+  const subtotal = 29.99;
 
   const dispatch = useDispatch();
 
   const closeModal = (ev) => {
     dispatch(togglePaymentView());
+    handleFetch(formData, cartState, subtotal);
   };
 
-  const handleFetch = async () => {
-    console.log(formData);
-    console.log("fetch");
-    // Sent form data + cart to BE
-    //Confirm page becomes visible
+  const handleFetch = async (form, cart, subtotal) => {
+    const reqPost = {
+      method: "POST",
+      body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
+
+    // const reqPatch = {
+    //   method: "PATCH",
+    //   body: JSON.stringify({ form, cart, subtotal }),
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+
+    try {
+      let response = await fetch("/order", reqPost);
+      response = await response.json();
+      console.log(response);
+    } catch {
+      console.log("error");
+    }
   };
 
   console.log(formData);
