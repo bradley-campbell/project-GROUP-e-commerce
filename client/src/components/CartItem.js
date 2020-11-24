@@ -9,15 +9,16 @@ import {
   removeItem,
   removeItemCompletely,
   updateQuantity,
-} from "./../actions";
+} from "../actions/cartActions";
 
 const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
   const dispatch = useDispatch();
-  const item = useSelector((state) => state[id]);
-  let history = useHistory();
+  const cartState = useSelector((state) => state.cartState);
+  const { id, imageSrc, name, price, quantity, numInStock } = item;
 
-  // const { _id, imageSrc, name, price, quantity, numInStock } = item;
-  // const id = _id;
+  const handleRemove = () => {
+    dispatch(removeItem(item));
+  };
 
   return (
     <Wrapper>
@@ -40,6 +41,7 @@ const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
           type="number"
           value={quantity}
           onKeyPress={(e) => {
+            console.log(e);
             e.preventDefault();
             return false;
           }}
@@ -53,11 +55,7 @@ const CartItem = ({ id, imageSrc, name, price, quantity, numInStock }) => {
           +
         </IncrementButton> */}
       </QuantityContainer>
-      <RemoveButton
-        onClick={() => {
-          dispatch(removeItemCompletely({ id }));
-        }}
-      >
+      <RemoveButton onClick={handleRemove}>
         <GoTrashcan />
       </RemoveButton>
     </Wrapper>
