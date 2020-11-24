@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { useForm, useFormContext, FormProvider } from "react-hook-form";
 import { RiAlertFill } from "react-icons/ri";
 import FInput from "./Input";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleConfirmationView,
+  togglePaymentView,
+} from "../../actions/statusActions";
 
 const provinces = [
   "AB",
@@ -23,12 +28,15 @@ const provinces = [
 const Form = ({ setFormData, handleFetch }) => {
   const { register, handleSubmit, errors } = useForm();
 
+  const dispatch = useDispatch();
+
   const FormConnect = useFormContext();
   console.log(useFormContext());
 
   const onSubmit = (data) => {
+    dispatch(togglePaymentView());
+    dispatch(toggleConfirmationView());
     setFormData(data);
-    handleFetch();
   };
 
   return (

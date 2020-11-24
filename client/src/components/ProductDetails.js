@@ -3,20 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
 import { COLORS } from "../ConstantStyles";
-
-import { addItem } from "./../actions";
-
+import { addItem } from "../actions/cartActions";
 import { getStoreItemArray } from "./../reducers";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
-  const storeItems = useSelector(getStoreItemArray);
+  const cartState = useSelector((state) => state.cartState); // Access the state from the cartReducer
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const itemId = params.productId;
 
-  // console.log(storeItems);
+  const handleAddToCart = () => {
+    dispatch(addItem({ ...product, id }));
+  };
+  console.log(cartState);
 
   useEffect(() => {
     fetch(`/product/by-product/${itemId}`)
@@ -54,10 +55,7 @@ const ProductDetails = () => {
               min="1"
               max={product.numInStock}
             />
-            <Button
-              className="addToCart"
-              onClick={() => dispatch(addItem({ ...product, id }))}
-            >
+            <Button className="addToCart" onClick={handleAddToCart}>
               Add to Cart
             </Button>
 

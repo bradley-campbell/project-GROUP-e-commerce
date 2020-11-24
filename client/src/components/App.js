@@ -32,6 +32,7 @@ function App() {
       <GlobalStyle />
       <Router>
         <Header />
+        <Payment />
 
         <Switch>
           <Route exact path="/home">

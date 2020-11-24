@@ -4,6 +4,8 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Input from "./Input";
 import { formValidation } from "./InputValidation";
 import Form from "./Form";
+import { useDispatch, useSelector } from "react-redux";
+import { togglePaymentView } from "../../actions/statusActions";
 
 const item = {
   name: "Jawbone UP24 Activity Tracker Wristband, Pink Coral, M",
@@ -19,10 +21,15 @@ const item = {
 
 const Payment = () => {
   const [formData, setFormData] = useState({});
-  const [visible, setVisible] = useState(true);
+  const viewState = useSelector((state) => state.viewState);
+  const { paymentPageView, confirmationPageView } = viewState;
+
+  console.log(paymentPageView);
+
+  const dispatch = useDispatch();
 
   const closeModal = (ev) => {
-    setVisible(false);
+    dispatch(togglePaymentView());
   };
 
   const handleFetch = async () => {
@@ -35,7 +42,7 @@ const Payment = () => {
   console.log(formData);
 
   return (
-    <Wrapper visible={visible}>
+    <Wrapper visible={paymentPageView}>
       <Overlay>
         <Content>
           <ExitButton onClick={closeModal}>

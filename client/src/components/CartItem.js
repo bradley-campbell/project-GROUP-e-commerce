@@ -12,11 +12,12 @@ import {
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
-  const theState = useSelector((state) => state);
-  // const item = useSelector((state) => state[id]);
-
-  const { _id, imageSrc, name, price, quantity, numInStock } = item;
-  const id = _id;
+  const cartState = useSelector((state) => state.cartState);
+  const { id, imageSrc, name, price, quantity, numInStock } = item;
+  
+  const handleRemove = () => {
+    dispatch(removeItem(item));
+  };
 
   return (
     <Wrapper>
@@ -51,11 +52,7 @@ const CartItem = ({ item }) => {
           +
         </IncrementButton> */}
       </QuantityContainer>
-      <RemoveButton
-        onClick={() => {
-          dispatch(removeItemCompletely({ id }));
-        }}
-      >
+      <RemoveButton onClick={handleRemove}>
         <GoTrashcan />
       </RemoveButton>
     </Wrapper>
