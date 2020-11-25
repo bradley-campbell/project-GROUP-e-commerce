@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { GoTrashcan } from "react-icons/go";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import {
   addItem,
@@ -128,5 +129,7 @@ const RemoveButton = styled.button`
     color: black;
   }
 `;
+
+const Name = styled.p``;
 
 export default CartItem;
