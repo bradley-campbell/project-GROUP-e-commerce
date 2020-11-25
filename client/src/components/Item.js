@@ -29,7 +29,7 @@ const Item = ({ item }) => {
         {numInStock > 0 ? (
           // Added button styling inside the component instead of creating a separate component, for simplicity
           <Button className="addToCart" onClick={handleAddToCart}>
-            AddToCart
+            Add to Cart
           </Button>
         ) : (
           <OutOfStock>Out of Stock</OutOfStock>

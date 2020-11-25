@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { GoTrashcan } from "react-icons/go";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
@@ -13,6 +14,7 @@ import {
 import { COLORS } from "../ConstantStyles";
 
 const CartItem = ({ item }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
   const { id, imageSrc, name, price, quantity, numInStock, companyName } = item;
@@ -25,8 +27,17 @@ const CartItem = ({ item }) => {
 
   return (
     <Wrapper>
-      <Image src={imageSrc} />{" "}
-      <Name>
+      <Image
+        src={imageSrc}
+        onClick={() => {
+          history.push(`/product/${id}`);
+        }}
+      />{" "}
+      <Name
+        onClick={() => {
+          history.push(`/product/${id}`);
+        }}
+      >
         {name}
         <CompanyName>by {companyName}</CompanyName>
       </Name>
@@ -86,6 +97,7 @@ const Image = styled.img`
   width: 100px;
   padding: 10px;
   object-fit: cover;
+  cursor: pointer;
 `;
 
 const Price = styled.p`
@@ -141,6 +153,10 @@ const RemoveButton = styled.button`
 
 const Name = styled.p`
   margin-top: 10px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const CompanyName = styled.p`
