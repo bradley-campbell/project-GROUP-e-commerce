@@ -26,7 +26,6 @@ export const All = () => {
         console.log(res.products);
         setItems(res.products);
       });
-      
   }, [itemsView]);
 
   console.log(itemsView);
@@ -52,7 +51,7 @@ export const All = () => {
         </ViewOption>
         <ViewOption onClick={() => setItemsView("gaming")}>Gaming</ViewOption>
       </SelectView>
-      <Grid itemsData={items} />
+      <Grid itemsData={items} itemsView={itemsView} />
     </Wrapper>
   );
 };
