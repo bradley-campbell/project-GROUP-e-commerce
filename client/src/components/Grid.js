@@ -48,6 +48,7 @@ const Grid = ({ itemsData, itemsView }) => {
     //   (item) => item.category === itemsView
     // );
     const itemsDisplayed = itemsData.slice(startIndex, endIndex);
+    console.log(itemsDisplayed);
     // setItemsArray(catergoryItems);
     setDisplayedItems(itemsDisplayed);
     window.scrollTo(0, 0);
