@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { useForm, useFormContext, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { RiAlertFill } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  toggleConfirmationView,
-  togglePaymentView,
-} from "../../actions/statusActions";
+import { useSelector } from "react-redux";
 
 const provinces = [
   "AB",
@@ -24,9 +20,11 @@ const provinces = [
   "YT",
 ];
 
-const Form = ({ handleFetch, cartMinimal, subtotal }) => {
+const Form = ({ handleFetch, cartMinimal }) => {
   const { register, handleSubmit, errors } = useForm();
-  const dispatch = useDispatch();
+
+  const viewState = useSelector((state) => state.viewState);
+  const { subtotal } = viewState;
 
   const onSubmit = (data) => {
     handleFetch(data, cartMinimal, subtotal);

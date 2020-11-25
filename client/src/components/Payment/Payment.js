@@ -16,11 +16,17 @@ import Confirmation from "../Confirmation";
 const Payment = () => {
   const [cartMinimal, setCartMinimal] = useState({}); // Minimal product information to process order
   const viewState = useSelector((state) => state.viewState);
-  const { paymentPageView, confirmationPageView, status } = viewState;
+  const {
+    paymentPageView,
+    confirmationPageView,
+    totalCartItems,
+    subtotal,
+  } = viewState;
   const cartState = useSelector((state) => state.cartState);
   const cartArray = Object.values(cartState);
-  const subtotal = 166.95;
   const [response, setResponse] = useState({});
+
+  const {} = viewState;
 
   useEffect(() => {
     // On change to cart, update  an object containing only the required information for the backend to process an order (item name + quantity ordered)
@@ -40,7 +46,6 @@ const Payment = () => {
   };
 
   const handleFetch = async (form, cart, subtotal) => {
-    
     const reqPut = {
       method: "PUT",
       body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
@@ -110,18 +115,14 @@ const Payment = () => {
                 </ItemizedList>
                 <Totals>
                   <div>
-                    <p>X Items </p>
-                    <p>Subtotal:</p>
-                    <p>QST:</p>
-                    <p>Total:</p>
+                    <p>{totalCartItems} Items </p>
+                    <p>Subtotal: {subtotal}</p>
+                    <p>QST:{subtotal * 0.15}</p>
+                    <p>Total:{subtotal * 1.15}</p>
                   </div>
                 </Totals>
               </OrderSummary>
-              <Form
-                handleFetch={handleFetch}
-                cartMinimal={cartMinimal}
-                subtotal={subtotal}
-              />
+              <Form handleFetch={handleFetch} cartMinimal={cartMinimal} />
             </PaymentView>
           ) : (
             <Confirmation orderInfo={response} />
