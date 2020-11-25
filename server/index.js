@@ -63,6 +63,11 @@ express()
   // REST endpoints?
   //.get("/bacon", (req, res) => res.status(200).json("🥓"))
 
+  .get("/product/all", (req, res) => {
+    // get all products
+    res.status(200).json({ status: 200, products: convertProducts(dataItems) });
+  })
+
   .get("/product/by-product/:productId", (req, res) => {
     // Get info for ProductDetails page
     // parse id to integer
@@ -188,14 +193,30 @@ express()
       });
       return;
     } else {
+      // check if number is larger than entire data
+      if (n > dataItems.length) {
+        res.status(400).json({
+          status: 400,
+          error: `Number is of value '${n}', it's larger than the number of data we have.`,
+        });
+        return;
+      }
+      // create a list of un-repeating integers
+      const ind = [];
+      while (ind.length <= n) {
+        const k = Math.floor(Math.random() * dataItems.length);
+        if (!ind.includes(k)) {
+          // if index array doesn't include k, push k
+          ind.push(k);
+        }
+        // else go to next round
+      }
+      // get all the items and push to frontend
       const arr = [];
-      for (let k = 0; k < n; k++) {
+      let k;
+      for (k of ind) {
         // get list of random products
-        arr.push(
-          convertProduct(
-            dataItems[Math.floor(Math.random() * dataItems.length)]
-          )
-        );
+        arr.push(convertProduct(dataItems[k]));
       }
       res.status(200).json({ status: 200, products: arr });
     }

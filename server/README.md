@@ -53,6 +53,11 @@
 
 ## endpoints info
 
+- GET `/product/all`
+
+  - Get all products
+  - On success: `{ status:200, products:[ List of All Product Object with a nested company:{ company object } ] }`;
+
 - GET `/product/by-product/:productId`
 
   - Get specific product information
@@ -88,10 +93,11 @@
   - Get array of X amount of random products
   - body requirement
     - `:num` is an integer of the data you want to retrieve.
-    - e.g. with `/product/random/34` will return 34 random products
+      - e.g. with `/product/random/34` will return 34 random products
   - On success: `{ status: 200, products:[ List of Product Object each with a nested 'company:{ company object }' ] }`
   - On failure:`{status: HTTPCODE, error:"ERROR MESSAGE"}`
-    - `400`: The number is not integer/is null/not provided:
+    - `400`: The number is not integer/is null/not provided
+    - `400`: The number is larger than the number of items in the database
 
 - GET `/company/all`
 
