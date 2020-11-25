@@ -59,7 +59,7 @@ const ProductDetails = () => {
               max={product.numInStock}
             />
             <Button className="addToCart" onClick={handleAddToCart}>
-              Add to Cart
+              {!cartState[id] ? "Add to Cart" : "Update Cart"}
             </Button>
 
             <NumInStock>{numInStock} In Stock</NumInStock>
