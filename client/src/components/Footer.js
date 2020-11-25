@@ -11,10 +11,6 @@ import { AiFillPhone, AiTwotoneMail } from "react-icons/ai";
 import { RiMapPin2Fill } from "react-icons/ri";
 
 export const Footer = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <Wrapper>
       <Contact>
