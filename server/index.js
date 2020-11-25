@@ -203,7 +203,7 @@ express()
       }
       // create a list of un-repeating integers
       const ind = [];
-      while (ind.length < n) {
+      while (ind.length <= n) {
         const k = Math.floor(Math.random() * dataItems.length);
         if (!ind.includes(k)) {
           // if index array doesn't include k, push k
