@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { togglePaymentView } from "../actions/statusActions";
+import { COLORS } from "../ConstantStyles";
 import CartItem from "./CartItem";
 
 const Cart = () => {
@@ -35,8 +36,8 @@ const Cart = () => {
     <Wrapper>
       <Container>
         <Top>
-          <Header>Cart</Header>
-          <SubHeader>Your cart contains {numberOfItems} items.</SubHeader>
+          <Header>Your Cart</Header>
+          <SubHeader> {numberOfItems} items</SubHeader>
         </Top>
         {cartArray.length > 0 &&
           cartArray.map((item) => {
@@ -46,8 +47,10 @@ const Cart = () => {
           <TotalContainer>
             <SubTotal>Subtotal: ${subTotal.toFixed(2)}</SubTotal>
             <Total>Total: ${total.toFixed(2)}</Total>
+            <Button className="addToCart" onClick={proceedToPayment}>
+              Proceed to Checkout
+            </Button>
           </TotalContainer>
-          <Button onClick={proceedToPayment}>Proceed to Checkout</Button>
         </Bottom>
       </Container>
     </Wrapper>
@@ -57,22 +60,33 @@ const Cart = () => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
+  background: ${COLORS.white};
+  margin: 50px 10vw;
 `;
 
 const Container = styled.div`
-  background: yellow;
-  border: 2px solid red;
+  box-shadow: -1px -1px 18px 0px rgba(50, 50, 50, 0.21);
+  background: white;
   width: 75%;
+  border-radius: ${COLORS.borderRadius};
 `;
 
 const Top = styled.div`
-  border-bottom: 2px solid blue;
+  border-bottom: 0.5px solid lightgray;
+  text-align: center;
   padding: 10px;
+  line-height: 2em;
 `;
 
-const Header = styled.p``;
+const Header = styled.p`
+  font-size: 20px;
+  font-weight: lighter;
+`;
 
-const SubHeader = styled.p``;
+const SubHeader = styled.p`
+  font-size: 14px;
+  color: grey;
+`;
 
 const Bottom = styled.div`
   align-items: center;
@@ -82,16 +96,23 @@ const Bottom = styled.div`
 `;
 
 const TotalContainer = styled.div`
+  text-align: right;
   margin-right: 20px;
+  line-height: 2em;
 `;
 
-const SubTotal = styled.p``;
+const SubTotal = styled.p`
+  color: darkgray;
+  padding-right: 30px;
+`;
 
-const Total = styled.p``;
+const Total = styled.p`
+  padding-right: 30px;
+`;
 
 const Button = styled.button`
-  border: none;
-  height: 40px;
+  display: block;
+  margin: 10px;
 `;
 
 export default Cart;

@@ -19,6 +19,8 @@ const CartItem = ({ item }) => {
     dispatch(removeItem(item));
   };
 
+  console.log(cartState);
+
   return (
     <Wrapper>
       <Image src={imageSrc} /> <Name>{name}</Name>
@@ -33,6 +35,7 @@ const CartItem = ({ item }) => {
         >
           -
         </DecrementButton> */}
+        Quantity:{" "}
         <Quantity
           min="1"
           max={numInStock}
@@ -49,24 +52,27 @@ const CartItem = ({ item }) => {
             );
           }}
         ></Quantity>
-        {/* <IncrementButton onClick={() => dispatch(addItem({ ...item, id }))}>
-          +
-        </IncrementButton> */}
       </QuantityContainer>
       <RemoveButton onClick={handleRemove}>
-        <GoTrashcan />
+        <AiOutlineCloseCircle size={20} />
       </RemoveButton>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  align-items: center;
-  background: lightpink;
-  border-bottom: 2px solid blue;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  background: white;
+  text-align: left;
+
+  border: 1px solid rgba(50, 50, 50, 0.05);
+  display: grid;
+  grid-template-columns: 3fr 8fr 4fr 2fr;
+  grid-template-rows: 80px 50px;
+  grid-template-areas:
+    "itempic title quant trash"
+    "itempic title itemprice itemprice";
 `;
 
 const Image = styled.img`
@@ -74,34 +80,53 @@ const Image = styled.img`
   width: 100px;
 `;
 
-const Name = styled.p``;
+const Price = styled.p`
+  grid-area: itemprice;
+  padding: 20px 10px 10px 120px;
+  font-size: 14px;
+`;
 
-const Price = styled.p``;
+const QuantityContainer = styled.div`
+  grid-area: quant;
+  font-size: 16px;
+  margin-top: 40px;
+  margin-left: 5px;
+  font-weight: lighter;
+  color: darkgray;
+`;
 
-const QuantityContainer = styled.div``;
+const Grey = styled.span`
+  color: grey;
+`;
 
 // const DecrementButton = styled.button`
 //   all: unset;
 // `;
 
 const Quantity = styled.input`
-  border: none;
-  /* box-sizing: border-box; */
+  border: 1px solid lightgray;
+  border-radius: 5px;
   font-weight: bold;
-  height: 40px;
-  margin: 10px;
   resize: none;
+  margin-left: 5px;
   text-align: center;
   vertical-align: middle;
-  width: 40px;
+  height: 20px;
+  width: 35px;
 `;
 
-// const IncrementButton = styled.button`
-//   all: unset;
-// `;
-
 const RemoveButton = styled.button`
+  color: gray;
+  height: 20px;
+  margin-left: 50px;
+  background: transparent;
+  padding-top: 10px;
+  grid-area: trash;
   border: none;
+  cursor: pointer;
+  &:hover {
+    color: black;
+  }
 `;
 
 export default CartItem;
