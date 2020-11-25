@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { FaCheckCircle } from "react-icons/fa";
-import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const Confirmation = ({ orderInfo }) => {
   const {

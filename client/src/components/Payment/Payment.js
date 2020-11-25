@@ -16,11 +16,19 @@ import Confirmation from "../Confirmation";
 const Payment = () => {
   const [cartMinimal, setCartMinimal] = useState({}); // Minimal product information to process order
   const viewState = useSelector((state) => state.viewState);
-  const { paymentPageView, confirmationPageView, status } = viewState;
+  const {
+    paymentPageView,
+    confirmationPageView,
+    totalCartItems,
+    subtotal,
+  } = viewState;
   const cartState = useSelector((state) => state.cartState);
   const cartArray = Object.values(cartState);
-  const subtotal = 166.95;
   const [response, setResponse] = useState({});
+  const qst = subtotal * 0.15;
+  const totalWithTax = subtotal + qst;
+
+  const {} = viewState;
 
   useEffect(() => {
     // On change to cart, update  an object containing only the required information for the backend to process an order (item name + quantity ordered)
@@ -40,7 +48,6 @@ const Payment = () => {
   };
 
   const handleFetch = async (form, cart, subtotal) => {
-    
     const reqPut = {
       method: "PUT",
       body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
@@ -103,25 +110,25 @@ const Payment = () => {
                           <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
                           {item.name.slice(0, 30)}
                         </span>
-                        <span>1 @ {item.price}</span>
+                        <span>
+                          {item.quantity} @ {item.price}
+                        </span>
                       </li>
                     );
                   })}
                 </ItemizedList>
                 <Totals>
                   <div>
-                    <p>X Items </p>
-                    <p>Subtotal:</p>
-                    <p>QST:</p>
-                    <p>Total:</p>
+                    <p>
+                      <span>{totalCartItems}</span> Items{" "}
+                    </p>
+                    <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                    <p>QST: ${qst.toFixed(2)}</p>
+                    <p>Total: ${totalWithTax.toFixed(2)}</p>
                   </div>
                 </Totals>
               </OrderSummary>
-              <Form
-                handleFetch={handleFetch}
-                cartMinimal={cartMinimal}
-                subtotal={subtotal}
-              />
+              <Form handleFetch={handleFetch} cartMinimal={cartMinimal} />
             </PaymentView>
           ) : (
             <Confirmation orderInfo={response} />
@@ -212,6 +219,10 @@ const Totals = styled.div`
   font-size: 12px;
   p {
     padding-top: 3px;
+  }
+
+  span {
+    font-weight: bold;
   }
 `;
 
