@@ -108,10 +108,23 @@
 
 - GET `/product/search`
 
-  - return products by serach key words
-  - on-going
-  - On success
-  - On failure
+  - Get the search results by key words (allow the search to be as loose as possible, always success)
+    - In dependency with a natural language processing package [natural package](https://github.com/NaturalNode/natural)
+    - With attached defult tokenizer
+    - Stemmer: `PorterStemmer`. It's less aggressive than `LancasterStemmer` according to the documentation
+      - stop words will be removed by the algorithm
+  - On success: `{ status: 200, numProducts: number of product found, products: [List of target products] }`
+  - On "failure": `{ status: 200, numProducts: 0, products: [List of all products] }`
+    - when no results were found
+    - If given empty search word
+    - Example:
+      ```javascript
+      {
+      status: 200,
+      numProducts: 0,
+      products: [List of all products in database],
+      }
+      ```
 
 - PATCH `/product`
 

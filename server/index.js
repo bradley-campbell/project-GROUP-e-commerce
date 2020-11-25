@@ -3,6 +3,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const natural = require("natural"); // package for natural language processing
+natural.PorterStemmer.attach(); // Porter steemer is less aggressive
+//const tokenizer = new natural.TreebankWordTokenizer(); // used for tokenizing things
+//  trebank word tokenizer will put the "n't" / "'s" parts as seperate tokens
+//  console.log(tokenizer.tokenize("My has's sleep for a while."));
+/*console.log(
+  "Pebble Steel Smart Watch For Iphone And Android Devices (black".tokenizeAndStem()
+);*/
 const { v4: uuidv4 } = require("uuid"); // to generate unique ids
 
 const PORT = 4000;
@@ -194,13 +202,76 @@ express()
   })
 
   .get("/product/search", (req, res) => {
-    //=> will complete leter
-    // Get products containing search term in title
-    // the search keywords:
-    // e.g. word1=winter&word2=summer
-    // input cleaning may needed
-    console.log(req.query);
-    res.status(200).json("🥓");
+    // Get the search results by key words
+    // 1. do cleaning on search word, get an array of target words
+    // 2.1 go through the item, clean the item name on-the-fly, create an arr of search words
+    // 2.2 add the item category, company name, and body location to the list
+    //      Some items don't have company name in their name so need to add even it it duplicates
+    // 3. go through the target to see if there is any words included in the search sords
+
+    // get the search string
+    const { search } = req.query;
+    // check if search field is empty or not
+    if (search == undefined || search === "") {
+      // note: search == undefined check for both null and undefined
+      // if undefined (empty search) or null (some other error), return with all data
+      res.status(200).json({
+        status: 200,
+        numProducts: 0,
+        products: convertProducts(dataItems),
+      });
+      return;
+    }
+
+    // process the search word
+    const targetWords = search.toLowerCase().tokenizeAndStem();
+    // check if we have target words left
+    if (targetWords.length < 0) {
+      // when there is no word left in the search word after stemming
+      res.status(200).json({
+        status: 200,
+        numProducts: 0,
+        products: convertProducts(dataItems),
+      });
+      return;
+    }
+
+    // go through items
+    const result = dataItems.reduce((acc, cur) => {
+      const cur_p = convertProduct(cur); // convert it since we'll need the company info anyway
+      // process name
+      const cur_tokenList = cur_p.name.tokenizeAndStem();
+      // add category
+      cur_tokenList.push(cur_p.category.toLowerCase());
+      // add company name
+      cur_tokenList.push(cur_p.company.name.toLowerCase());
+
+      // check if tokenList includes the targets
+      // a checker to see if arr contains all items in tar
+      //    note: will return true if tar is empty
+      const checkAll = (arr, tar) => tar.every((ele) => arr.includes(ele));
+      // kinda greedy to include all targets, but better to be accurate in this workshop I guess
+      if (checkAll(cur_tokenList, targetWords)) {
+        return [...acc, cur_p];
+      } else {
+        return acc;
+      }
+    }, []);
+
+    // check if the result is empty. If empty, return all the products
+    if (result.length === 0) {
+      res.status(200).json({
+        status: 200,
+        numProducts: 0,
+        products: convertProducts(dataItems),
+      });
+      return;
+    } else {
+      res
+        .status(200)
+        .json({ status: 200, numProducts: result.length, products: result });
+      return;
+    }
   })
 
   .get("/company/all", (req, res) => {
@@ -285,7 +356,7 @@ express()
         });
         return; // terminate when there is an error
       } else {
-        // check if the quantity required is <= in stock
+        // check if the quantity required is < in stock
         const stock = dataItems[state]["numInStock"];
         if (stock < item.quantity) {
           // check if the quantity is smaller than the request
@@ -428,8 +499,8 @@ const editNaming = (item) => {
       }
     }
   }
-  // append companyName as a key
-  copy["companyName"] = c_name;
+  // append companyName as a key, capitalize the company name for convenience
+  copy["companyName"] = c_name.charAt(0).toUpperCase() + c_name.slice(1);
   return copy;
 };
 // function to get the starting index of a target string in another string
