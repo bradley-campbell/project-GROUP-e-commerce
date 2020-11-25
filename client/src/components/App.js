@@ -94,7 +94,7 @@ function App() {
             <Confirmation />
           </Route>
 
-          <Route exact path="/search">
+          <Route exact path="/search/:searchWord">
             <SearchResults />
           </Route>
 
@@ -112,6 +112,7 @@ export default App;
 
 const Wrapper = styled.div`
   background: ${COLORS.white};
+  width: 100vw;
 `;
 
 const Grid = styled.div``;
