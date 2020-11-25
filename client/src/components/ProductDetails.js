@@ -69,7 +69,7 @@ const ProductDetails = () => {
         )}
         <Specs>
           <Company>
-            Company: <GoTo to={`/company/${companyId}}`}>{companyName}</GoTo>
+            Brand: <GoTo to={`/company/${companyId}}`}>{companyName}</GoTo>
           </Company>
           <BodyLocation>
             Body Location:{" "}
@@ -143,13 +143,13 @@ const Category = styled.p`
 const Specs = styled.div`
   font-size: 14px;
   margin-top: 30px;
-  border: 1px solid ${COLORS.secondary};
+  border: 1px solid ${COLORS.accent};
   padding: 10px;
   border-radius: ${COLORS.borderRadius};
 `;
 
 const GoTo = styled(Link)`
-  color: ${COLORS.secondary};
+  color: ${COLORS.accentdark};
   &:hover {
     text-decoration: underline;
     color: ${COLORS.accent};

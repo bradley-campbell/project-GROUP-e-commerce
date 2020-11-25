@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { GoTrashcan } from "react-icons/go";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
@@ -10,11 +11,13 @@ import {
   removeItemCompletely,
   updateQuantity,
 } from "../actions/cartActions";
+import { COLORS } from "../ConstantStyles";
 
 const CartItem = ({ item }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
-  const { id, imageSrc, name, price, quantity, numInStock } = item;
+  const { id, imageSrc, name, price, quantity, numInStock, companyName } = item;
 
   const handleRemove = () => {
     dispatch(removeItem(item));
@@ -24,7 +27,20 @@ const CartItem = ({ item }) => {
 
   return (
     <Wrapper>
-      <Image src={imageSrc} /> <Name>{name}</Name>
+      <Image
+        src={imageSrc}
+        onClick={() => {
+          history.push(`/product/${id}`);
+        }}
+      />{" "}
+      <Name
+        onClick={() => {
+          history.push(`/product/${id}`);
+        }}
+      >
+        {name}
+        <CompanyName>by {companyName}</CompanyName>
+      </Name>
       <Price>${price}</Price>
       <QuantityContainer>
         {/* <DecrementButton
@@ -66,7 +82,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   background: white;
   text-align: left;
-
+  padding-top: 10px;
   border: 1px solid rgba(50, 50, 50, 0.05);
   display: grid;
   grid-template-columns: 3fr 8fr 4fr 2fr;
@@ -79,12 +95,17 @@ const Wrapper = styled.div`
 const Image = styled.img`
   height: 100px;
   width: 100px;
+  padding: 10px;
+  object-fit: cover;
+  cursor: pointer;
 `;
 
 const Price = styled.p`
   grid-area: itemprice;
-  padding: 20px 10px 10px 120px;
+  margin-right: 10px;
+  padding: 20px 0px 10px 120px;
   font-size: 14px;
+  border-top: 1px solid rgba(50, 50, 50, 0.05);
 `;
 
 const QuantityContainer = styled.div`
@@ -109,7 +130,7 @@ const Quantity = styled.input`
   border-radius: 5px;
   font-weight: bold;
   resize: none;
-  margin-left: 5px;
+  margin-left: 15px;
   text-align: center;
   vertical-align: middle;
   height: 20px;
@@ -121,7 +142,7 @@ const RemoveButton = styled.button`
   height: 20px;
   margin-left: 50px;
   background: transparent;
-  padding-top: 10px;
+  padding-top: 0px;
   grid-area: trash;
   border: none;
   cursor: pointer;
@@ -130,6 +151,19 @@ const RemoveButton = styled.button`
   }
 `;
 
-const Name = styled.p``;
+const Name = styled.p`
+  margin-top: 10px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const CompanyName = styled.p`
+  display: block;
+  color: ${COLORS.accentdark};
+  font-size: 14px;
+  margin-top: 10px;
+`;
 
 export default CartItem;

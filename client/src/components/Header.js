@@ -25,10 +25,10 @@ const Header = () => {
         <ShopTitle>SHOP FETCH</ShopTitle>
       </LogoLink>
       <Navigation>
-        <NavStyle exact to="/all" activeStyle={{ color: "pink" }}>
+        <NavStyle exact to="/all" activeStyle={{ color: COLORS.accent }}>
           <h3>All</h3>
         </NavStyle>
-        <NavStyle exact to="/company" activeStyle={{ color: "pink" }}>
+        <NavStyle exact to="/company" activeStyle={{ color: COLORS.accent }}>
           <h3>Brands</h3>
         </NavStyle>
         <NavDrop>
@@ -133,11 +133,11 @@ const Navigation = styled.div`
 `;
 
 const NavStyle = styled(NavLink)`
-  color: ${COLORS.accent};
+  color: white;
   position: relative;
   display: inline-block;
   &:hover {
-    color: ${COLORS.white};
+    color: ${COLORS.accentlight};
   }
 `;
 
@@ -154,7 +154,7 @@ const DropBtn = styled.button`
   padding: 5px 8px;
   width: 120px;
   &:active {
-    background: ${COLORS.secondary};
+    background: ${COLORS.accent};
   }
 `;
 
@@ -194,7 +194,7 @@ const CartLink = styled(Link)``;
 const CartNum = styled(Link)`
   color: ${COLORS.white};
   margin-right: -29px;
-  margin-top: -7px;
+  margin-top: -6px;
   font-size: 12px;
   font-weight: bolder;
 `;
@@ -223,11 +223,11 @@ const CartWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  background: ${COLORS.button};
+  background: ${COLORS.accentlight};
   border-radius: 0 ${COLORS.borderRadius} ${COLORS.borderRadius} 0;
   color: ${COLORS.primary};
   border: none;
-  padding: 5px 20px;
+  padding: 6px 20px;
   cursor: pointer;
 
   &:hover {
@@ -237,7 +237,7 @@ const Button = styled.button`
 
 const Input = styled.input`
   background: ${COLORS.white};
-  padding: 5px 10px;
+  padding: 6px 10px;
   border: none;
   border-radius: ${COLORS.borderRadius} 0 0 ${COLORS.borderRadius};
 `;
