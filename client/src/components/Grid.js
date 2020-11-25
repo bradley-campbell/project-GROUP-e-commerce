@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Item from "./Item";
+import { COLORS } from "../ConstantStyles";
 
 const Grid = ({ itemsData }) => {
-  const [itemsView, setItemsView] = useState("all");
+  // const [itemsView, setItemsView] = useState("all");
   const [itemsArray, setItemsArray] = useState(itemsData);
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(25);
+  const [endIndex, setEndIndex] = useState(24);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   let numOfPages = 0;
   const pages = [];
-  const pageSize = 25;
-
-  console.log(itemsView);
+  const pageSize = 24;
 
   if (itemsArray.length > 0) {
     numOfPages = Math.ceil(itemsArray.length / pageSize);
@@ -26,24 +25,28 @@ const Grid = ({ itemsData }) => {
     pages.push(i);
   }
 
+  console.log(currentPage);
+
+  // console.log(pages);
+
   useEffect(() => {
     // itemsView === "all"
     //   ? setItemsArray(itemsData)
     //   : setItemsArray(itemsData.filter((item) => item.category === itemsView));
-    if (itemsView === "all") {
-      const itemsDisplayed = itemsData.slice(startIndex, endIndex);
-      setItemsArray(itemsData);
-      setDisplayedItems(itemsDisplayed);
-    } else {
-      const categoryItems = itemsData.filter(
-        (item) => item.category === itemsView
-      );
-      console.log(categoryItems);
-      const itemsDisplayed = itemsData.slice(startIndex, endIndex);
-      setItemsArray(categoryItems);
-      setDisplayedItems(itemsDisplayed);
-    }
-  }, [itemsView, startIndex, endIndex]);
+    // if (itemsView === "all") {
+    //   const itemsDisplayed = itemsData.slice(startIndex, endIndex);
+    //   setItemsArray(itemsData);
+    //   setDisplayedItems(itemsDisplayed);
+    // } else {
+    // const catergoryItems = itemsData.filter(
+    //   (item) => item.category === itemsView
+    // );
+    const itemsDisplayed = itemsData.slice(startIndex, endIndex);
+    // setItemsArray(catergoryItems);
+    setDisplayedItems(itemsDisplayed);
+    window.scrollTo(0, 0);
+    // }
+  }, [startIndex, endIndex, itemsData]);
 
   const handleBack = () => {
     if (currentPage > 1) {
@@ -69,41 +72,21 @@ const Grid = ({ itemsData }) => {
 
   return (
     <Wrapper>
-      <Pagination>
-        <Back key="0" onClick={handleBack}>
-          Back
-        </Back>
-        {pages.map((page) => {
-          return (
-            <Page
-              key={page}
-              onClick={() => {
-                handlePage(page);
-              }}
-            >
-              {page}
-            </Page>
-          );
-        })}
-        <Forward key={pages.length + 1} onClick={handleForward}>
-          Forward
-        </Forward>
-      </Pagination>
       {/* <SelectView>
         <ViewOption onClick={() => setItemsView("all")}>All</ViewOption>
         <ViewOption onClick={() => setItemsView("Fitness")}>Fitness</ViewOption>
         <ViewOption onClick={() => setItemsView("Medical")}>Medical</ViewOption>
         <ViewOption onClick={() => setItemsView("Lifestyle")}>
-          Lifestyle
+        Lifestyle
         </ViewOption>
         <ViewOption onClick={() => setItemsView("Entertainment")}>
-          Entertainment
+        Entertainment
         </ViewOption>
         <ViewOption onClick={() => setItemsView("Industrial")}>
-          Industrial
+        Industrial
         </ViewOption>
         <ViewOption onClick={() => setItemsView("Pets and Animals")}>
-          Pets and Animals
+        Pets and Animals
         </ViewOption>
         <ViewOption onClick={() => setItemsView("Gaming")}>Gaming</ViewOption>
       </SelectView> */}
@@ -120,6 +103,28 @@ const Grid = ({ itemsData }) => {
           <div>loading</div>
         )}
       </GridDisplay>
+      {pages.length > 1 && (
+        <Pagination>
+          <Back key="0" onClick={handleBack}>
+            Back
+          </Back>
+          {pages.map((page) => {
+            return (
+              <Page
+                key={page}
+                onClick={() => {
+                  handlePage(page);
+                }}
+              >
+                {page}
+              </Page>
+            );
+          })}
+          <Forward key={pages.length + 1} onClick={handleForward}>
+            Forward
+          </Forward>
+        </Pagination>
+      )}
     </Wrapper>
   );
 };
@@ -131,6 +136,8 @@ const Wrapper = styled.div`
   min-height: 100vh;
   padding-top: 15px;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const SelectView = styled.div`
@@ -156,10 +163,51 @@ const GridDisplay = styled.div`
   justify-content: center;
 `;
 
-const Pagination = styled.div``;
+const Pagination = styled.div`
+  margin-top: 25px;
+`;
 
-const Back = styled.button``;
+const Back = styled.button`
+  color: ${COLORS.white};
+  border: none;
+  padding: 10px 17px;
+  background: ${COLORS.primary};
+  cursor: pointer;
+  &:hover {
+    background: ${COLORS.accent};
+  }
 
-const Forward = styled.button``;
+  &:active {
+    background: ${COLORS.secondary};
+  }
+`;
 
-const Page = styled.button``;
+const Forward = styled.button`
+  color: ${COLORS.white};
+  border: none;
+  padding: 10px 17px;
+  background: ${COLORS.primary};
+  cursor: pointer;
+  &:hover {
+    background: ${COLORS.accent};
+  }
+
+  &:active {
+    background: ${COLORS.secondary};
+  }
+`;
+
+const Page = styled.button`
+  color: ${COLORS.white};
+  border: none;
+  padding: 10px 17px;
+  background: ${COLORS.primary};
+  cursor: pointer;
+  &:hover {
+    background: ${COLORS.accent};
+  }
+
+  &:active {
+    background: ${COLORS.secondary};
+  }
+`;

@@ -157,17 +157,24 @@ const DropBtn = styled.button`
 const DropdownContent = styled.ul`
   margin-top: 18px;
   position: absolute;
-  margin-left: -60px;
-  width: 300px;
+  box-sizing: border-box;
+  text-align: center;
+  left: 0;
+  opacity: 0.9;
+  background: ${COLORS.primary};
+  width: calc(100vw - (100vw - 100%));
+  padding: 0 10vw;
 `;
 
 const DropItem = styled(Link)`
   display: inline-block;
+  box-sizing: border-box;
   text-align: center;
-  width: 60px;
+  width: calc(70vw / 9);
   background: ${COLORS.primary};
   color: white;
   padding: 10px 10px;
+  margin: 5px 0;
   &:hover {
     background: ${COLORS.accent};
   }

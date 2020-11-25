@@ -51,6 +51,7 @@ const Wrapper = styled.div`
   justify-content: center;
   background: ${COLORS.white};
   margin: 50px 10vw;
+  padding-bottom: 20vh;
 `;
 
 const Container = styled.div`
