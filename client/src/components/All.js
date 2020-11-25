@@ -3,14 +3,14 @@ import styled from "styled-components";
 import Grid from "./Grid";
 
 export const All = () => {
-  const [items, setItems] = useState("");
-  const [itemsView, setItemsView] = useState("");
+  const [items, setItems] = useState([]);
+  const [itemsView, setItemsView] = useState("all");
 
   useEffect(() => {
     fetch(`/product/all`)
       .then((res) => res.json())
       .then((res) => {
-        setItems([...res.products]);
+        setItems(res.products);
       });
   }, []);
 
