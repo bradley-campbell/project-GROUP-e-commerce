@@ -6,6 +6,7 @@ import { COLORS } from "../ConstantStyles";
 import { useSelector } from "react-redux";
 
 const Header = () => {
+  const history = useHistory();
   const [query, setQuery] = useState("");
   const [dropOpen, setDropOpen] = useState(false);
   const viewState = useSelector((state) => state.viewState);
@@ -14,8 +15,9 @@ const Header = () => {
   const dropHandle = () => {
     setDropOpen(!dropOpen);
   };
-
-  const history = useHistory();
+  const handlePushHis = (que) => {
+    history.push(`/search/${que}`);
+  };
 
   return (
     <Wrapper>
@@ -66,11 +68,13 @@ const Header = () => {
         </NavDrop>
         <form
           onSubmit={(ev) => {
-            ev.preventDefault();
-            history.push(`/search/?search=${query}`); // depends on where you want to direct to
-            fetch(`/product/search/?search=${query}`) // sending info to backend by params
+            //ev.preventDefault();
+            /*fetch(`/product/search/?search=${query}`) // sending info to backend by params
               .then((data) => data.json())
-              .then((data) => console.log(data)); // later work after backend,may setQuery
+              .then((data) => {
+                handlePushHis(data, query);
+              }); // later work after backend*/
+            handlePushHis(query);
             setQuery("");
           }}
         >
