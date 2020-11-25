@@ -30,8 +30,6 @@ const Form = ({ handleFetch, cartMinimal, subtotal }) => {
 
   const onSubmit = (data) => {
     handleFetch(data, cartMinimal, subtotal);
-    dispatch(togglePaymentView());
-    dispatch(toggleConfirmationView());
   };
 
   return (
