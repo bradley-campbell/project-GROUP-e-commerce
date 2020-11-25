@@ -19,7 +19,6 @@ const statusReducer = (state = initialState, action) => {
     }
     case "PAYMENT_PAGE_VISIBLE": {
       const newState = state;
-      console.log(state.paymentPageView);
       return { ...newState, paymentPageView: !state.paymentPageView };
     }
     case "CONFIRMATION_PAGE_VISIBLE": {

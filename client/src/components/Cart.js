@@ -30,8 +30,6 @@ const Cart = () => {
     dispatch(togglePaymentView());
   };
 
-  console.log(viewState);
-
   return (
     <Wrapper>
       <Container>

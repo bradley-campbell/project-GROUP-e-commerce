@@ -12,8 +12,6 @@ const Header = () => {
     setDropOpen(!dropOpen);
   };
 
-  console.log(query);
-
   const history = useHistory();
 
   return (
