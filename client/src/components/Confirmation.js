@@ -3,48 +3,50 @@ import styled from "styled-components";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-const Confirmation = () => {
+const Confirmation = ({ orderInfo }) => {
+  const {
+    orderId,
+    formData: {
+      givenName,
+      lastName,
+      address,
+      city,
+      province,
+      postalCode,
+      country,
+      email,
+    },
+  } = orderInfo;
+
+  console.log(orderInfo);
+
   return (
-    <Overlay>
-      <button>
-        <AiOutlineCloseCircle />
-      </button>
-      <Content>
-        <Wrapper>
-          <Container>
-            <FaCheckCircle size="3em" />
-            <Header>Thank you for your order, Name Here!</Header>
-            <OrderNumber>Your order number is 19712742904393287.</OrderNumber>
-            <Email>
-              A confirmation email with order details has been sent to
-              email@here.com.
-            </Email>
-            <OrderDetails>
-              <OrderDate>Order Date: DA/TE/HERE</OrderDate>
-              <DeliveryAddress>
-                <Declaration>Shipping Address:</Declaration>
-                <Address>
-                  <p>Kurt Fizzard</p>
-                  <p>123 Fake Street</p>
-                  <p>Montreal, Quebec, 0s0od2</p>
-                  <p>Canada</p>
-                </Address>
-              </DeliveryAddress>
-            </OrderDetails>
-          </Container>
-        </Wrapper>
-      </Content>
-    </Overlay>
+    <Container>
+      <FaCheckCircle size="3em" />
+      <Header>Thank you for your order, {givenName}!</Header>
+      <OrderNumber>Your order number is {orderId}.</OrderNumber>
+      <Email>
+        A confirmation email with order details has been sent to {email}.
+      </Email>
+      <OrderDetails>
+        <OrderDate>Order Date: DA/TE/HERE</OrderDate>
+        <DeliveryAddress>
+          <Declaration>Shipping Address:</Declaration>
+          <Address>
+            <p>
+              {givenName} {lastName}
+            </p>
+            <p>{address}</p>
+            <p>
+              {city}, {province}, {postalCode}
+            </p>
+            <p>{country}</p>
+          </Address>
+        </DeliveryAddress>
+      </OrderDetails>
+    </Container>
   );
 };
-
-const Wrapper = styled.div`
-  align-items: center;
-  border-bottom: 2px solid blue;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-`;
 
 const Container = styled.div`
   align-items: center;
@@ -88,39 +90,6 @@ const Declaration = styled.p``;
 
 const Address = styled.div`
   margin-left: 10px;
-`;
-
-const Overlay = styled.div`
-  position: fixed;
-  display: block;
-  overflow: auto;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  cursor: pointer;
-`;
-
-const Content = styled.div`
-  margin: 15% auto;
-  background-color: white;
-  border-radius: 0.25 rem;
-  width: 50vw;
-  padding: 2rem;
-  position: relative;
-`;
-
-const ExitButton = styled.button`
-  padding: 10px;
-  cursor: pointer;
-  border: 0;
-  position: absolute;
-  top: 0.3rem;
-  right: 0.5 rem;
 `;
 
 export default Confirmation;

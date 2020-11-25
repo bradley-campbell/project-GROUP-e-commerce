@@ -3,15 +3,24 @@ import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Form from "./Form";
 import { useDispatch, useSelector } from "react-redux";
-import { togglePaymentView } from "../../actions/statusActions";
+import {
+  receiveData,
+  receiveDataError,
+  requestData,
+  toggleConfirmationView,
+  togglePaymentView,
+} from "../../actions/statusActions";
+import { clearCart } from "../../actions/cartActions";
+import Confirmation from "../Confirmation";
 
 const Payment = () => {
   const [cartMinimal, setCartMinimal] = useState({}); // Minimal product information to process order
   const viewState = useSelector((state) => state.viewState);
-  const { paymentPageView, confirmationPageView } = viewState;
+  const { paymentPageView, confirmationPageView, status } = viewState;
   const cartState = useSelector((state) => state.cartState);
   const cartArray = Object.values(cartState);
-  const subtotal = 29.99;
+  const subtotal = 166.95;
+  const [response, setResponse] = useState({});
 
   useEffect(() => {
     // On change to cart, update  an object containing only the required information for the backend to process an order (item name + quantity ordered)
@@ -27,13 +36,13 @@ const Payment = () => {
 
   const closeModal = (ev) => {
     dispatch(togglePaymentView());
+    confirmationPageView && dispatch(toggleConfirmationView());
   };
 
   const handleFetch = async (form, cart, subtotal) => {
-    console.log({ body: JSON.stringify({ formData: form, cart, subtotal }) });
-
-    const reqPost = {
-      method: "POST",
+    
+    const reqPut = {
+      method: "PUT",
       body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
       headers: {
         Accept: "application/json",
@@ -49,17 +58,23 @@ const Payment = () => {
         "Content-Type": "application/json",
       },
     };
-
+    dispatch(requestData());
     try {
-      let putResponse = await fetch("/order", reqPost);
+      let putResponse = await fetch("/order", reqPut);
       putResponse = await putResponse.json();
+      setResponse(putResponse);
       console.log(putResponse);
 
       let patchResponse = await fetch("/product", reqPatch);
       patchResponse = await patchResponse.json();
-      console.log(patchResponse);
-    } catch {
-      console.log("error");
+      console.log(patchResponse.orderId);
+      dispatch(receiveData());
+      dispatch(clearCart());
+      dispatch(toggleConfirmationView());
+    } catch (error) {
+      dispatch(receiveDataError());
+      dispatch(toggleConfirmationView());
+      setResponse("An unexpected error has occured, please try again");
     }
   };
 
@@ -70,42 +85,47 @@ const Payment = () => {
           <ExitButton onClick={closeModal}>
             <AiOutlineCloseCircle size={35} />
           </ExitButton>
-
-          <div>
-            <ShopName>Shop Fetch</ShopName>
-          </div>
-
-          <OrderSummary>
-            <h1>Order Summary</h1>
-            <ItemizedList>
-              {/* map through items in cart */}
-              {cartArray.map((item) => {
-                return (
-                  <li>
-                    <span>
-                      {" "}
-                      <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
-                      {item.name.slice(0, 30)}
-                    </span>
-                    <span>1 @ {item.price}</span>
-                  </li>
-                );
-              })}
-            </ItemizedList>
-            <Totals>
+          {!confirmationPageView ? (
+            <PaymentView>
               <div>
-                <p>X Items </p>
-                <p>Subtotal:</p>
-                <p>QST:</p>
-                <p>Total:</p>
+                <ShopName>Shop Fetch</ShopName>
               </div>
-            </Totals>
-          </OrderSummary>
-          <Form
-            handleFetch={handleFetch}
-            cartMinimal={cartMinimal}
-            subtotal={subtotal}
-          />
+
+              <OrderSummary>
+                <h1>Order Summary</h1>
+                <ItemizedList>
+                  {/* map through items in cart */}
+                  {cartArray.map((item) => {
+                    return (
+                      <li>
+                        <span>
+                          {" "}
+                          <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
+                          {item.name.slice(0, 30)}
+                        </span>
+                        <span>1 @ {item.price}</span>
+                      </li>
+                    );
+                  })}
+                </ItemizedList>
+                <Totals>
+                  <div>
+                    <p>X Items </p>
+                    <p>Subtotal:</p>
+                    <p>QST:</p>
+                    <p>Total:</p>
+                  </div>
+                </Totals>
+              </OrderSummary>
+              <Form
+                handleFetch={handleFetch}
+                cartMinimal={cartMinimal}
+                subtotal={subtotal}
+              />
+            </PaymentView>
+          ) : (
+            <Confirmation orderInfo={response} />
+          )}
         </Content>
       </Overlay>
     </Wrapper>
@@ -194,3 +214,5 @@ const Totals = styled.div`
     padding-top: 3px;
   }
 `;
+
+const PaymentView = styled.div``;
