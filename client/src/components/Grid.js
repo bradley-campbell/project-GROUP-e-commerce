@@ -14,12 +14,8 @@ const Grid = ({ itemsData }) => {
   const pages = [];
   const pageSize = 25;
 
-  console.log("current page", currentPage);
-  console.log("pages", pages);
-  console.log("dispayedItems", displayedItems);
-  console.log("itemsArray", itemsArray);
+  console.log(itemsView);
 
-  console.log(itemsArray.length);
   if (itemsArray.length > 0) {
     numOfPages = Math.ceil(itemsArray.length / pageSize);
   } else if (itemsArray.length === 0 && itemsData.length > 0) {
@@ -29,7 +25,6 @@ const Grid = ({ itemsData }) => {
   for (let i = 1; i <= numOfPages; i++) {
     pages.push(i);
   }
-  console.log(pages);
 
   useEffect(() => {
     // itemsView === "all"
@@ -40,11 +35,12 @@ const Grid = ({ itemsData }) => {
       setItemsArray(itemsData);
       setDisplayedItems(itemsDisplayed);
     } else {
-      const catergoryItems = itemsData.filter(
+      const categoryItems = itemsData.filter(
         (item) => item.category === itemsView
       );
+      console.log(categoryItems);
       const itemsDisplayed = itemsData.slice(startIndex, endIndex);
-      setItemsArray(catergoryItems);
+      setItemsArray(categoryItems);
       setDisplayedItems(itemsDisplayed);
     }
   }, [itemsView, startIndex, endIndex]);
@@ -93,7 +89,7 @@ const Grid = ({ itemsData }) => {
           Forward
         </Forward>
       </Pagination>
-      <SelectView>
+      {/* <SelectView>
         <ViewOption onClick={() => setItemsView("all")}>All</ViewOption>
         <ViewOption onClick={() => setItemsView("Fitness")}>Fitness</ViewOption>
         <ViewOption onClick={() => setItemsView("Medical")}>Medical</ViewOption>
@@ -110,7 +106,7 @@ const Grid = ({ itemsData }) => {
           Pets and Animals
         </ViewOption>
         <ViewOption onClick={() => setItemsView("Gaming")}>Gaming</ViewOption>
-      </SelectView>
+      </SelectView> */}
       <GridDisplay>
         {displayedItems ? (
           displayedItems
