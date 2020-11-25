@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { togglePaymentView } from "../actions/statusActions";
+import {
+  setCartItemsTotal,
+  setSubtotal,
+  togglePaymentView,
+} from "../actions/statusActions";
 import { COLORS } from "../ConstantStyles";
 import CartItem from "./CartItem";
 
@@ -10,21 +14,24 @@ const Cart = () => {
   const cartArray = Object.values(cartState);
   const dispatch = useDispatch();
   const viewState = useSelector((state) => state.viewState);
+  const { subtotal, cartItemTotal } = viewState;
+  const total = subtotal * 1.15;
 
-  const subTotal = useSelector((state) => {
-    const values = Object.values(state.cartState);
-    return values.reduce((acc, item) => {
+  useEffect(() => {
+    let subtotal = Object.values(cartState);
+    subtotal = subtotal.reduce((acc, item) => {
       return acc + item.quantity * item.price;
     }, 0);
-  });
-  const total = subTotal * 1.15;
+    dispatch(setSubtotal(subtotal));
 
-  const numberOfItems = useSelector((state) => {
-    const values = Object.values(state.cartState);
-    return values.reduce((acc, item) => {
+    let totalItems = Object.values(cartState);
+    totalItems = totalItems.reduce((acc, item) => {
       return acc + item.quantity;
     }, 0);
-  });
+    dispatch(setCartItemsTotal(totalItems));
+  }, [cartState]);
+
+  console.log(viewState);
 
   const proceedToPayment = () => {
     dispatch(togglePaymentView());
@@ -35,7 +42,7 @@ const Cart = () => {
       <Container>
         <Top>
           <Header>Your Cart</Header>
-          <SubHeader> {numberOfItems} items</SubHeader>
+          <SubHeader> {cartItemTotal} items</SubHeader>
         </Top>
         {cartArray.length > 0 &&
           cartArray.map((item) => {
@@ -43,7 +50,7 @@ const Cart = () => {
           })}
         <Bottom>
           <TotalContainer>
-            <SubTotal>Subtotal: ${subTotal.toFixed(2)}</SubTotal>
+            <SubTotal>Subtotal: ${subtotal.toFixed(2)}</SubTotal>
             <Total>Total: ${total.toFixed(2)}</Total>
             <Button className="addToCart" onClick={proceedToPayment}>
               Proceed to Checkout
