@@ -17,6 +17,8 @@ import Payment from "./Payment/Payment";
 import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
+import Footer from "./Footer";
+import ScrollToTop from "./HandScrollToTop";
 import { COLORS } from "../ConstantStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartItemsTotal, setSubtotal } from "../actions/statusActions";
@@ -51,6 +53,7 @@ function App() {
     <Wrapper>
       <GlobalStyle />
       <Router>
+        <ScrollToTop />
         <Header />
         <Payment />
 
@@ -99,6 +102,7 @@ function App() {
             <Admin />
           </Route>
         </Switch>
+        <Footer />
       </Router>
     </Wrapper>
   );
