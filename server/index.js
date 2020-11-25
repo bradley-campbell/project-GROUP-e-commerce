@@ -1,25 +1,24 @@
 "use strict";
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const natural = require("natural"); // package for natural language processing
 natural.PorterStemmer.attach(); // Porter steemer is less aggressive
-//const tokenizer = new natural.TreebankWordTokenizer(); // used for tokenizing things
-//  trebank word tokenizer will put the "n't" / "'s" parts as seperate tokens
-//  console.log(tokenizer.tokenize("My has's sleep for a while."));
-/*console.log(
-  "Pebble Steel Smart Watch For Iphone And Android Devices (black".tokenizeAndStem()
-);*/
+
 const { v4: uuidv4 } = require("uuid"); // to generate unique ids
 
 const PORT = 4000;
-const dataItems = require("./data/items.json");
-const dataCompanies = require("./data/companies.json");
-const dataOrders = require("./data/orders.json");
+const {
+  dataItems,
+  dataCompanies,
+  dataOrders,
+} = require("./data/data_preprocess.js");
+//const dataItems = require("./data/items.json");
+//const dataCompanies = require("./data/companies.json");
+//const dataOrders = require("./data/orders.json");
 //const fs = require("fs"); // static file-writing, allows files to be accessed after closing server
-// replacing SQL
 
+// replacing SQL
 // hard-coded body locations and categories
 const allBodyLocations = [
   "wrist",
@@ -60,12 +59,11 @@ express()
   .use(express.urlencoded({ extended: false }))
   .use("/", express.static(__dirname + "/"))
 
-  // REST endpoints?
-  //.get("/bacon", (req, res) => res.status(200).json("🥓"))
+  // REST endpoints
 
   .get("/product/all", (req, res) => {
     // get all products
-    res.status(200).json({ status: 200, products: convertProducts(dataItems) });
+    res.status(200).json({ status: 200, products: dataItems });
   })
 
   .get("/product/by-product/:productId", (req, res) => {
@@ -74,13 +72,11 @@ express()
     const id = parseInt(req.params.productId, 10);
     // check validity of id (if NaN then it's not integer)
     if (!isNaN(id)) {
-      const p = dataItems.find((ele) => ele._id === id);
+      const p = dataItems.find((ele) => ele.id === id);
       // check if it's found
       if (p) {
-        // if found, find the company info
-        const new_p = convertProduct(p);
         //send back with 200 and product
-        res.status(200).json({ status: 200, product: new_p });
+        res.status(200).json({ status: 200, product: p });
       } else {
         // if not found, send back with 404 not found
         res.status(404).json({
@@ -95,6 +91,7 @@ express()
         .json({ status: 400, error: "The productId should be an integer." });
     }
   })
+
   .get("/product/by-company/:companyId", (req, res) => {
     // Get products sold by Company X
     const cId = parseInt(req.params.companyId);
@@ -102,18 +99,17 @@ express()
     // check is is integer or not
     if (!isNaN(cId)) {
       // check if the cId is included in our databse
-      //console.log(comIds);
       if (comIds.includes(cId)) {
         // get the reduced list of demanded item
         const cList = dataItems.reduce((acc, cur) => {
           const c_cur = { ...cur };
           if (cur.companyId === cId) {
-            acc.push(convertProduct(c_cur));
+            acc.push(c_cur);
           }
           return acc;
         }, []);
         // get the company
-        const c = convertCompany(getCompById(cId));
+        const c = getCompById(cId); // in case if we found nothing of the company
         // responde with list of items
         res.status(200).json({ status: 200, products: cList, company: c });
         return;
@@ -140,7 +136,7 @@ express()
     if (allBodyLocations.includes(bId.toLowerCase())) {
       const bList = dataItems.reduce((acc, cur) => {
         if (cur.body_location.toLowerCase() === bId.toLowerCase()) {
-          acc.push(convertProduct(cur));
+          acc.push(cur);
         }
         return acc;
       }, []);
@@ -159,12 +155,11 @@ express()
     // Get products in category X
     const catId = req.params.category;
     //const cats = getAllOf("category");
-    //console.log(cats);
     // reduce the list to demanded item
     if (allCategories.includes(catId.toLowerCase())) {
       const catList = dataItems.reduce((acc, cur) => {
         if (cur.category.toLowerCase() === catId.toLowerCase()) {
-          acc.push(convertProduct(cur));
+          acc.push(cur);
         }
         return acc;
       }, []);
@@ -216,7 +211,7 @@ express()
       let k;
       for (k of ind) {
         // get list of random products
-        arr.push(convertProduct(dataItems[k]));
+        arr.push(dataItems[k]);
       }
       res.status(200).json({ status: 200, products: arr });
     }
@@ -239,7 +234,7 @@ express()
       res.status(200).json({
         status: 200,
         numProducts: 0,
-        products: convertProducts(dataItems),
+        products: dataItems,
       });
       return;
     }
@@ -252,14 +247,14 @@ express()
       res.status(200).json({
         status: 200,
         numProducts: 0,
-        products: convertProducts(dataItems),
+        products: dataItems,
       });
       return;
     }
 
     // go through items
     const result = dataItems.reduce((acc, cur) => {
-      const cur_p = convertProduct(cur); // convert it since we'll need the company info anyway
+      const cur_p = { ...cur };
       // process name
       const cur_tokenList = cur_p.name.tokenizeAndStem();
       // add category
@@ -284,7 +279,7 @@ express()
       res.status(200).json({
         status: 200,
         numProducts: 0,
-        products: convertProducts(dataItems),
+        products: dataItems,
       });
       return;
     } else {
@@ -297,8 +292,7 @@ express()
 
   .get("/company/all", (req, res) => {
     // Get list of all companies
-    // convert _id to id
-    const cs = convertCompanies(dataCompanies);
+    const cs = dataCompanies;
     res.status(200).json({ status: 200, companies: cs });
   })
 
@@ -308,11 +302,9 @@ express()
     const cIds = getCompanyIds();
     if (!isNaN(cId)) {
       if (cIds.includes(cId)) {
-        const c = convertCompany(
-          dataCompanies.find((ele) => {
-            return ele._id === cId;
-          })
-        );
+        const c = dataCompanies.find((ele) => {
+          return ele.id === cId;
+        });
         res.status(200).json({ status: 200, company: c });
         return;
       } else {
@@ -367,7 +359,7 @@ express()
     for (item of items) {
       // findIndex return -1 if not found
       const state = dataItems.findIndex((ele) => {
-        return ele._id === item.id;
+        return ele.id === item.id;
       });
       // if not found
       if (state < 0) {
@@ -384,7 +376,7 @@ express()
           //   this shouldn't happen given front-end is limiting the quantity but just in case
           res.status(409).json({
             status: 409,
-            error: `The quantity required for the product ${dataItems[state]._id}, the "${dataItems[state].name}" is larger than the quantity of stock!`,
+            error: `The quantity required for the product ${dataItems[state].id}, the "${dataItems[state].name}" is larger than the quantity of stock!`,
           });
           return; // terminate if anything goes wrong
         } else {
@@ -393,7 +385,7 @@ express()
         }
       }
     }
-    // go through the list to reduce the quantity it's safely passed after all checks
+    // go through the list to reduce the quantity as it's safely passed after all checks
     let cur;
     for (cur of list_to_patch) {
       dataItems[cur.index]["numInStock"] -= cur.decreQuan;
@@ -441,7 +433,6 @@ const readJsonFile = (path) => {
   const rawData = fs.readFileSync(path);
   return JSON.parse(rawData);
 };
-//console.log(readJsonFile("./data/orders.json"));
 
 // function to write json file, accept thing to write
 const addOrder = (path, id, order) => {
@@ -463,115 +454,20 @@ const addOrder = (path, id, order) => {
 // function to remove an order from the json file
 const removeOrder = (path, id) => {};
 
-// function to convert one product
-//    1. convert _id to id
-//    2. convert price to double
-//    3. remove companyName in name if first word is company name, and add companyName as a key
-//    4. add company as a key
-const convertProduct = (item) => {
-  const new_item = addCompanyById(editNaming(convertItem(item))); // convertItem will take care of both id and price
-  return new_item;
-};
-// function to convert a list of product
-const convertProducts = (items) => {
-  const new_items = [];
-  let ele;
-  for (ele of items) {
-    new_items.push(convertProduct(ele));
-  }
-  return new_items;
-};
-// function to convert company
-//    1. convert _id to id
-const convertCompany = (company) => {
-  return convertId(company);
-};
-// function to convert a list of companies
-const convertCompanies = (companies) => {
-  const new_companies = [];
-  let ele;
-  for (ele of companies) {
-    new_companies.push(convertCompany(ele));
-  }
-  return new_companies;
-};
-
-/// function to add companyName as key in object
-//  And remove it from the name of product if the first word is companyName
-const editNaming = (item) => {
-  // get the company info
-  const copy = { ...item };
-  const i_name = item.name.toLowerCase();
-  const c_name = getCompById(item.companyId).name.toLowerCase();
-  const c_name_index = getIndexOf(i_name, c_name);
-  // check if found any
-  if (c_name_index >= 0) {
-    // get the first word
-    // check if the return value equals original string or not
-    // if it is then the first word is not company name, don't touch it
-
-    if (c_name_index + 1 < i_name.length) {
-      // check if exceeds boundary
-      copy["name"] = i_name.substr(c_name_index + c_name.length + 1);
-      // check if the first letter is " " or " - "
-      // Not sure if it covers all cases, can add if found other consistencies
-      while (copy["name"][0] === " " || copy["name"][0] === "-") {
-        copy["name"] = copy["name"].substr(1);
-      }
-    }
-  }
-  // append companyName as a key, capitalize the company name for convenience
-  copy["companyName"] = c_name.charAt(0).toUpperCase() + c_name.slice(1);
-  return copy;
-};
-// function to get the starting index of a target string in another string
-const getIndexOf = (inputStr, target) => {
-  const i = inputStr.indexOf(target);
-  return i;
-};
-// function to add company name to a single product
-const addCompanyById = (item) => {
-  const new_item = { ...item };
-  new_item["company"] = convertCompany(getCompById(new_item.companyId));
-  return new_item;
+// function to get all company ids
+const getCompanyIds = () => {
+  // return a list of company ids
+  const cL = dataCompanies.reduce((acc, cur) => {
+    acc.push(cur.id);
+    return acc;
+  }, []);
+  return cL;
 };
 // function to return a company given an id
 const getCompById = (id) => {
   // id is an integer
   const c = dataCompanies.find((ele) => {
-    return ele._id === id;
+    return ele.id === id;
   });
   return { ...c };
 };
-// function to get all company ids
-const getCompanyIds = () => {
-  // return a list of company ids
-  const cL = dataCompanies.reduce((acc, cur) => {
-    //console.log(cur);
-    acc.push(cur._id);
-    return acc;
-  }, []);
-  return cL;
-};
-// convert the single product : id and price
-function convertItem(item) {
-  // return a new object
-  const it = convertId(item);
-  const pri = convertPrice(item.price);
-  return { ...it, price: pri };
-}
-function convertId(item) {
-  // return a new object
-  const item_new = { ...item };
-  const n_id = item._id;
-  delete item_new["_id"];
-  return { ...item_new, id: n_id };
-}
-function convertPrice(input) {
-  // fixed format: $33.33
-  const str_sub = input.substring(1);
-  if (isNaN(parseFloat(str_sub))) {
-    console.log(input);
-  }
-  return parseFloat(str_sub);
-}
