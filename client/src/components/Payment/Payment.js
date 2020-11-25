@@ -15,24 +15,22 @@ import Confirmation from "../Confirmation";
 
 const Payment = () => {
   const [cartMinimal, setCartMinimal] = useState({}); // Minimal product information to process order
-  const viewState = useSelector((state) => state.viewState);
+  const cartState = useSelector((state) => state.cartState); // Cart that has been saved to cartReducer state
+  const cartArray = Object.values(cartState); // Cart values in an array to be mapped over in order summary
+  const viewState = useSelector((state) => state.viewState); // states saved to statusReducer state
   const {
-    paymentPageView,
-    confirmationPageView,
-    totalCartItems,
-    subtotal,
+    paymentPageView, // Boolean to determine if payment form is showin
+    confirmationPageView, // Boolean to determine if confirmation message is showing
+    totalCartItems, // Number of items currently in the cart -- updates on cart change (see App.js)
+    subtotal, // Subtotal of items currently in cart -- updates on cart change (see App.js)
   } = viewState;
-  const cartState = useSelector((state) => state.cartState);
-  const cartArray = Object.values(cartState);
-  const [response, setResponse] = useState({});
-  const qst = subtotal * 0.15;
-  const totalWithTax = subtotal + qst;
-
-  const {} = viewState;
+  const [response, setResponse] = useState({}); // response from order request containing order number sent from BE
+  const qst = subtotal * 0.15; // Calculate before being converted to string in form using toFixed
+  const totalWithTax = subtotal + qst; // Calculate before being converted to string in form using toFixed
 
   useEffect(() => {
-    // On change to cart, update  an object containing only the required information for the backend to process an order (item name + quantity ordered)
     cartArray.forEach((item) => {
+      //Generates an object with the minimal data needed from the cart for order placement
       setCartMinimal({
         ...cartMinimal,
         [item.id]: { id: item.id, quantity: item.quantity },
