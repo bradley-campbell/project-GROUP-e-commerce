@@ -6,7 +6,7 @@ export const All = () => {
   const [items, setItems] = useState("");
 
   useEffect(() => {
-    fetch(`/product/random/349`)
+    fetch(`/product/all`)
       .then((res) => res.json())
       .then((res) => {
         setItems([...res.products]);
