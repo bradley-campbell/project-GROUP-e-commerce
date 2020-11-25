@@ -1,4 +1,4 @@
-export const action = () => ({
-  type: "ACTION",
-  item,
+export const setPageNumber = (pageNumber) => ({
+  type: "SET_PAGE",
+  pageNumber,
 });

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Item from "./Item";
 import { COLORS } from "../ConstantStyles";
 
-const Grid = ({ itemsData }) => {
+const Grid = ({ itemsData, itemsView }) => {
   // const [itemsView, setItemsView] = useState("all");
   const [itemsArray, setItemsArray] = useState(itemsData);
   const [startIndex, setStartIndex] = useState(0);
@@ -28,6 +28,12 @@ const Grid = ({ itemsData }) => {
   console.log(currentPage);
 
   // console.log(pages);
+
+  useEffect(() => {
+    setStartIndex(0);
+    setEndIndex(24);
+    setCurrentPage(1);
+  }, [itemsView]);
 
   useEffect(() => {
     // itemsView === "all"
@@ -115,6 +121,7 @@ const Grid = ({ itemsData }) => {
                 onClick={() => {
                   handlePage(page);
                 }}
+                pageButtonColor={currentPage === page}
               >
                 {page}
               </Page>
@@ -201,7 +208,8 @@ const Page = styled.button`
   color: ${COLORS.white};
   border: none;
   padding: 10px 17px;
-  background: ${COLORS.primary};
+  background: ${(props) =>
+    !props.pageButtonColor ? COLORS.primary : COLORS.accent};
   cursor: pointer;
   &:hover {
     background: ${COLORS.accent};
