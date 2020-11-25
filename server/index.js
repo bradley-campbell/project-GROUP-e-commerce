@@ -402,6 +402,14 @@ express()
     // 1. order id
     // 2. date
     // 3. formData and cart info
+    if (Object.values(req.body.cart).length === 0) {
+      res.status(400).json({
+        status: 400,
+        formData: { ...req.body.formData },
+        error: `There is nothing in the cart!`,
+      });
+      return; // terminate
+    }
 
     const orderId = uuidv4(); // generate a unique id
     // write to the orders.json file

@@ -4,14 +4,14 @@ import Grid from "./Grid";
 import { COLORS } from "../ConstantStyles";
 
 export const All = () => {
-  const [items, setItems] = useState("");
-  const [itemsView, setItemsView] = useState("");
+  const [items, setItems] = useState([]);
+  const [itemsView, setItemsView] = useState("all");
 
   useEffect(() => {
     fetch(`/product/all`)
       .then((res) => res.json())
       .then((res) => {
-        setItems([...res.products]);
+        setItems(res.products);
       });
   }, []);
 
