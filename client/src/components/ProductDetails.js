@@ -27,11 +27,10 @@ const ProductDetails = () => {
   } = product;
 
   const handleAddToCart = () => {
-    return !cartState[id] && quantity === 1
+    return !cartState[id]
       ? dispatch(addItem({ ...product, id, quantity: quantity }))
-      : updateQuantity({ ...product, id, quantity: quantity });
+      : dispatch(updateQuantity({ ...product, id, quantity: +quantity }));
   };
-  console.log(cartState);
 
   useEffect(() => {
     fetch(`/product/by-product/${itemId}`)

@@ -4,7 +4,9 @@ const cartReducer = (state = intitialState, action) => {
   switch (action.type) {
     case "ADD_ITEM": {
       const id = action.item.id;
-      return { ...state, [id]: { ...action.item, quantity: 1 } };
+      const quantity = action.item.quantity;
+      console.log(quantity);
+      return { ...state, [id]: { ...action.item, quantity: +quantity } };
     }
     case "REMOVE_ITEM": {
       let stateCopy = state;
