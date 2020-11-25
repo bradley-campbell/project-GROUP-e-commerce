@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useForm, useFormContext, FormProvider } from "react-hook-form";
 import { RiAlertFill } from "react-icons/ri";
-import FInput from "./Input";
 import { useDispatch, useSelector } from "react-redux";
 import {
   toggleConfirmationView,
@@ -25,143 +24,137 @@ const provinces = [
   "YT",
 ];
 
-const Form = ({ setFormData, handleFetch }) => {
+const Form = ({ handleFetch, cartMinimal, subtotal }) => {
   const { register, handleSubmit, errors } = useForm();
-
   const dispatch = useDispatch();
 
-  const FormConnect = useFormContext();
-  console.log(useFormContext());
-
   const onSubmit = (data) => {
+    handleFetch(data, cartMinimal, subtotal);
     dispatch(togglePaymentView());
     dispatch(toggleConfirmationView());
-    setFormData(data);
   };
 
   return (
     <IWrapper>
       <FormContent>
-        <FormProvider>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>Bill to:</h2>
-            <FormGroup>
-              <InputDiv>
-                <Input
-                  ref={register({ required: true, minLength: 2 })}
-                  name="givenName"
-                  type="text"
-                  placeholder="First name"
-                />
-                {errors.givenName && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
-              <InputDiv>
-                <Input
-                  ref={register({ required: true, minLength: 2 })}
-                  name="surname"
-                  type="text"
-                  placeholder="Last name"
-                />
-                {errors.surname && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
-            </FormGroup>
-            <FormGroup>
-              <InputDiv>
-                <Input
-                  ref={register({ required: true, minLength: 2 })}
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                />
-                {errors.email && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
-            </FormGroup>
-            <FormGroup>
-              <InputDiv>
-                <Input
-                  ref={register({ required: true, minLength: 2 })}
-                  name="address"
-                  type="address"
-                  placeholder="Address"
-                />
-                {errors.address && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
-            </FormGroup>
-            <FormGroup>
-              <InputDiv>
-                <Input
-                  ref={register({ required: true, minLength: 2 })}
-                  name="city"
-                  type="text"
-                  placeholder="City"
-                />
-                {errors.city && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
-              <InputDiv>
-                <DropDown>
-                  <label for="province">Province:</label>
-                  <select
-                    name="province"
-                    ref={register({ required: true, minLength: 2 })}
-                  >
-                    <option></option>
-
-                    {provinces.map((province) => {
-                      return <option value={province}>{province}</option>;
-                    })}
-                  </select>
-                </DropDown>
-                {errors.province && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
-            </FormGroup>
-            <FormGroup>
-              <InputDiv>
-                <Input
-                  ref={register({ required: true, minLength: 6, maxLength: 7 })}
-                  name="postcode"
-                  type="text"
-                  placeholder="Postal Code"
-                />
-                {errors.postcode && (
-                  <FormError>
-                    <RiAlertFill /> This is a required field
-                  </FormError>
-                )}
-              </InputDiv>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h2>Bill to:</h2>
+          <FormGroup>
+            <InputDiv>
               <Input
-                ref={register({ required: true })}
-                name="country"
+                ref={register({ required: true, minLength: 2 })}
+                name="givenName"
                 type="text"
-                value={"Canada"}
+                placeholder="First name"
               />
-              <Input type="submit" />
-            </FormGroup>
-          </form>
-        </FormProvider>
+              {errors.givenName && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+            <InputDiv>
+              <Input
+                ref={register({ required: true, minLength: 2 })}
+                name="lastName"
+                type="text"
+                placeholder="Last name"
+              />
+              {errors.surname && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+          </FormGroup>
+          <FormGroup>
+            <InputDiv>
+              <Input
+                ref={register({ required: true, minLength: 2 })}
+                name="email"
+                type="email"
+                placeholder="Email"
+              />
+              {errors.email && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+          </FormGroup>
+          <FormGroup>
+            <InputDiv>
+              <Input
+                ref={register({ required: true, minLength: 2 })}
+                name="address"
+                type="address"
+                placeholder="Address"
+              />
+              {errors.address && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+          </FormGroup>
+          <FormGroup>
+            <InputDiv>
+              <Input
+                ref={register({ required: true, minLength: 2 })}
+                name="city"
+                type="text"
+                placeholder="City"
+              />
+              {errors.city && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+            <InputDiv>
+              <DropDown>
+                <label for="province">Province:</label>
+                <select
+                  name="province"
+                  ref={register({ required: true, minLength: 2 })}
+                >
+                  <option></option>
+
+                  {provinces.map((province) => {
+                    return <option value={province}>{province}</option>;
+                  })}
+                </select>
+              </DropDown>
+              {errors.province && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+          </FormGroup>
+          <FormGroup>
+            <InputDiv>
+              <Input
+                ref={register({ required: true, minLength: 6, maxLength: 7 })}
+                name="postalCode"
+                type="text"
+                placeholder="Postal Code"
+              />
+              {errors.postcode && (
+                <FormError>
+                  <RiAlertFill /> This is a required field
+                </FormError>
+              )}
+            </InputDiv>
+            <Input
+              ref={register({ required: true })}
+              name="country"
+              type="text"
+              value={"Canada"}
+            />
+            <Input type="submit" />
+          </FormGroup>
+        </form>
       </FormContent>
     </IWrapper>
   );

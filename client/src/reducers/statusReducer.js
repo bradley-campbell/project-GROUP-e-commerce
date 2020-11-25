@@ -3,6 +3,7 @@ const initialState = {
   paymentPageView: false,
   confirmationPageView: false,
   cartItemTotal: 0,
+  subtotal: 0,
 };
 
 const statusReducer = (state = initialState, action) => {
@@ -26,6 +27,9 @@ const statusReducer = (state = initialState, action) => {
     }
     case "SET_CART_ITEMS_TOTAL": {
       return { ...state, cartItemTotal: action.total };
+    }
+    case "SET_SUBTOTAL": {
+      return { ...state, subtotal: action.total };
     }
     default:
       return state;

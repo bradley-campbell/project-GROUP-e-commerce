@@ -1,9 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { useHistory } from "react-router-dom";
-import { COLORS } from "../ConstantStyles";
+import { GoTrashcan } from "react-icons/go";
 
 import {
   addItem,
@@ -13,7 +11,6 @@ import {
 } from "../actions/cartActions";
 
 const CartItem = ({ item }) => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
   const { id, imageSrc, name, price, quantity, numInStock } = item;
@@ -26,11 +23,8 @@ const CartItem = ({ item }) => {
 
   return (
     <Wrapper>
-      <Image src={imageSrc} onClick={() => history.push(`/product/${id}`)} />{" "}
-      <Name onClick={() => history.push(`/product/${id}`)}>{name}</Name>
-      <Price>
-        <Grey>Item Total:</Grey> ${price.toFixed(2)}
-      </Price>
+      <Image src={imageSrc} /> <Name>{name}</Name>
+      <Price>${price}</Price>
       <QuantityContainer>
         {/* <DecrementButton
           onClick={() => {
@@ -82,24 +76,8 @@ const Wrapper = styled.div`
 `;
 
 const Image = styled.img`
-  grid-area: itempic;
-  width: 70px;
-  padding: 20px 20px;
-  border-radius: 30%;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-`;
-
-const Name = styled.p`
-  margin-top: 10px;
-  grid-area: title;
-  padding: 20px;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
+  height: 100px;
+  width: 100px;
 `;
 
 const Price = styled.p`
