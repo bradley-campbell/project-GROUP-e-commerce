@@ -80,7 +80,7 @@ export const Footer = () => {
 
 const Wrapper = styled.div`
   box-sizing: border-box;
-  width: 100vw;
+  width: 98.7vw;
   line-height: 2em;
   background: ${COLORS.primary};
   font-size: 14px;
