@@ -25,6 +25,8 @@ const Payment = () => {
   const cartState = useSelector((state) => state.cartState);
   const cartArray = Object.values(cartState);
   const [response, setResponse] = useState({});
+  const qst = subtotal * 0.15;
+  const totalWithTax = subtotal + qst;
 
   const {} = viewState;
 
@@ -108,17 +110,21 @@ const Payment = () => {
                           <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
                           {item.name.slice(0, 30)}
                         </span>
-                        <span>1 @ {item.price}</span>
+                        <span>
+                          {item.quantity} @ {item.price}
+                        </span>
                       </li>
                     );
                   })}
                 </ItemizedList>
                 <Totals>
                   <div>
-                    <p>{totalCartItems} Items </p>
-                    <p>Subtotal: {subtotal}</p>
-                    <p>QST:{subtotal * 0.15}</p>
-                    <p>Total:{subtotal * 1.15}</p>
+                    <p>
+                      <span>{totalCartItems}</span> Items{" "}
+                    </p>
+                    <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                    <p>QST: ${qst.toFixed(2)}</p>
+                    <p>Total: ${totalWithTax.toFixed(2)}</p>
                   </div>
                 </Totals>
               </OrderSummary>
@@ -213,6 +219,10 @@ const Totals = styled.div`
   font-size: 12px;
   p {
     padding-top: 3px;
+  }
+
+  span {
+    font-weight: bold;
   }
 `;
 
