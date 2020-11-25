@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
   --borderRadius: "10px",
 }
 
+:focus{
+ outline: none; 
+}
+
 ${reset};
 
 
