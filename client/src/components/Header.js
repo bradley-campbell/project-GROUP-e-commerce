@@ -3,10 +3,13 @@ import styled from "styled-components";
 import { FiShoppingCart as CartIcon } from "react-icons/fi";
 import { NavLink, Link, useHistory } from "react-router-dom";
 import { COLORS } from "../ConstantStyles";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [query, setQuery] = useState("");
   const [dropOpen, setDropOpen] = useState(false);
+  const viewState = useSelector((state) => state.viewState);
+  const { cartItemTotal } = viewState;
 
   const dropHandle = () => {
     setDropOpen(!dropOpen);
@@ -16,7 +19,7 @@ const Header = () => {
 
   return (
     <Wrapper>
-      <LogoLink exact to="/home">
+      <LogoLink exact to="/">
         <ShopTitle>SHOP FETCH</ShopTitle>
       </LogoLink>
       <Navigation>
@@ -86,7 +89,7 @@ const Header = () => {
       </Navigation>
       <CartWrapper>
         <CartNum exact to="/cart">
-          2
+          {cartItemTotal !== 0 && cartItemTotal}
         </CartNum>
         <CartLink exact to="/cart">
           <CartIcon size={42} color={COLORS.white} />

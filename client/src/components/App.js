@@ -18,8 +18,27 @@ import ProductByCompany from "./ProductByCompany";
 import ProductDetails from "./ProductDetails";
 import SearchResults from "./SearchResults";
 import { COLORS } from "../ConstantStyles";
+import { useDispatch, useSelector } from "react-redux";
+import { setCartItemsTotal, setSubtotal } from "../actions/statusActions";
 
 function App() {
+  const cartState = useSelector((state) => state.cartState);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let subtotal = Object.values(cartState);
+    subtotal = subtotal.reduce((acc, item) => {
+      return acc + item.quantity * item.price;
+    }, 0);
+    dispatch(setSubtotal(subtotal));
+
+    let totalItems = Object.values(cartState);
+    totalItems = totalItems.reduce((acc, item) => {
+      return acc + item.quantity;
+    }, 0);
+    dispatch(setCartItemsTotal(totalItems));
+  }, [cartState]);
+
   // const [bacon, setBacon] = useState(null);
 
   // useEffect(() => {
