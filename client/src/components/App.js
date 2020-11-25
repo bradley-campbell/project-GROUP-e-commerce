@@ -36,7 +36,7 @@ function App() {
         <Payment />
 
         <Switch>
-          <Route exact path="/home">
+          <Route exact path="/">
             <Home />
           </Route>
 
