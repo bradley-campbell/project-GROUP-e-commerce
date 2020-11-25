@@ -17,22 +17,6 @@ const Cart = () => {
   const { subtotal, cartItemTotal } = viewState;
   const total = subtotal * 1.15;
 
-  useEffect(() => {
-    let subtotal = Object.values(cartState);
-    subtotal = subtotal.reduce((acc, item) => {
-      return acc + item.quantity * item.price;
-    }, 0);
-    dispatch(setSubtotal(subtotal));
-
-    let totalItems = Object.values(cartState);
-    totalItems = totalItems.reduce((acc, item) => {
-      return acc + item.quantity;
-    }, 0);
-    dispatch(setCartItemsTotal(totalItems));
-  }, [cartState]);
-
-  console.log(viewState);
-
   const proceedToPayment = () => {
     dispatch(togglePaymentView());
   };
