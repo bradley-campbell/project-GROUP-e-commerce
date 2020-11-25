@@ -16,7 +16,7 @@ const Item = ({ item }) => {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    dispatch(addItem({ ...item, id }));
+    dispatch(addItem({ ...item, id, quantity: 1 }));
   };
 
   return (

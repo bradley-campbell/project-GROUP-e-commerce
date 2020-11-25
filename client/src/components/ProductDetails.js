@@ -27,7 +27,7 @@ const ProductDetails = () => {
   } = product;
 
   const handleAddToCart = () => {
-    return !cartState[id] && quantity === 1
+    return !cartState[id]
       ? dispatch(addItem({ ...product, id, quantity: quantity }))
       : updateQuantity({ ...product, id, quantity: quantity });
   };
