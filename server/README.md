@@ -53,6 +53,11 @@
 
 ## endpoints info
 
+- GET `/product/all`
+
+  - Get all products
+  - On success: `{ status:200, products:[ List of All Product Object with a nested company:{ company object } ] }`;
+
 - GET `/product/by-product/:productId`
 
   - Get specific product information
