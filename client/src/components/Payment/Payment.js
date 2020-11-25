@@ -21,7 +21,7 @@ const Payment = () => {
   const {
     paymentPageView, // Boolean to determine if payment form is showin
     confirmationPageView, // Boolean to determine if confirmation message is showing
-    totalCartItems, // Number of items currently in the cart -- updates on cart change (see App.js)
+    cartItemTotal, // Number of items currently in the cart -- updates on cart change (see App.js)
     subtotal, // Subtotal of items currently in cart -- updates on cart change (see App.js)
   } = viewState;
   const [response, setResponse] = useState({}); // response from order request containing order number sent from BE
@@ -41,14 +41,15 @@ const Payment = () => {
   const dispatch = useDispatch();
 
   const closeModal = (ev) => {
-    dispatch(togglePaymentView());
-    confirmationPageView && dispatch(toggleConfirmationView());
+    dispatch(togglePaymentView()); // toggle payment page view
+    confirmationPageView && dispatch(toggleConfirmationView()); // If confirmation view is active, clicking X will toggle it
   };
 
   const handleFetch = async (form, cart, subtotal) => {
     const reqPut = {
+      // formatting request object for order creation
       method: "PUT",
-      body: JSON.stringify({ formData: form, cart, subtotal }), // id quantity
+      body: JSON.stringify({ formData: form, cart, subtotal }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -56,6 +57,7 @@ const Payment = () => {
     };
 
     const reqPatch = {
+      // formatting request object for inventory update
       method: "PATCH",
       body: JSON.stringify({ cart: cart }),
       headers: {
@@ -63,23 +65,22 @@ const Payment = () => {
         "Content-Type": "application/json",
       },
     };
-    dispatch(requestData());
+    dispatch(requestData()); // change status in statusReducer to loading
     try {
-      let putResponse = await fetch("/order", reqPut);
-      putResponse = await putResponse.json();
-      setResponse(putResponse);
-      console.log(putResponse);
+      let putResponse = await fetch("/order", reqPut); // send request to create order
+      putResponse = await putResponse.json(); // parse response
+      setResponse(putResponse); // set response to state, which contains orderId
 
-      let patchResponse = await fetch("/product", reqPatch);
-      patchResponse = await patchResponse.json();
-      console.log(patchResponse.orderId);
-      dispatch(receiveData());
-      dispatch(clearCart());
-      dispatch(toggleConfirmationView());
+      let patchResponse = await fetch("/product", reqPatch); // send request to update inventory
+      patchResponse = await patchResponse.json(); // if successful, BE inventory will be updated
+
+      dispatch(receiveData()); // change status in statusReducer to idle
+      dispatch(clearCart()); // remove all cart items from cartReducer upon success
+      dispatch(toggleConfirmationView()); // change view to confirmation page
     } catch (error) {
-      dispatch(receiveDataError());
-      dispatch(toggleConfirmationView());
-      setResponse("An unexpected error has occured, please try again");
+      dispatch(receiveDataError()); // change status in statusReducer to error
+      dispatch(toggleConfirmationView()); // change view to confirmation page
+      setResponse("An unexpected error has occured, please try again"); // set response in case of an error
     }
   };
 
@@ -106,10 +107,10 @@ const Payment = () => {
                         <span>
                           {" "}
                           <a href={`/product/${item.id}`}># {item.id}</a> -{" "}
-                          {item.name.slice(0, 30)}
+                          {item.name.slice(0, 45)}
                         </span>
                         <span>
-                          {item.quantity} @ {item.price}
+                          {item.quantity} @ ${item.price.toFixed(2)}
                         </span>
                       </li>
                     );
@@ -118,11 +119,17 @@ const Payment = () => {
                 <Totals>
                   <div>
                     <p>
-                      <span>{totalCartItems}</span> Items{" "}
+                      <span>{cartItemTotal}</span> Items{" "}
                     </p>
-                    <p>Subtotal: ${subtotal.toFixed(2)}</p>
-                    <p>QST: ${qst.toFixed(2)}</p>
-                    <p>Total: ${totalWithTax.toFixed(2)}</p>
+                    <p>
+                      Subtotal: <span>${subtotal.toFixed(2)}</span>
+                    </p>
+                    <p>
+                      QST: <span>${qst.toFixed(2)}</span>
+                    </p>
+                    <p>
+                      Total: <span>${totalWithTax.toFixed(2)}</span>
+                    </p>
                   </div>
                 </Totals>
               </OrderSummary>
@@ -140,7 +147,10 @@ const Payment = () => {
 export default Payment;
 
 const Wrapper = styled.div`
-  visibility: ${(props) => (props.visible ? "visible" : "hidden")};
+  visibility: ${(props) =>
+    props.visible
+      ? "visible"
+      : "hidden"}; // Payment page view toggled by "Proceed to checkout button" in cart and "X" inside modal
 `;
 
 const Overlay = styled.div`
