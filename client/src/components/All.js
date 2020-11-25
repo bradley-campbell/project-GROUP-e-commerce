@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Grid from "./Grid";
+import { COLORS } from "../ConstantStyles";
 
 export const All = () => {
   const [items, setItems] = useState("");
@@ -34,22 +35,54 @@ export const All = () => {
   return (
     <Wrapper>
       <SelectView>
-        <ViewOption onClick={() => setItemsView("all")}>All</ViewOption>
-        <ViewOption onClick={() => setItemsView("fitness")}>Fitness</ViewOption>
-        <ViewOption onClick={() => setItemsView("medical")}>Medical</ViewOption>
-        <ViewOption onClick={() => setItemsView("lifestyle")}>
+        <ViewOption
+          onClick={() => setItemsView("all")}
+          active={itemsView === "all"}
+        >
+          All
+        </ViewOption>
+        <ViewOption
+          onClick={() => setItemsView("fitness")}
+          active={itemsView === "fitness"}
+        >
+          Fitness
+        </ViewOption>
+        <ViewOption
+          onClick={() => setItemsView("medical")}
+          active={itemsView === "medical"}
+        >
+          Medical
+        </ViewOption>
+        <ViewOption
+          onClick={() => setItemsView("lifestyle")}
+          active={itemsView === "lifestyle"}
+        >
           Lifestyle
         </ViewOption>
-        <ViewOption onClick={() => setItemsView("entertainment")}>
+        <ViewOption
+          onClick={() => setItemsView("entertainment")}
+          active={itemsView === "entertainment"}
+        >
           Entertainment
         </ViewOption>
-        <ViewOption onClick={() => setItemsView("industrial")}>
+        <ViewOption
+          onClick={() => setItemsView("industrial")}
+          active={itemsView === "industrial"}
+        >
           Industrial
         </ViewOption>
-        <ViewOption onClick={() => setItemsView("Pets and Animals")}>
+        <ViewOption
+          onClick={() => setItemsView("Pets and Animals")}
+          active={itemsView === "Pets and Animals"}
+        >
           Pets and Animals
         </ViewOption>
-        <ViewOption onClick={() => setItemsView("gaming")}>Gaming</ViewOption>
+        <ViewOption
+          onClick={() => setItemsView("gaming")}
+          active={itemsView === "gaming"}
+        >
+          Gaming
+        </ViewOption>
       </SelectView>
       <Grid itemsData={items} itemsView={itemsView} />
     </Wrapper>
@@ -77,6 +110,21 @@ const ViewOption = styled.button`
   padding: 15px;
   border: none;
   border-radius: 5px;
+
+  color: ${COLORS.white};
+  border: none;
+  padding: 10px 17px;
+  background: ${(props) => (!props.active ? COLORS.primary : COLORS.accent)};
+  cursor: pointer;
+  &:hover {
+    background: ${COLORS.accent};
+  }
+
+  &:active {
+    background: ${COLORS.secondary};
+  }
+
+  cursor: pointer;
 `;
 
 export default All;
