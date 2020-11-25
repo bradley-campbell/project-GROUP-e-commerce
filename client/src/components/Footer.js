@@ -128,7 +128,7 @@ const FootLink = styled(Link)`
   color: white;
   display: block;
   &:hover {
-    color: ${COLORS.accent};
+    color: ${COLORS.accentlight};
   }
 `;
 

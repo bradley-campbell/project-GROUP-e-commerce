@@ -11,7 +11,7 @@ import { receiveData } from "../actions/statusActions";
 const Item = ({ item }) => {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState); // Access the state from the cartReducer
-  const { name, price, numInStock, imageSrc, id } = item; // Destructured item to have direct access to variables
+  const { name, price, numInStock, imageSrc, id, companyName } = item; // Destructured item to have direct access to variables
   let history = useHistory();
 
   const handleAddToCart = (e) => {
@@ -24,6 +24,7 @@ const Item = ({ item }) => {
       <ProductImg src={imageSrc} width="100%" />
       <Info>
         <Name>{name}</Name>
+        <CompanyName>{companyName}</CompanyName>
         <Price>${price}</Price>
         {numInStock > 0 ? (
           // Added button styling inside the component instead of creating a separate component, for simplicity
@@ -69,7 +70,20 @@ const Name = styled.p`
   font-weight: bold;
   line-height: 1.2em;
   color: black;
-  padding: 30px 30px 20px 30px;
+  padding: 30px 30px 5px 30px;
+`;
+
+const CompanyName = styled.p`
+  font-size: 18;
+  color: black;
+  font-weight: bold;
+  margin: auto;
+  margin-bottom: 10px;
+  width: 100px;
+  padding: 5px;
+  opacity: 0.6;
+  background: ${COLORS.accentlight};
+  border-radius: ${COLORS.borderRadius};
 `;
 
 const Price = styled.p`

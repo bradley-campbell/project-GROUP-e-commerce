@@ -34,7 +34,7 @@ border-radius: ${COLORS.borderRadius};
   }
 
   &:active {
-    background: ${COLORS.secondary};
+    background: ${COLORS.accentdark};
   }
 }
 
