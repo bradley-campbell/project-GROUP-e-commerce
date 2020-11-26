@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { COLORS } from "../ConstantStyles";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   AiFillTwitterCircle,
   AiFillInstagram,

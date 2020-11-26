@@ -4,14 +4,11 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Form from "./Form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  receiveData,
-  receiveDataError,
-  requestData,
   toggleConfirmationView,
   togglePaymentView,
 } from "../../actions/statusActions";
 import { clearCart } from "../../actions/cartActions";
-import Confirmation from "../Confirmation";
+import Confirmation from "./Confirmation";
 
 const Payment = () => {
   const [cartMinimal, setCartMinimal] = useState({}); // Minimal product information to process order
@@ -65,23 +62,16 @@ const Payment = () => {
         "Content-Type": "application/json",
       },
     };
-    dispatch(requestData()); // change status in statusReducer to loading
-    try {
-      let putResponse = await fetch("/order", reqPut); // send request to create order
-      putResponse = await putResponse.json(); // parse response
-      setResponse(putResponse); // set response to state, which contains orderId
 
-      let patchResponse = await fetch("/product", reqPatch); // send request to update inventory
-      patchResponse = await patchResponse.json(); // if successful, BE inventory will be updated
+    let putResponse = await fetch("/order", reqPut); // send request to create order
+    putResponse = await putResponse.json(); // parse response
+    setResponse(putResponse); // set response to state, which contains orderId
 
-      dispatch(receiveData()); // change status in statusReducer to idle
-      dispatch(clearCart()); // remove all cart items from cartReducer upon success
-      dispatch(toggleConfirmationView()); // change view to confirmation page
-    } catch (error) {
-      dispatch(receiveDataError()); // change status in statusReducer to error
-      dispatch(toggleConfirmationView()); // change view to confirmation page
-      setResponse("An unexpected error has occured, please try again"); // set response in case of an error
-    }
+    let patchResponse = await fetch("/product", reqPatch); // send request to update inventory
+    patchResponse = await patchResponse.json(); // if successful, BE inventory will be updated
+
+    dispatch(clearCart()); // remove all cart items from cartReducer upon success
+    dispatch(toggleConfirmationView()); // change view to confirmation page
   };
 
   return (

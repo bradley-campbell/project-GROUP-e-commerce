@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
-import { COLORS } from "../ConstantStyles";
-import { addItem, updateQuantity } from "../actions/cartActions";
-import { getStoreItemArray } from "./../reducers";
+import { COLORS } from "../../ConstantStyles";
+import { addItem, updateQuantity } from "../../actions/cartActions";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();

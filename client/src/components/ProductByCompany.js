@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Grid from "./Grid";
+import Grid from "./Reusable/Grid";
 
 // Fetch items by company selected
 const ProductByCompany = () => {

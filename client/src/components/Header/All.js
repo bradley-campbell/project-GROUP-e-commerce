@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Grid from "./Grid";
-import { COLORS } from "../ConstantStyles";
+import Grid from "../Reusable/Grid";
+import { COLORS } from "../../ConstantStyles";
 
 export const All = () => {
   const [items, setItems] = useState([]);

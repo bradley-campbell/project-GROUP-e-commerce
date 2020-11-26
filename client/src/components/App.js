@@ -2,21 +2,16 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyle from "../GlobalStyles";
-
-import Admin from "./Admin";
-import BodyLocation from "./BodyLocation";
+import BodyLocation from "./Header/BodyLocation";
 import Cart from "./Cart";
-import CategoryList from "./CategoryList";
-import CompanyList from "./CompanyList";
-import Confirmation from "./Confirmation";
-import Header from "./Header";
-import Home from "./Home";
-import All from "./All";
-import ItemsByCategory from "./ItemsByCategory";
+import CompanyList from "./Header/CompanyList";
+import Header from "./Header/Header";
+import Home from "./Header/Home";
+import All from "./Header/All";
 import Payment from "./Payment/Payment";
 import ProductByCompany from "./ProductByCompany";
-import ProductDetails from "./ProductDetails";
-import SearchResults from "./SearchResults";
+import ProductDetails from "./Reusable/ProductDetails";
+import SearchResults from "./Header/SearchResults";
 import Footer from "./Footer";
 import ScrollToTop from "./HandScrollToTop";
 import { COLORS } from "../ConstantStyles";
@@ -43,12 +38,6 @@ function App() {
 
   // const [bacon, setBacon] = useState(null);
 
-  // useEffect(() => {
-  //   fetch("/bacon")
-  //     .then((res) => res.json())
-  //     .then((data) => setBacon(data));
-  // }, []);
-
   return (
     <Wrapper>
       <GlobalStyle />
@@ -56,7 +45,6 @@ function App() {
         <ScrollToTop />
         <Header />
         <Payment />
-
         <Switch>
           <Route exact path="/">
             <Home />
@@ -86,20 +74,8 @@ function App() {
             <Cart />
           </Route>
 
-          <Route exact path="/payment">
-            <Payment />
-          </Route>
-
-          <Route exact path="/confirmation">
-            <Confirmation />
-          </Route>
-
           <Route exact path="/search/:searchWord">
             <SearchResults />
-          </Route>
-
-          <Route exact path="/admin">
-            <Admin />
           </Route>
         </Switch>
         <Footer />

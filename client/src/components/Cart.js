@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import {
-  setCartItemsTotal,
-  setSubtotal,
-  togglePaymentView,
-} from "../actions/statusActions";
+import { togglePaymentView } from "../actions/statusActions";
 import { COLORS } from "../ConstantStyles";
-import CartItem from "./CartItem";
+import CartItem from "./Reusable/CartItem";
 
 const Cart = () => {
   const cartState = useSelector((state) => state.cartState);
@@ -18,7 +14,9 @@ const Cart = () => {
   const total = subtotal * 1.15;
 
   const proceedToPayment = () => {
-    dispatch(togglePaymentView());
+    if (cartArray.length > 0) {
+      dispatch(togglePaymentView());
+    }
   };
 
   return (

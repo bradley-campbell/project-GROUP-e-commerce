@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useHistory } from "react-router-dom";
-
-import Grid from "./Grid";
-import { COLORS } from "../ConstantStyles";
+import { COLORS } from "../../ConstantStyles";
 
 const Home = () => {
   const history = useHistory();

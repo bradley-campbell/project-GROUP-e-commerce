@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Item from "./Item";
-import { COLORS } from "../ConstantStyles";
+import { COLORS } from "../../ConstantStyles";
 
 const Grid = ({ itemsData, itemsView }) => {
-  // const [itemsView, setItemsView] = useState("all");
   const [itemsArray, setItemsArray] = useState(itemsData);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(24);
@@ -27,8 +26,6 @@ const Grid = ({ itemsData, itemsView }) => {
 
   console.log(currentPage);
 
-  // console.log(pages);
-
   useEffect(() => {
     setStartIndex(0);
     setEndIndex(24);
@@ -36,23 +33,10 @@ const Grid = ({ itemsData, itemsView }) => {
   }, [itemsView]);
 
   useEffect(() => {
-    // itemsView === "all"
-    //   ? setItemsArray(itemsData)
-    //   : setItemsArray(itemsData.filter((item) => item.category === itemsView));
-    // if (itemsView === "all") {
-    //   const itemsDisplayed = itemsData.slice(startIndex, endIndex);
-    //   setItemsArray(itemsData);
-    //   setDisplayedItems(itemsDisplayed);
-    // } else {
-    // const catergoryItems = itemsData.filter(
-    //   (item) => item.category === itemsView
-    // );
     const itemsDisplayed = itemsData.slice(startIndex, endIndex);
     console.log(itemsDisplayed);
-    // setItemsArray(catergoryItems);
     setDisplayedItems(itemsDisplayed);
     window.scrollTo(0, 0);
-    // }
   }, [startIndex, endIndex, itemsData]);
 
   const handleBack = () => {
@@ -79,24 +63,6 @@ const Grid = ({ itemsData, itemsView }) => {
 
   return (
     <Wrapper>
-      {/* <SelectView>
-        <ViewOption onClick={() => setItemsView("all")}>All</ViewOption>
-        <ViewOption onClick={() => setItemsView("Fitness")}>Fitness</ViewOption>
-        <ViewOption onClick={() => setItemsView("Medical")}>Medical</ViewOption>
-        <ViewOption onClick={() => setItemsView("Lifestyle")}>
-        Lifestyle
-        </ViewOption>
-        <ViewOption onClick={() => setItemsView("Entertainment")}>
-        Entertainment
-        </ViewOption>
-        <ViewOption onClick={() => setItemsView("Industrial")}>
-        Industrial
-        </ViewOption>
-        <ViewOption onClick={() => setItemsView("Pets and Animals")}>
-        Pets and Animals
-        </ViewOption>
-        <ViewOption onClick={() => setItemsView("Gaming")}>Gaming</ViewOption>
-      </SelectView> */}
       <GridDisplay>
         {displayedItems ? (
           displayedItems

@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaCheckCircle } from "react-icons/fa";
-import moment from "moment";
-import { COLORS } from "../ConstantStyles";
+import { COLORS } from "../../ConstantStyles";
 
 const Confirmation = ({ orderInfo }) => {
   const {

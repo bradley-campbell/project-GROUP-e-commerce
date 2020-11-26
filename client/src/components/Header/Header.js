@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiShoppingCart as CartIcon } from "react-icons/fi";
 import { NavLink, Link, useHistory } from "react-router-dom";
-import { COLORS } from "../ConstantStyles";
+import { COLORS } from "../../ConstantStyles";
 import { useSelector } from "react-redux";
 
 const Header = () => {

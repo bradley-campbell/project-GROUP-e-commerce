@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import Grid from "./Grid";
+import Grid from "../Reusable/Grid";
 
 const BodyLocation = () => {
   const [items, setItems] = useState("");

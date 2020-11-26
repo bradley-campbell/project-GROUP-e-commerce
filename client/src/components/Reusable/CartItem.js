@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { GoTrashcan } from "react-icons/go";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import {
@@ -10,8 +9,8 @@ import {
   removeItem,
   removeItemCompletely,
   updateQuantity,
-} from "../actions/cartActions";
-import { COLORS } from "../ConstantStyles";
+} from "../../actions/cartActions";
+import { COLORS } from "../../ConstantStyles";
 
 const CartItem = ({ item }) => {
   const history = useHistory();
@@ -43,15 +42,6 @@ const CartItem = ({ item }) => {
       </Name>
       <Price>${price}</Price>
       <QuantityContainer>
-        {/* <DecrementButton
-          onClick={() => {
-            quantity > 1
-              ? dispatch(removeItem({ ...item, id }))
-              : dispatch(removeItemCompletely({ id }));
-          }}
-        >
-          -
-        </DecrementButton> */}
         Quantity:{" "}
         <Quantity
           min="1"

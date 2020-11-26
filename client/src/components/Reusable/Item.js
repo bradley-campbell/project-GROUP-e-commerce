@@ -1,12 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { COLORS } from "../ConstantStyles";
-import { Link, useHistory } from "react-router-dom";
-
-import { addItem } from "../actions/cartActions";
-import { getStoreItemArray } from "./../reducers";
-import { receiveData } from "../actions/statusActions";
+import { COLORS } from "../../ConstantStyles";
+import { useHistory } from "react-router-dom";
+import { addItem } from "../../actions/cartActions";
 
 const Item = ({ item }) => {
   const dispatch = useDispatch();

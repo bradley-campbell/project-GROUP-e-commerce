@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Grid from "./Grid";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import Grid from "../Reusable/Grid";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 const SearchResults = () => {

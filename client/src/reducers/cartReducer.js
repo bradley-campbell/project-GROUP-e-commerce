@@ -14,24 +14,6 @@ const cartReducer = (state = intitialState, action) => {
       delete stateCopy[id];
       return { ...stateCopy };
     }
-    case "INCREMENT_ITEM": {
-      const id = action.item.id;
-      const newQuantity = action.item[id].quantity + 1;
-      return { ...state, [id]: { ...action.item[id], quantity: newQuantity } };
-    }
-    case "DECREMENT_ITEM": {
-      //       return {
-      // //         ...state,
-      // //         [action.item.id]: {
-      // //           ...action.item,
-      // //           quantity: state[action.item.id].quantity - 1,
-      // //         },
-      // //       };
-      // //     }
-      const id = action.item.id;
-      const newQuantity = action.item[id].quantity - 1;
-      return { ...state, [id]: { ...action.item[id], quantity: newQuantity } };
-    }
     case "UPDATE_QUANTITY": {
       return {
         ...state,
