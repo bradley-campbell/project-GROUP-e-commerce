@@ -5,9 +5,7 @@ import { useHistory } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import {
-  addItem,
   removeItem,
-  removeItemCompletely,
   updateQuantity,
 } from "../../actions/cartActions";
 import { COLORS } from "../../ConstantStyles";
@@ -106,14 +104,6 @@ const QuantityContainer = styled.div`
   font-weight: lighter;
   color: darkgray;
 `;
-
-const Grey = styled.span`
-  color: grey;
-`;
-
-// const DecrementButton = styled.button`
-//   all: unset;
-// `;
 
 const Quantity = styled.input`
   border: 1px solid lightgray;

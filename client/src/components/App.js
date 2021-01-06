@@ -34,6 +34,7 @@ function App() {
       return acc + item.quantity;
     }, 0);
     dispatch(setCartItemsTotal(totalItems));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartState]);
 
   // const [bacon, setBacon] = useState(null);
@@ -90,5 +91,3 @@ const Wrapper = styled.div`
   background: ${COLORS.white};
   width: 100vw;
 `;
-
-const Grid = styled.div``;

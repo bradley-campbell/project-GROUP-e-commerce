@@ -4,7 +4,7 @@ import Item from "./Item";
 import { COLORS } from "../../ConstantStyles";
 
 const Grid = ({ itemsData, itemsView }) => {
-  const [itemsArray, setItemsArray] = useState(itemsData);
+  
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(24);
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -14,9 +14,9 @@ const Grid = ({ itemsData, itemsView }) => {
   const pages = [];
   const pageSize = 24;
 
-  if (itemsArray.length > 0) {
-    numOfPages = Math.ceil(itemsArray.length / pageSize);
-  } else if (itemsArray.length === 0 && itemsData.length > 0) {
+  if (itemsData.length > 0) {
+    numOfPages = Math.ceil(itemsData.length / pageSize);
+  } else if (itemsData.length === 0 && itemsData.length > 0) {
     numOfPages = Math.ceil(itemsData.length / pageSize);
   }
 
@@ -112,20 +112,6 @@ const Wrapper = styled.div`
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-`;
-
-const SelectView = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const ViewOption = styled.button`
-  padding: 15px;
-  border: none;
-  border-radius: 5px;
 `;
 
 const GridDisplay = styled.div`
