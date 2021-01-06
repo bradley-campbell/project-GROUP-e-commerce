@@ -20,6 +20,7 @@ const SearchResults = () => {
         setNP(numProducts);
         setSW(searchWord);
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return p ? (

@@ -33,6 +33,7 @@ const Payment = () => {
         [item.id]: { id: item.id, quantity: item.quantity },
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartState]);
 
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const Payment = () => {
 
     let patchResponse = await fetch("/product", reqPatch); // send request to update inventory
     patchResponse = await patchResponse.json(); // if successful, BE inventory will be updated
+    console.log(patchResponse);
 
     dispatch(clearCart()); // remove all cart items from cartReducer upon success
     dispatch(toggleConfirmationView()); // change view to confirmation page

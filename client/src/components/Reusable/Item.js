@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { COLORS } from "../../ConstantStyles";
 import { useHistory } from "react-router-dom";
@@ -7,7 +7,7 @@ import { addItem } from "../../actions/cartActions";
 
 const Item = ({ item }) => {
   const dispatch = useDispatch();
-  const cartState = useSelector((state) => state.cartState); // Access the state from the cartReducer
+
   const { name, price, numInStock, imageSrc, id, companyName } = item; // Destructured item to have direct access to variables
   let history = useHistory();
 

@@ -20,6 +20,7 @@ const ProductByCompany = () => {
           console.log(info.error); // may direct to error page
         }
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return cProducts && comInfo ? (
